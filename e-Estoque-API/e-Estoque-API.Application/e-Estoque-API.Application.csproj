@@ -8,6 +8,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="12.0.1" />
     <PackageReference Include="LinqKit.Core" Version="1.2.5" />
     <PackageReference Include="LinqKit.Microsoft.EntityFrameworkCore" Version="8.1.5" />
     <PackageReference Include="MediatR" Version="12.2.0" />
@@ -26,7 +27,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Categories\" />
+    <Folder Include="Categories\Commands\Handlers\" />
+    <Folder Include="Categories\ViewModels\" />
     <Folder Include="Companies\" />
     <Folder Include="Customers\" />
     <Folder Include="Inventories\" />

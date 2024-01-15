@@ -8,6 +8,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.1" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="8.0.1" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="8.0.1" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.1" />
@@ -28,10 +29,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\e-Estoque-API.Core\e-Estoque-API.Core.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Mappings\" />
   </ItemGroup>
 
 </Project>

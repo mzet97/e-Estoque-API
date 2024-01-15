@@ -9,10 +9,10 @@ namespace e_Estoque_API.Infrastructure.Repositories
 {
     public abstract class Repository<TEntity> : IRepository<TEntity> where TEntity : AggregateRoot, new()
     {
-        protected readonly EstoqueDbContext Db;
+        protected readonly DataIdentityDbContext Db;
         protected readonly DbSet<TEntity> DbSet;
 
-        protected Repository(EstoqueDbContext db)
+        protected Repository(DataIdentityDbContext db)
         {
             Db = db;
             DbSet = db.Set<TEntity>();

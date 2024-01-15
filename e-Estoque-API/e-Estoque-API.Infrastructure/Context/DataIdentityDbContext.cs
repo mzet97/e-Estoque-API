@@ -1,10 +1,16 @@
 ﻿using e_Estoque_API.Core.Entities;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace e_Estoque_API.Infrastructure.Context
 {
-    public class EstoqueDbContext : DbContext
+    public class DataIdentityDbContext : IdentityDbContext<User, IdentityRole<Guid>, Guid>
     {
+        public DataIdentityDbContext(DbContextOptions<DataIdentityDbContext> options) : base(options)
+        {
+        }
+
         public DbSet<Product> Products { get; set; }
         public DbSet<Category> Categories { get; set; }
         public DbSet<Company> Companies { get; set; }
@@ -14,26 +20,26 @@ namespace e_Estoque_API.Infrastructure.Context
         public DbSet<Sale> Sales { get; set; }
         public DbSet<SaleProduct> SaleProducts { get; set; }
         public DbSet<Tax> Taxs { get; set; }
+        public DbSet<ProfileUser> ProfileUsers { get; set; }
 
-        public EstoqueDbContext(
-           DbContextOptions options) : base(options)
-        {
-        }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            //ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTracking;
-            //ChangeTracker.AutoDetectChangesEnabled = false;
+            //optionsBuilder.LogTo(Console.WriteLine);
+            //optionsBuilder.UseLazyLoadingProxies();
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.ApplyConfigurationsFromAssembly(typeof(EstoqueDbContext).Assembly);
+            modelBuilder.HasDefaultSchema("public");
+            modelBuilder.ApplyConfigurationsFromAssembly(typeof(DataIdentityDbContext).Assembly);
 
             foreach (var relationship in modelBuilder.Model.GetEntityTypes().SelectMany(e => e.GetForeignKeys())) relationship.DeleteBehavior = DeleteBehavior.ClientSetNull;
 
             base.OnModelCreating(modelBuilder);
+
         }
+
 
         public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = new CancellationToken())
         {

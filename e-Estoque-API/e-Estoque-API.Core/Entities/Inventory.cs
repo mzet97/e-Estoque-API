@@ -14,6 +14,10 @@ namespace e_Estoque_API.Core.Entities
 
         #endregion EFCRelations
 
+        public Inventory()
+        {
+        }
+
         public Inventory(Guid id, int quantity, DateTime dateOrder, Guid idProduct)
         {
             Id = id;

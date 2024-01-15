@@ -43,7 +43,7 @@ namespace e_Estoque.Data.Mappings
 
             builder.Property(c => c.Latitude)
                .IsRequired()
-               .HasColumnType("varchar(80)T");
+               .HasColumnType("varchar(80)");
 
             builder.Property(c => c.Longitude)
                .IsRequired()
