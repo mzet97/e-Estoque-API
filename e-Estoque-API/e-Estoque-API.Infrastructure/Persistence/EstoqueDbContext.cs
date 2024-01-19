@@ -1,5 +1,7 @@
 ﻿using e_Estoque_API.Core.Entities;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
+using NodaTime;
 using System.Reflection;
 
 namespace e_Estoque_API.Infrastructure.Persistence
@@ -9,6 +11,7 @@ namespace e_Estoque_API.Infrastructure.Persistence
 
         public EstoqueDbContext(DbContextOptions<EstoqueDbContext> options) : base(options)
         {
+            AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
         }
 
         public DbSet<Product> Products { get; set; }
@@ -21,6 +24,18 @@ namespace e_Estoque_API.Infrastructure.Persistence
         public DbSet<SaleProduct> SaleProducts { get; set; }
         public DbSet<Tax> Taxs { get; set; }
 
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            optionsBuilder.LogTo(Console.WriteLine);
+            //optionsBuilder.UseLazyLoadingProxies();
+        }
+
+        protected override void ConfigureConventions(ModelConfigurationBuilder configurationBuilder)
+        {
+            base.ConfigureConventions(configurationBuilder);
+
+            configurationBuilder.Properties<ZonedDateTime>(x => x.HaveConversion<ZonedDateTimeConverter>());
+        }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -52,6 +67,14 @@ namespace e_Estoque_API.Infrastructure.Persistence
             }
 
             return base.SaveChangesAsync(cancellationToken);
+        }
+    }
+
+    internal class ZonedDateTimeConverter : ValueConverter<ZonedDateTime, LocalDateTime>
+    {
+        public ZonedDateTimeConverter() :
+           base(v => v.WithZone(DateTimeZone.Utc).LocalDateTime, v => v.InUtc())
+        {
         }
     }
 }

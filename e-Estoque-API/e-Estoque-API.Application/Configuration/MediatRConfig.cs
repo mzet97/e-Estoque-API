@@ -7,7 +7,7 @@ namespace e_Estoque_API.Application.Configuration
     {
         public static IServiceCollection AddHandlers(this IServiceCollection services)
         {
-            services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(CreateCategory).Assembly));
+            services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(CreateCategoryCommand).Assembly));
 
             return services;
         }
