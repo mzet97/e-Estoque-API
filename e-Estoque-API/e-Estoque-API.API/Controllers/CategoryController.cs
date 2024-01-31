@@ -42,6 +42,7 @@ namespace e_Estoque_API.API.Controllers
             return CustomResponse(true, result);
         }
 
+        [Authorize(Roles = "Create")]
         [HttpPost]
         public async Task<IActionResult> Post([FromBody] CreateCategoryCommand command)
         {
@@ -50,6 +51,7 @@ namespace e_Estoque_API.API.Controllers
             return await Get(id);
         }
 
+        [Authorize(Roles = "Create")]
         [HttpPut("{id}")]
         public async Task<IActionResult> Put([FromBody] UpdateCategoryCommand command)
         {
@@ -58,6 +60,7 @@ namespace e_Estoque_API.API.Controllers
             return await Get(result);
         }
 
+        [Authorize(Roles = "Create")]
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(Guid id)
         {
