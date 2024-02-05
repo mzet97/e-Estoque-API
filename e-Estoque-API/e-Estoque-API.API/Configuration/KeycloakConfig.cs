@@ -1,6 +1,11 @@
 ﻿using Keycloak.AuthServices.Authentication;
 using Keycloak.AuthServices.Authorization;
 using Keycloak.AuthServices.Sdk.Admin;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authentication.OpenIdConnect;
+using Microsoft.IdentityModel.Tokens;
+using System.Security.Claims;
 
 namespace e_Estoque_API.API.Configuration
 {
@@ -46,7 +51,7 @@ namespace e_Estoque_API.API.Configuration
             keycloak.Credentials = new e_Estoque_API.Core.Models.Credentials();
             keycloak.Credentials.Secret = keycloakSection["credentials:secret"];
             keycloak.ConfidentialPort = keycloakSection["confidential-port"];
-           
+
             ValidateKeys(keycloak);
 
             return keycloak;

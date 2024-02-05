@@ -1,0 +1,107 @@
+version: "3.9"
+services:
+  
+  redis:
+    image: "redis"
+    command: redis-server --requirepass dsv@123
+    ports:
+      - "6379:6379"
+    networks:
+      - ob-network
+  
+  postgres:
+    image: "postgres"
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=dsv@123
+      - POSTGRES_DB=postgres
+    networks:
+      - ob-network
+    volumes:
+      - ./data:/var/lib/postgresql/data
+  
+  pgadmin:
+    image: dpage/pgadmin4
+    ports:
+      - "15432:80"
+    environment:
+      - PGADMIN_DEFAULT_EMAIL=admin@admin.com
+      - PGADMIN_DEFAULT_PASSWORD=dsv@123
+    networks:
+      - ob-network
+  
+  rabbitmq:
+    image: rabbitmq:3-management
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    environment:
+      - RABBITMQ_DEFAULT_USER=dsv
+      - RABBITMQ_DEFAULT_PASS=dsv@123
+    networks:
+      - ob-network
+  
+  keycloak:
+    image: quay.io/keycloak/keycloak:23.0.5
+    command: 
+      ["start-dev", "--import-realm"]
+    restart: unless-stopped
+    environment:
+      KC_DB: postgres
+      KC_DB_URL_HOST: postgres
+      KC_DB_URL_DATABASE: postgres
+      KC_DB_PASSWORD: dsv@123
+      KC_DB_USERNAME: postgres
+      KC_DB_SCHEMA: public
+      KEYCLOAK_ADMIN: dsv
+      KEYCLOAK_ADMIN_PASSWORD: dsv@123  
+    ports:
+      - 8080:8080
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost:8080/health/ready" ]
+      interval: 15s
+      timeout: 2s
+      retries: 15
+    volumes:
+      - ../keycloak/realm-export.json:/opt/keycloak/data/import/realm-export.json
+    networks:
+      - ob-network
+    depends_on:
+      - postgres
+  
+  prometheus:
+    image: prom/prometheus
+    container_name: prometheus
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+    ports:
+      - 9090:9090
+    restart: unless-stopped
+    volumes:
+      - ./prometheus:/etc/prometheus
+    networks:
+      - ob-network
+  
+  grafana:
+    image: grafana/grafana
+    container_name: grafana
+    ports:
+      - 3000:3000
+    restart: unless-stopped
+    environment:
+      - GF_SECURITY_ADMIN_USER=dsv
+      - GF_SECURITY_ADMIN_PASSWORD=dsv@123
+    volumes:
+      - ./grafana/datasource:/etc/grafana/provisioning/datasources
+    networks:
+      - ob-network
+      
+networks:
+  ob-network:
+    driver: bridge
+    name: ob-network
+
+volumes:
+  grafana-storage: {}
