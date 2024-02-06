@@ -4,13 +4,13 @@ namespace e_Estoque_API.Core.Entities
 {
     public class Inventory : AggregateRoot
     {
-        public int Quantity { get; set; }
-        public DateTime DateOrder { get; set; }
+        public int Quantity { get; private set; }
+        public DateTime DateOrder { get; private set; }
 
         #region EFCRelations
 
-        public Guid IdProduct { get; set; }
-        public virtual Product Product { get; set; } = null!;
+        public Guid IdProduct { get; private set; }
+        public virtual Product Product { get; private set; } = null!;
 
         #endregion EFCRelations
 

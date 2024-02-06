@@ -4,12 +4,12 @@ namespace e_Estoque_API.Core.Entities
 {
     public class Category : AggregateRoot
     {
-        public string Name { get; set; } = string.Empty;
-        public string Description { get; set; } = string.Empty;
-        public string ShortDescription { get; set; } = string.Empty;
+        public string Name { get; private set; } = string.Empty;
+        public string Description { get; private set; } = string.Empty;
+        public string ShortDescription { get; private set; } = string.Empty;
 
-        public virtual IEnumerable<Tax> Taxs { get; set; } = null!;
-        public virtual IEnumerable<Product> Products { get; set; } = null!;
+        public virtual IEnumerable<Tax> Taxs { get; private set; } = null!;
+        public virtual IEnumerable<Product> Products { get; private set; } = null!;
 
         public Category()
         {

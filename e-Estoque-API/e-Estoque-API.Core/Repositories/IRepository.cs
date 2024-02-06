@@ -8,7 +8,7 @@ namespace e_Estoque_API.Core.Repositories
     {
         Task Add(TEntity entity);
         Task<TEntity?> GetById(Guid id);
-        Task<List<TEntity>> GetAll();
+        Task<IEnumerable<TEntity>> GetAll();
         Task<IEnumerable<TEntity>> Find(Expression<Func<TEntity, bool>> predicate);
         Task Update(TEntity entity);
         Task Remove(Guid id);

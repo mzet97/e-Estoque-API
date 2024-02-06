@@ -5,23 +5,23 @@ namespace e_Estoque_API.Core.Entities
 {
     public class Sale : AggregateRoot
     {
-        public int Quantity { get; set; }
-        public decimal TotalPrice { get; set; }
-        public decimal TotalTax { get; set; }
+        public int Quantity { get; private set; }
+        public decimal TotalPrice { get; private set; }
+        public decimal TotalTax { get; private set; }
 
-        public SaleType SaleType { get; set; }
-        public PaymentType PaymentType { get; set; }
+        public SaleType SaleType { get; private set; }
+        public PaymentType PaymentType { get; private set; }
 
-        public DateTime? DeliveryDate { get; set; }
-        public DateTime SaleDate { get; set; }
-        public DateTime? PaymentDate { get; set; }
+        public DateTime? DeliveryDate { get; private set; }
+        public DateTime SaleDate { get; private set; }
+        public DateTime? PaymentDate { get; private set; }
 
         #region EFCRelations
 
-        public Guid IdCustomer { get; set; }
-        public Customer Customer { get; set; } = null!;
+        public Guid IdCustomer { get; private set; }
+        public Customer Customer { get; private set; } = null!;
 
-        public virtual IEnumerable<SaleProduct> SaleProducts { get; set; } = null!;
+        public virtual IEnumerable<SaleProduct> SaleProducts { get; private set; } = null!;
 
         #endregion EFCRelations
 

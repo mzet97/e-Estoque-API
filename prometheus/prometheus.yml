@@ -4,4 +4,4 @@
 scrape_configs:
   - job_name: 'Category'
     static_configs:
-      - targets: ['backend:7026']
+      - targets: ['192.168.0.142:5000']

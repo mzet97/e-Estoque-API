@@ -4,14 +4,14 @@ namespace e_Estoque_API.Core.Entities
 {
     public class Tax : AggregateRoot
     {
-        public string Name { get; set; } = string.Empty;
-        public string Description { get; set; } = string.Empty;
-        public decimal Percentage { get; set; }
+        public string Name { get; private set; } = string.Empty;
+        public string Description { get; private set; } = string.Empty;
+        public decimal Percentage { get; private set; }
 
         #region EFCRelations
 
-        public Guid IdCategory { get; set; }
-        public virtual Category Category { get; set; } = null!;
+        public Guid IdCategory { get; private set; }
+        public virtual Category Category { get; private set; } = null!;
 
         #endregion EFCRelations
         public Tax()

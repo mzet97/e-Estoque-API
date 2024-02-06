@@ -17,10 +17,5 @@ namespace e_Estoque_API.Application.Categories.Commands
             ShortDescription = shortDescription;
             Description = description;
         }
-
-        public Category ToEntity()
-        {
-            return new Category(Id, Name, Description, ShortDescription);
-        }
     }
 }

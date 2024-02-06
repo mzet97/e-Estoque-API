@@ -2,13 +2,13 @@
 {
     public class SaleProduct : AggregateRoot
     {
-        public int Quantity { get; set; }
+        public int Quantity { get; private set; }
 
-        public Guid IdProduct { get; set; }
-        public virtual Product Product { get; set; } = null!;
+        public Guid IdProduct { get; private set; }
+        public virtual Product Product { get; private set; } = null!;
 
-        public Guid IdSale { get; set; }
-        public virtual Sale Sale { get; set; } = null!;
+        public Guid IdSale { get;  private set; }
+        public virtual Sale Sale { get; private set; } = null!;
 
 
         public SaleProduct()

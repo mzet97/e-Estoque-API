@@ -6,29 +6,26 @@ using e_Estoque_API.Core.Validations;
 using e_Estoque_API.Infrastructure.MessageBus;
 using MediatR;
 
-namespace e_Estoque_API.Application.Categories.Commands.Handlers
+namespace e_Estoque_API.Application.Taxes.Commands.Handlers
 {
-    public class UpdateCategoryCommandHandler : IRequestHandler<UpdateCategoryCommand, Guid>
+    public class UpdateTaxCommandHandler : IRequestHandler<UpdateTaxCommand, Guid>
     {
-        private readonly ICategoryRepository _categoryRepository;
-
+        private readonly ITaxRepository _taxRepository;
         private readonly IMessageBusClient _messageBus;
 
-        public UpdateCategoryCommandHandler(
-            ICategoryRepository categoryRepository,
-            IMessageBusClient messageBus)
+        public UpdateTaxCommandHandler(ITaxRepository taxRepository, IMessageBusClient messageBus)
         {
-            _categoryRepository = categoryRepository;
+            _taxRepository = taxRepository;
             _messageBus = messageBus;
         }
 
-        public async Task<Guid> Handle(UpdateCategoryCommand request, CancellationToken cancellationToken)
+        public async Task<Guid> Handle(UpdateTaxCommand request, CancellationToken cancellationToken)
         {
-            var entity = await _categoryRepository.GetById(request.Id);
+            var entity = await _taxRepository.GetById(request.Id);
 
             if (entity == null)
             {
-                var noticiation = new NotificationError("Update Category has error", "Update Category has error");
+                var noticiation = new NotificationError("Update Tax has error", "Update Tax has error");
                 var routingKey = noticiation.GetType().Name.ToDashCase();
 
                 _messageBus.Publish(noticiation, routingKey, "noticiation-service");
@@ -36,9 +33,9 @@ namespace e_Estoque_API.Application.Categories.Commands.Handlers
                 throw new NotFoundException("Find Error");
             }
 
-            if (!Validator.Validate(new CategoryValidation(), entity))
+            if (!Validator.Validate(new TaxValidation(), entity))
             {
-                var noticiation = new NotificationError("Validate Category has error", "Validate Category has error");
+                var noticiation = new NotificationError("Validate Tax has error", "Validate Tax has error");
                 var routingKey = noticiation.GetType().Name.ToDashCase();
 
                 _messageBus.Publish(noticiation, routingKey, "noticiation-service");
@@ -47,15 +44,15 @@ namespace e_Estoque_API.Application.Categories.Commands.Handlers
             }
 
             entity
-                .Update(request.Name, request.ShortDescription, request.Description);
+                .Update(request.Name, request.Description, request.Percentage, request.IdCategory);
 
-            await _categoryRepository.Update(entity);
+            await _taxRepository.Update(entity);
 
             foreach (var @event in entity.Events)
             {
                 var routingKey = @event.GetType().Name.ToDashCase();
 
-                _messageBus.Publish(@event, routingKey, "category-service");
+                _messageBus.Publish(@event, routingKey, "tax-service");
             }
 
             return entity.Id;

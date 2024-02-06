@@ -5,23 +5,23 @@ namespace e_Estoque_API.Core.Entities
     public class Product : AggregateRoot
     {
 
-        public string Name { get; set; } = string.Empty;
-        public string Description { get; set; } = string.Empty;
-        public string ShortDescription { get; set; } = string.Empty;
-        public decimal Price { get; set; }
-        public decimal Weight { get; set; }
-        public decimal Height { get; set; }
-        public decimal Length { get; set; }
+        public string Name { get; private set; } = string.Empty;
+        public string Description { get; private set; } = string.Empty;
+        public string ShortDescription { get; private set; } = string.Empty;
+        public decimal Price { get; private set; }
+        public decimal Weight { get; private set; }
+        public decimal Height { get; private set; }
+        public decimal Length { get; private set; }
 
-        public string Image { get; set; } = string.Empty;
+        public string Image { get; private set; } = string.Empty;
 
         #region EFCRelations
 
-        public Guid IdCategory { get; set; }
-        public virtual Category Category { get; set; } = null!;
+        public Guid IdCategory { get; private set; }
+        public virtual Category Category { get; private set; } = null!;
 
-        public Guid IdCompany { get; set; }
-        public virtual Company Company { get; set; } = null!;
+        public Guid IdCompany { get; private set; }
+        public virtual Company Company { get; private set; } = null!;
 
         #endregion EFCRelations
 

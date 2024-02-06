@@ -61,12 +61,12 @@ namespace e_Estoque_API.Infrastructure.Persistence.Repositories
             return await DbSet.AsNoTracking().Where(predicate).ToListAsync();
         }
 
-        public virtual async Task<List<TEntity>> GetAll()
+        public virtual async Task<IEnumerable<TEntity>> GetAll()
         {
             return await DbSet.ToListAsync();
         }
 
-        public async Task<TEntity?> GetById(Guid id)
+        public virtual async Task<TEntity?> GetById(Guid id)
         {
             return await DbSet.FindAsync(id);
         }

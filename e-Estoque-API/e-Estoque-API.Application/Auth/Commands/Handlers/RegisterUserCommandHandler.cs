@@ -27,7 +27,7 @@ namespace e_Estoque_API.Application.Auth.Commands.Handlers
 
             var user = new UserDto()
             {
-                attributes = new Attributes() { attribute_key = "test_value" },
+                attributes = new Attributes() { attribute_key = "client" },
                 credentials = new Credential[] { new Credential() { temporary = false, type = "password", value = request.Password } },
                 username = request.Username,
                 firstName = request.FirstName,

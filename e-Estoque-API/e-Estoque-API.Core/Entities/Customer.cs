@@ -4,13 +4,13 @@ namespace e_Estoque_API.Core.Entities
 {
     public class Customer : AggregateRoot
     {
-        public string Name { get; set; } = string.Empty;
-        public string DocId { get; set; } = string.Empty;
-        public string Email { get; set; } = string.Empty;
-        public string Description { get; set; } = string.Empty;
-        public string PhoneNumber { get; set; } = string.Empty;
-        public Guid IdCustomerAddress { get; set; }
-        public virtual CustomerAddress CustomerAddress { get; set; } = null!;
+        public string Name { get; private set; } = string.Empty;
+        public string DocId { get; private set; } = string.Empty;
+        public string Email { get; private set; } = string.Empty;
+        public string Description { get; private set; } = string.Empty;
+        public string PhoneNumber { get; private set; } = string.Empty;
+        public Guid IdCustomerAddress { get; private set; }
+        public virtual CustomerAddress CustomerAddress { get; private set; } = null!;
 
         public Customer()
         {

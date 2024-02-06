@@ -30,7 +30,6 @@
     <Folder Include="Inventories\" />
     <Folder Include="Sales\" />
     <Folder Include="Products\" />
-    <Folder Include="Taxes\" />
   </ItemGroup>
 
 </Project>
