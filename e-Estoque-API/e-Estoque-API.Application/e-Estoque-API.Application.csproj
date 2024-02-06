@@ -9,6 +9,7 @@
 
   <ItemGroup>
     <PackageReference Include="AutoMapper" Version="12.0.1" />
+    <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="11.9.0" />
     <PackageReference Include="LinqKit.Core" Version="1.2.5" />
     <PackageReference Include="LinqKit.Microsoft.EntityFrameworkCore" Version="8.1.5" />
     <PackageReference Include="MediatR" Version="12.2.0" />
@@ -25,11 +26,18 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Companies\" />
-    <Folder Include="Customers\" />
-    <Folder Include="Inventories\" />
-    <Folder Include="Sales\" />
-    <Folder Include="Products\" />
+    <Folder Include="Customers\Commands\Handlers\" />
+    <Folder Include="Customers\ViewModels\" />
+    <Folder Include="Customers\Queries\Handlers\" />
+    <Folder Include="Inventories\Commands\Handlers\" />
+    <Folder Include="Inventories\ViewModels\" />
+    <Folder Include="Inventories\Queries\Handlers\" />
+    <Folder Include="Products\Commands\Handlers\" />
+    <Folder Include="Products\ViewModels\" />
+    <Folder Include="Products\Queries\Handlers\" />
+    <Folder Include="Sales\Commands\Handlers\" />
+    <Folder Include="Sales\ViewModels\" />
+    <Folder Include="Sales\Queries\Handlers\" />
   </ItemGroup>
 
 </Project>

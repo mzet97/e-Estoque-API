@@ -91,7 +91,7 @@ namespace e_Estoque_API.Application.Categories.Queries.Handlers
             }
 
 
-            if (request.CreatedAt.Year > 1)
+            if (request.CreatedAt != default)
             {
                 if (filter == null)
                 {
@@ -101,7 +101,7 @@ namespace e_Estoque_API.Application.Categories.Queries.Handlers
                 filter = filter.And(x => x.CreatedAt == request.CreatedAt);
             }
 
-            if (request.UpdatedAt.Year > 1)
+            if (request.UpdatedAt != default)
             {
                 if (filter == null)
                 {
@@ -111,7 +111,7 @@ namespace e_Estoque_API.Application.Categories.Queries.Handlers
                 filter = filter.And(x => x.UpdatedAt == request.UpdatedAt);
             }
 
-            if (request.DeletedAt.HasValue || request.DeletedAt?.Year > 1)
+            if (request.DeletedAt.HasValue || request.DeletedAt != default)
             {
                 if (filter == null)
                 {

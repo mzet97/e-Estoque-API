@@ -17,6 +17,9 @@ namespace e_Estoque_API.Infrastructure.Configuration
                 //options.EnableSensitiveDataLogging(true);
             });
 
+            services.AddHealthChecks()
+                .AddDbContextCheck<EstoqueDbContext>();
+
             return services;
         }
     }

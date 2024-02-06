@@ -1,4 +1,6 @@
-﻿using Microsoft.OpenApi.Any;
+﻿using e_Estoque_API.API.Infrastructure;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.OpenApi.Any;
 using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.SwaggerGen;
 
@@ -8,6 +10,15 @@ namespace e_Estoque_API.API.Configuration
     {
         public static IServiceCollection AddSwaggerConfig(this IServiceCollection services)
         {
+            services.AddDatabaseDeveloperPageExceptionFilter();
+
+            services.AddHttpContextAccessor();
+
+            services.AddExceptionHandler<CustomExceptionHandler>();
+
+            services.Configure<ApiBehaviorOptions>(options =>
+                options.SuppressModelStateInvalidFilter = true);
+
             services.AddSwaggerGen(c =>
             {
                 c.OperationFilter<SwaggerDefaultValues>();

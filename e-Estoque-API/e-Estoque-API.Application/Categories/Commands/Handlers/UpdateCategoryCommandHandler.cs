@@ -36,6 +36,9 @@ namespace e_Estoque_API.Application.Categories.Commands.Handlers
                 throw new NotFoundException("Find Error");
             }
 
+            entity
+               .Update(request.Name, request.ShortDescription, request.Description);
+
             if (!Validator.Validate(new CategoryValidation(), entity))
             {
                 var noticiation = new NotificationError("Validate Category has error", "Validate Category has error");
@@ -45,9 +48,6 @@ namespace e_Estoque_API.Application.Categories.Commands.Handlers
 
                 throw new ValidationException("Validate Error");
             }
-
-            entity
-                .Update(request.Name, request.ShortDescription, request.Description);
 
             await _categoryRepository.Update(entity);
 

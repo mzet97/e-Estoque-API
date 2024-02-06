@@ -1,5 +1,6 @@
 using e_Estoque_API.API.Configuration;
 using e_Estoque_API.API.Extensions;
+using e_Estoque_API.Application;
 using e_Estoque_API.Application.Configuration;
 using e_Estoque_API.Infrastructure.Configuration;
 using Microsoft.AspNetCore.Mvc;
@@ -26,6 +27,8 @@ builder.Services.AddDbContextConfig(builder.Configuration);
 builder.Services.ResolveDependencies();
 builder.Services.AddMessageBus(builder.Configuration);
 builder.Services.AddHandlers();
+builder.Services.AddApplicationServices();
+
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
@@ -54,12 +57,13 @@ else
 
 app.UseMiddleware<ExceptionMiddleware>();
 
+app.UseExceptionHandler(options => { });
 app.UseRouting();
 
 app.UseHttpsRedirection();
 app.UseAuthentication();
 app.UseAuthorization();
-
+app.UseHealthChecks("/health");
 app.UseStaticFiles();
 
 app.MapControllers();

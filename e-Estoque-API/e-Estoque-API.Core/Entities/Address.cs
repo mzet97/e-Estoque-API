@@ -12,5 +12,34 @@
         public string ZipCode { get; private set; } = string.Empty;
         public string Latitude { get; private set; } = string.Empty;
         public string Longitude { get; private set; } = string.Empty;
+
+        public Address()
+        {
+            
+        }
+
+        public Address(
+            string street,
+            string number,
+            string complement,
+            string neighborhood,
+            string district,
+            string city,
+            string county,
+            string zipCode,
+            string latitude,
+            string longitude)
+        {
+            Street = street;
+            Number = number;
+            Complement = complement;
+            Neighborhood = neighborhood;
+            District = district;
+            City = city;
+            County = county;
+            ZipCode = zipCode;
+            Latitude = latitude;
+            Longitude = longitude;
+        }
     }
 }

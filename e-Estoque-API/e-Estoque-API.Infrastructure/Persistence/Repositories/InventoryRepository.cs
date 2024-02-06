@@ -43,6 +43,7 @@ namespace e_Estoque_API.Infrastructure.Persistence.Repositories
             entity.UpdatedAt = DateTime.Now;
             entity.DeletedAt = DateTime.Now;
             DbSet.Update(entity);
+            await Db.SaveChangesAsync();
         }
 
         public override async Task<BaseResult<Inventory>> Search(

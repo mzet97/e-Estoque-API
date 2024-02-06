@@ -1,31 +1,36 @@
-﻿using e_Estoque_API.Application.Taxes.ViewModels;
+﻿using e_Estoque_API.Application.Categories.ViewModels;
+using e_Estoque_API.Application.Companies.ViewModels;
 using e_Estoque_API.Core.Entities;
 using e_Estoque_API.Core.Models;
 using e_Estoque_API.Core.Repositories;
+using e_Estoque_API.Infrastructure.MessageBus;
 using LinqKit;
 using MediatR;
 using System.Linq.Expressions;
 
-namespace e_Estoque_API.Application.Taxes.Queries.Handlers
+namespace e_Estoque_API.Application.Companies.Queries.Handlers
 {
-    public class SearchTaxQueryHandler : IRequestHandler<SearchTaxQuery, BaseResult<TaxViewModel>>
+    public class SearchCompanyQueryHandler : IRequestHandler<SearchCompanyQuery, BaseResult<CompanyViewModel>>
     {
-        private readonly ITaxRepository _taxRepository;
-        public SearchTaxQueryHandler(ITaxRepository taxRepository)
+        private readonly ICompanyRepository _companyRepository;
+        private readonly IMessageBusClient _messageBus;
+
+        public SearchCompanyQueryHandler(ICompanyRepository companyRepository, IMessageBusClient messageBus)
         {
-            _taxRepository = taxRepository;
+            _companyRepository = companyRepository;
+            _messageBus = messageBus;
         }
 
-        public async Task<BaseResult<TaxViewModel>> Handle(SearchTaxQuery request, CancellationToken cancellationToken)
+        public async Task<BaseResult<CompanyViewModel>> Handle(SearchCompanyQuery request, CancellationToken cancellationToken)
         {
-            Expression<Func<Tax, bool>>? filter = null;
-            Func<IQueryable<Tax>, IOrderedQueryable<Tax>>? ordeBy = null;
+            Expression<Func<Company, bool>>? filter = null;
+            Func<IQueryable<Company>, IOrderedQueryable<Company>>? ordeBy = null;
 
             if (!string.IsNullOrWhiteSpace(request.Name))
             {
                 if (filter == null)
                 {
-                    filter = PredicateBuilder.New<Tax>(true);
+                    filter = PredicateBuilder.New<Company>(true);
                 }
 
                 filter = filter.And(x => x.Name == request.Name);
@@ -35,20 +40,40 @@ namespace e_Estoque_API.Application.Taxes.Queries.Handlers
             {
                 if (filter == null)
                 {
-                    filter = PredicateBuilder.New<Tax>(true);
+                    filter = PredicateBuilder.New<Company>(true);
                 }
 
                 filter = filter.And(x => x.Description == request.Description);
             }
 
-            if (request.Percentage != 0)
+            if (!string.IsNullOrWhiteSpace(request.DocId))
             {
                 if (filter == null)
                 {
-                    filter = PredicateBuilder.New<Tax>(true);
+                    filter = PredicateBuilder.New<Company>(true);
                 }
 
-                filter = filter.And(x => x.Percentage == request.Percentage);
+                filter = filter.And(x => x.DocId == request.DocId);
+            }
+
+            if (!string.IsNullOrWhiteSpace(request.PhoneNumber))
+            {
+                if (filter == null)
+                {
+                    filter = PredicateBuilder.New<Company>(true);
+                }
+
+                filter = filter.And(x => x.PhoneNumber == request.PhoneNumber);
+            }
+
+            if (!string.IsNullOrWhiteSpace(request.Email))
+            {
+                if (filter == null)
+                {
+                    filter = PredicateBuilder.New<Company>(true);
+                }
+
+                filter = filter.And(x => x.Email == request.Email);
             }
 
             if (!string.IsNullOrWhiteSpace(request.Order))
@@ -64,8 +89,14 @@ namespace e_Estoque_API.Application.Taxes.Queries.Handlers
                     case "Description":
                         ordeBy = x => x.OrderBy(n => n.Description);
                         break;
-                    case "Percentage":
-                        ordeBy = x => x.OrderBy(n => n.Percentage);
+                    case "DocId":
+                        ordeBy = x => x.OrderBy(n => n.DocId);
+                        break;
+                    case "Email":
+                        ordeBy = x => x.OrderBy(n => n.Email);
+                        break;
+                    case "PhoneNumber":
+                        ordeBy = x => x.OrderBy(n => n.PhoneNumber);
                         break;
                     case "CreatedAt":
                         ordeBy = x => x.OrderBy(n => n.CreatedAt);
@@ -83,7 +114,7 @@ namespace e_Estoque_API.Application.Taxes.Queries.Handlers
             {
                 if (filter == null)
                 {
-                    filter = PredicateBuilder.New<Tax>(true);
+                    filter = PredicateBuilder.New<Company>(true);
                 }
 
                 filter = filter.And(x => x.Id == request.Id);
@@ -94,7 +125,7 @@ namespace e_Estoque_API.Application.Taxes.Queries.Handlers
             {
                 if (filter == null)
                 {
-                    filter = PredicateBuilder.New<Tax>(true);
+                    filter = PredicateBuilder.New<Company>(true);
                 }
 
                 filter = filter.And(x => x.CreatedAt == request.CreatedAt);
@@ -104,7 +135,7 @@ namespace e_Estoque_API.Application.Taxes.Queries.Handlers
             {
                 if (filter == null)
                 {
-                    filter = PredicateBuilder.New<Tax>(true);
+                    filter = PredicateBuilder.New<Company>(true);
                 }
 
                 filter = filter.And(x => x.UpdatedAt == request.UpdatedAt);
@@ -114,21 +145,21 @@ namespace e_Estoque_API.Application.Taxes.Queries.Handlers
             {
                 if (filter == null)
                 {
-                    filter = PredicateBuilder.New<Tax>(true);
+                    filter = PredicateBuilder.New<Company>(true);
                 }
 
                 filter = filter.And(x => x.DeletedAt == request.DeletedAt);
             }
 
-            var result = await _taxRepository
+            var result = await _companyRepository
                 .Search(
                     filter,
                     ordeBy,
                     request.PageSize,
                     request.PageIndex);
 
-            return new BaseResult<TaxViewModel>(
-                result.Data.Select(x => TaxViewModel.FromEntity(x)).ToList(), result.PagedResult);
+            return new BaseResult<CompanyViewModel>(
+                result.Data.Select(x => CompanyViewModel.FromEntity(x)).ToList(), result.PagedResult);
         }
     }
 }
