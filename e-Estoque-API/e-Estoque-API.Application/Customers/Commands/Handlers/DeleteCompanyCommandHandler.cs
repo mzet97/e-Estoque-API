@@ -5,36 +5,35 @@ using e_Estoque_API.Core.Repositories;
 using e_Estoque_API.Infrastructure.MessageBus;
 using MediatR;
 
-namespace e_Estoque_API.Application.Customers.Commands.Handlers
+namespace e_Estoque_API.Application.Customers.Commands.Handlers;
+
+public class DeleteCustomerCommandHandler : IRequestHandler<DeleteCustomerCommand, Unit>
 {
-    public class DeleteCustomerCommandHandler : IRequestHandler<DeleteCustomerCommand, Unit>
+    private readonly ICustomerRepository _customerRepository;
+    private readonly IMessageBusClient _messageBus;
+
+    public DeleteCustomerCommandHandler(ICustomerRepository customerRepository, IMessageBusClient messageBus)
     {
-        private readonly ICustomerRepository _customerRepository;
-        private readonly IMessageBusClient _messageBus;
+        _customerRepository = customerRepository;
+        _messageBus = messageBus;
+    }
 
-        public DeleteCustomerCommandHandler(ICustomerRepository customerRepository, IMessageBusClient messageBus)
+    public async Task<Unit> Handle(DeleteCustomerCommand request, CancellationToken cancellationToken)
+    {
+        var entity = await _customerRepository.GetById(request.Id);
+
+        if (entity == null)
         {
-            _customerRepository = customerRepository;
-            _messageBus = messageBus;
+            var noticiation = new NotificationError("Delete Customer has error", "Delete Customer has error");
+            var routingKey = noticiation.GetType().Name.ToDashCase();
+
+            _messageBus.Publish(noticiation, routingKey, "noticiation-service");
+
+            throw new NotFoundException("Delete Error");
         }
 
-        public async Task<Unit> Handle(DeleteCustomerCommand request, CancellationToken cancellationToken)
-        {
-            var entity = await _customerRepository.GetById(request.Id);
+        await _customerRepository.Remove(entity.Id);
 
-            if (entity == null)
-            {
-                var noticiation = new NotificationError("Delete Customer has error", "Delete Customer has error");
-                var routingKey = noticiation.GetType().Name.ToDashCase();
-
-                _messageBus.Publish(noticiation, routingKey, "noticiation-service");
-
-                throw new NotFoundException("Delete Error");
-            }
-
-            await _customerRepository.Remove(entity.Id);
-
-            return Unit.Value;
-        }
+        return Unit.Value;
     }
 }

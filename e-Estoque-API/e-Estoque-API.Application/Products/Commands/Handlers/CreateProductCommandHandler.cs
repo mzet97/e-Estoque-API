@@ -8,85 +8,84 @@ using e_Estoque_API.Core.Validations;
 using e_Estoque_API.Infrastructure.MessageBus;
 using MediatR;
 
-namespace e_Estoque_API.Application.Taxes.Commands.Handlers
+namespace e_Estoque_API.Application.Taxes.Commands.Handlers;
+
+public class CreateProductCommandHandler : IRequestHandler<CreateProductCommand, Guid>
 {
-    public class CreateProductCommandHandler : IRequestHandler<CreateProductCommand, Guid>
+    private readonly IProductRepository _productRepository;
+    private readonly ICategoryRepository _categoryRepository;
+    private readonly ICompanyRepository _companyRepository;
+    private readonly IMessageBusClient _messageBus;
+
+    public CreateProductCommandHandler(
+        IProductRepository productRepository,
+        IMessageBusClient messageBus,
+        ICategoryRepository categoryRepository,
+        ICompanyRepository companyRepository)
     {
-        private readonly IProductRepository _productRepository;
-        private readonly ICategoryRepository _categoryRepository;
-        private readonly ICompanyRepository _companyRepository;
-        private readonly IMessageBusClient _messageBus;
+        _productRepository = productRepository;
+        _messageBus = messageBus;
+        _categoryRepository = categoryRepository;
+        _companyRepository = companyRepository;
+    }
 
-        public CreateProductCommandHandler(
-            IProductRepository productRepository,
-            IMessageBusClient messageBus,
-            ICategoryRepository categoryRepository,
-            ICompanyRepository companyRepository)
+    public async Task<Guid> Handle(CreateProductCommand request, CancellationToken cancellationToken)
+    {
+        var entity = Product.Create(
+            request.Name,
+            request.Description,
+            request.ShortDescription,
+            request.Price,
+            request.Weight,
+            request.Height,
+            request.Length,
+            request.Image,
+            request.IdCategory,
+            request.IdCompany);
+
+        if (!Validator.Validate(new ProductValidation(), entity))
         {
-            _productRepository = productRepository;
-            _messageBus = messageBus;
-            _categoryRepository = categoryRepository;
-            _companyRepository = companyRepository;
+            var noticiation = new NotificationError("Validate Product has error", "Validate Product has error");
+            var routingKey = noticiation.GetType().Name.ToDashCase();
+
+            _messageBus.Publish(noticiation, routingKey, "noticiation-service");
+
+            throw new ValidationException("Validate Error");
         }
 
-        public async Task<Guid> Handle(CreateProductCommand request, CancellationToken cancellationToken)
+        var category = await _categoryRepository.GetById(request.IdCategory);
+
+        if (category == null)
         {
-            var entity = Product.Create(
-                request.Name,
-                request.Description,
-                request.ShortDescription,
-                request.Price,
-                request.Weight,
-                request.Height,
-                request.Length,
-                request.Image,
-                request.IdCategory,
-                request.IdCompany);
+            var noticiation = new NotificationError("Category not found", "Category not found");
+            var routingKey = noticiation.GetType().Name.ToDashCase();
 
-            if (!Validator.Validate(new ProductValidation(), entity))
-            {
-                var noticiation = new NotificationError("Validate Product has error", "Validate Product has error");
-                var routingKey = noticiation.GetType().Name.ToDashCase();
+            _messageBus.Publish(noticiation, routingKey, "noticiation-service");
 
-                _messageBus.Publish(noticiation, routingKey, "noticiation-service");
-
-                throw new ValidationException("Validate Error");
-            }
-
-            var category = await _categoryRepository.GetById(request.IdCategory);
-
-            if (category == null)
-            {
-                var noticiation = new NotificationError("Category not found", "Category not found");
-                var routingKey = noticiation.GetType().Name.ToDashCase();
-
-                _messageBus.Publish(noticiation, routingKey, "noticiation-service");
-
-                throw new NotFoundException("Category not found");
-            }
-
-            var company = await _companyRepository.GetById(request.IdCompany);
-
-            if(company == null)
-            {
-                var noticiation = new NotificationError("Company not found", "Company not found");
-                var routingKey = noticiation.GetType().Name.ToDashCase();
-
-                _messageBus.Publish(noticiation, routingKey, "noticiation-service");
-
-                throw new NotFoundException("Company not found");
-            }   
-
-            await _productRepository.Add(entity);
-
-            foreach (var @event in entity.Events)
-            {
-                var routingKey = @event.GetType().Name.ToDashCase();
-
-                _messageBus.Publish(@event, routingKey, "product-service");
-            }
-
-            return entity.Id;
+            throw new NotFoundException("Category not found");
         }
+
+        var company = await _companyRepository.GetById(request.IdCompany);
+
+        if (company == null)
+        {
+            var noticiation = new NotificationError("Company not found", "Company not found");
+            var routingKey = noticiation.GetType().Name.ToDashCase();
+
+            _messageBus.Publish(noticiation, routingKey, "noticiation-service");
+
+            throw new NotFoundException("Company not found");
+        }
+
+        await _productRepository.Add(entity);
+
+        foreach (var @event in entity.Events)
+        {
+            var routingKey = @event.GetType().Name.ToDashCase();
+
+            _messageBus.Publish(@event, routingKey, "product-service");
+        }
+
+        return entity.Id;
     }
 }

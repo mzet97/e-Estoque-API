@@ -7,61 +7,60 @@ using e_Estoque_API.Core.Validations;
 using e_Estoque_API.Infrastructure.MessageBus;
 using MediatR;
 
-namespace e_Estoque_API.Application.Inventories.Commands.Handlers
+namespace e_Estoque_API.Application.Inventories.Commands.Handlers;
+
+public class CreateInventoryCommandHandler : IRequestHandler<CreateInventoryCommand, Guid>
 {
-    public class CreateInventoryCommandHandler : IRequestHandler<CreateInventoryCommand, Guid>
+    private readonly IInventoryRepository _inventoryRepository;
+    private readonly IProductRepository _productRepository;
+    private readonly IMessageBusClient _messageBus;
+
+    public CreateInventoryCommandHandler(
+        IInventoryRepository inventoryRepository,
+        IProductRepository productRepository,
+        IMessageBusClient messageBus
+        )
     {
-        private readonly IInventoryRepository _inventoryRepository;
-        private readonly IProductRepository _productRepository;
-        private readonly IMessageBusClient _messageBus;
+        _inventoryRepository = inventoryRepository;
+        _productRepository = productRepository;
+        _messageBus = messageBus;
+    }
 
-        public CreateInventoryCommandHandler(
-            IInventoryRepository inventoryRepository,
-            IProductRepository productRepository,
-            IMessageBusClient messageBus
-            )
+    public async Task<Guid> Handle(CreateInventoryCommand request, CancellationToken cancellationToken)
+    {
+        var entity = Inventory.Create(request.Quantity, request.DateOrder, request.IdProduct);
+
+        if (!Validator.Validate(new InventoryValidation(), entity))
         {
-            _inventoryRepository = inventoryRepository;
-            _productRepository = productRepository;
-            _messageBus = messageBus;
+            var noticiation = new NotificationError("Validate Inventory has error", "Validate Inventory has error");
+            var routingKey = noticiation.GetType().Name.ToDashCase();
+
+            _messageBus.Publish(noticiation, routingKey, "noticiation-service");
+
+            throw new ValidationException("Inventory Error");
         }
 
-        public async Task<Guid> Handle(CreateInventoryCommand request, CancellationToken cancellationToken)
+        var product = await _productRepository.GetById(request.IdProduct);
+
+        if (product == null)
         {
-            var entity = Inventory.Create(request.Quantity, request.DateOrder, request.IdProduct);
+            var noticiation = new NotificationError("Product not found", "Product not found");
+            var routingKey = noticiation.GetType().Name.ToDashCase();
 
-            if (!Validator.Validate(new InventoryValidation(), entity))
-            {
-                var noticiation = new NotificationError("Validate Inventory has error", "Validate Inventory has error");
-                var routingKey = noticiation.GetType().Name.ToDashCase();
+            _messageBus.Publish(noticiation, routingKey, "noticiation-service");
 
-                _messageBus.Publish(noticiation, routingKey, "noticiation-service");
-
-                throw new ValidationException("Inventory Error");
-            }
-
-            var product = await _productRepository.GetById(request.IdProduct);
-
-            if (product == null)
-            {
-                var noticiation = new NotificationError("Product not found", "Product not found");
-                var routingKey = noticiation.GetType().Name.ToDashCase();
-
-                _messageBus.Publish(noticiation, routingKey, "noticiation-service");
-
-                throw new NotFoundException("Product not found");
-            }
-
-            await _inventoryRepository.Add(entity);
-
-            foreach (var @event in entity.Events)
-            {
-                var routingKey = @event.GetType().Name.ToDashCase();
-
-                _messageBus.Publish(@event, routingKey, "inventory-service");
-            }
-
-            return entity.Id;
+            throw new NotFoundException("Product not found");
         }
+
+        await _inventoryRepository.Add(entity);
+
+        foreach (var @event in entity.Events)
+        {
+            var routingKey = @event.GetType().Name.ToDashCase();
+
+            _messageBus.Publish(@event, routingKey, "inventory-service");
+        }
+
+        return entity.Id;
     }
 }

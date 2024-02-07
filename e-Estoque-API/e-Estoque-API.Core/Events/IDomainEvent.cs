@@ -1,6 +1,5 @@
-﻿namespace e_Estoque_API.Core.Events
+﻿namespace e_Estoque_API.Core.Events;
+
+public interface IDomainEvent
 {
-    public interface IDomainEvent
-    {
-    }
 }

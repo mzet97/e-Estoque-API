@@ -5,36 +5,35 @@ using e_Estoque_API.Core.Repositories;
 using e_Estoque_API.Infrastructure.MessageBus;
 using MediatR;
 
-namespace e_Estoque_API.Application.Taxes.Commands.Handlers
+namespace e_Estoque_API.Application.Taxes.Commands.Handlers;
+
+public class DeleteTaxHandler : IRequestHandler<DeleteTaxCommand, Unit>
 {
-    public class DeleteTaxHandler : IRequestHandler<DeleteTaxCommand, Unit>
+    private readonly ITaxRepository _taxRepository;
+    private readonly IMessageBusClient _messageBus;
+
+    public DeleteTaxHandler(ITaxRepository taxRepository, IMessageBusClient messageBus)
     {
-        private readonly ITaxRepository _taxRepository;
-        private readonly IMessageBusClient _messageBus;
+        _taxRepository = taxRepository;
+        _messageBus = messageBus;
+    }
 
-        public DeleteTaxHandler(ITaxRepository taxRepository, IMessageBusClient messageBus)
+    public async Task<Unit> Handle(DeleteTaxCommand request, CancellationToken cancellationToken)
+    {
+        var entity = await _taxRepository.GetById(request.Id);
+
+        if (entity == null)
         {
-            _taxRepository = taxRepository;
-            _messageBus = messageBus;
+            var noticiation = new NotificationError("Delete Tax has error", "Delete Tax has error");
+            var routingKey = noticiation.GetType().Name.ToDashCase();
+
+            _messageBus.Publish(noticiation, routingKey, "noticiation-service");
+
+            throw new NotFoundException("Delete Error");
         }
 
-        public async Task<Unit> Handle(DeleteTaxCommand request, CancellationToken cancellationToken)
-        {
-            var entity = await _taxRepository.GetById(request.Id);
+        await _taxRepository.Remove(entity.Id);
 
-            if (entity == null)
-            {
-                var noticiation = new NotificationError("Delete Tax has error", "Delete Tax has error");
-                var routingKey = noticiation.GetType().Name.ToDashCase();
-
-                _messageBus.Publish(noticiation, routingKey, "noticiation-service");
-
-                throw new NotFoundException("Delete Error");
-            }
-
-            await _taxRepository.Remove(entity.Id);
-
-            return Unit.Value;
-        }
+        return Unit.Value;
     }
 }

@@ -1,7 +1,6 @@
-﻿namespace e_Estoque_API.Infrastructure.MessageBus
+﻿namespace e_Estoque_API.Infrastructure.MessageBus;
+
+public interface IMessageBusClient
 {
-    public interface IMessageBusClient
-    {
-        void Publish(object message, string routingKey, string exchange);
-    }
+    void Publish(object message, string routingKey, string exchange);
 }

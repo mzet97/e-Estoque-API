@@ -6,34 +6,33 @@ using e_Estoque_API.Core.Repositories;
 using e_Estoque_API.Infrastructure.MessageBus;
 using MediatR;
 
-namespace e_Estoque_API.Application.Taxes.Queries.Handlers
+namespace e_Estoque_API.Application.Taxes.Queries.Handlers;
+
+public class GetByIdTaxQueryHandler : IRequestHandler<GetByIdTaxQuery, TaxViewModel>
 {
-    public class GetByIdTaxQueryHandler : IRequestHandler<GetByIdTaxQuery, TaxViewModel>
+    private readonly ITaxRepository _taxRepository;
+    private readonly IMessageBusClient _messageBus;
+
+    public GetByIdTaxQueryHandler(ITaxRepository taxRepository, IMessageBusClient messageBus)
     {
-        private readonly ITaxRepository _taxRepository;
-        private readonly IMessageBusClient _messageBus;
+        _taxRepository = taxRepository;
+        _messageBus = messageBus;
+    }
 
-        public GetByIdTaxQueryHandler(ITaxRepository taxRepository, IMessageBusClient messageBus)
+    public async Task<TaxViewModel> Handle(GetByIdTaxQuery request, CancellationToken cancellationToken)
+    {
+        var entity = await _taxRepository.GetById(request.Id);
+
+        if (entity == null)
         {
-            _taxRepository = taxRepository;
-            _messageBus = messageBus;
+            var noticiation = new NotificationError("Not found Tax", "Not found Tax");
+            var routingKey = noticiation.GetType().Name.ToDashCase();
+
+            _messageBus.Publish(noticiation, routingKey, "noticiation-service");
+
+            throw new NotFoundException("Not found");
         }
 
-        public async Task<TaxViewModel> Handle(GetByIdTaxQuery request, CancellationToken cancellationToken)
-        {
-            var entity = await _taxRepository.GetById(request.Id);
-
-            if (entity == null)
-            {
-                var noticiation = new NotificationError("Not found Tax", "Not found Tax");
-                var routingKey = noticiation.GetType().Name.ToDashCase();
-
-                _messageBus.Publish(noticiation, routingKey, "noticiation-service");
-
-                throw new NotFoundException("Not found");
-            }
-
-            return TaxViewModel.FromEntity(entity);
-        }
+        return TaxViewModel.FromEntity(entity);
     }
 }

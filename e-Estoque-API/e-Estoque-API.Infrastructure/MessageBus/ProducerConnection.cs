@@ -1,14 +1,13 @@
 ﻿using RabbitMQ.Client;
 
-namespace e_Estoque_API.Infrastructure.MessageBus
-{
-    public class ProducerConnection
-    {
-        public IConnection Connection { get; private set; }
+namespace e_Estoque_API.Infrastructure.MessageBus;
 
-        public ProducerConnection(IConnection connection)
-        {
-            Connection = connection;
-        }
+public class ProducerConnection
+{
+    public IConnection Connection { get; private set; }
+
+    public ProducerConnection(IConnection connection)
+    {
+        Connection = connection;
     }
 }

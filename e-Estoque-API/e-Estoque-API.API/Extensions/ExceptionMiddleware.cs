@@ -2,45 +2,44 @@
 using System.Net;
 using System.Text.Json;
 
-namespace e_Estoque_API.API.Extensions
+namespace e_Estoque_API.API.Extensions;
+
+public class ExceptionMiddleware
 {
-    public class ExceptionMiddleware
+    private readonly RequestDelegate _next;
+    private readonly ILogger<ExceptionMiddleware> _log;
+
+    public ExceptionMiddleware(RequestDelegate next, ILogger<ExceptionMiddleware> log)
     {
-        private readonly RequestDelegate _next;
-        readonly ILogger<ExceptionMiddleware> _log;
+        _log = log;
+        _next = next;
+    }
 
-        public ExceptionMiddleware(RequestDelegate next, ILogger<ExceptionMiddleware> log)
+    public async Task InvokeAsync(HttpContext httpContext)
+    {
+        try
         {
-            _log = log;
-            _next = next;
+            await _next(httpContext);
         }
-
-        public async Task InvokeAsync(HttpContext httpContext)
+        catch (Exception ex)
         {
-            try
-            {
-                await _next(httpContext);
-            }
-            catch (Exception ex)
-            {
-                _log.LogError(ex.Message);
-                await HandleExceptionAsync(httpContext, ex);
-            }
+            _log.LogError(ex.Message);
+            await HandleExceptionAsync(httpContext, ex);
         }
+    }
 
-        private static Task HandleExceptionAsync(HttpContext context, Exception exception)
-        {
-            HttpStatusCode code = HttpStatusCode.InternalServerError;
+    private static Task HandleExceptionAsync(HttpContext context, Exception exception)
+    {
+        HttpStatusCode code = HttpStatusCode.InternalServerError;
 
-            if (exception is NotFoundException) code = HttpStatusCode.NotFound;
-            if (exception is ValidationException) code = HttpStatusCode.UnprocessableContent;
+        if (exception is NotFoundException) code = HttpStatusCode.NotFound;
+        if (exception is ValidationException) code = HttpStatusCode.UnprocessableContent;
 
-            string result = JsonSerializer.Serialize(new { error = exception.Message });
+        string result = JsonSerializer.Serialize(new { error = exception.Message });
 
-            context.Response.ContentType = "application/json";
-            context.Response.StatusCode = (int)code;
+        context.Response.ContentType = "application/json";
+        context.Response.StatusCode = (int)code;
 
-            return context.Response.WriteAsync(result);
-        }
+        return context.Response.WriteAsync(result);
     }
 }

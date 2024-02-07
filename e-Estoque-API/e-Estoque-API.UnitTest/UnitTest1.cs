@@ -4,7 +4,6 @@ namespace e_Estoque_API.UnitTest
     {
         public void Test1()
         {
-
         }
     }
 }

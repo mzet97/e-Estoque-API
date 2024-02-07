@@ -1,54 +1,53 @@
 ﻿using e_Estoque_API.Core.Events.Taxes;
 
-namespace e_Estoque_API.Core.Entities
+namespace e_Estoque_API.Core.Entities;
+
+public class Tax : AggregateRoot
 {
-    public class Tax : AggregateRoot
+    public string Name { get; private set; } = string.Empty;
+    public string Description { get; private set; } = string.Empty;
+    public decimal Percentage { get; private set; }
+
+    #region EFCRelations
+
+    public Guid IdCategory { get; private set; }
+    public virtual Category Category { get; private set; } = null!;
+
+    #endregion EFCRelations
+
+    public Tax()
     {
-        public string Name { get; private set; } = string.Empty;
-        public string Description { get; private set; } = string.Empty;
-        public decimal Percentage { get; private set; }
+    }
 
-        #region EFCRelations
+    public Tax(Guid id, string name, string description, decimal percentage, Guid idCategory)
+    {
+        Id = id;
+        Name = name;
+        Description = description;
+        Percentage = percentage;
+        IdCategory = idCategory;
+    }
 
-        public Guid IdCategory { get; private set; }
-        public virtual Category Category { get; private set; } = null!;
+    public static Tax Create(string name, string description, decimal percentage, Guid idCategory)
+    {
+        var tax = new Tax(Guid.NewGuid(), name, description, percentage, idCategory);
 
-        #endregion EFCRelations
-        public Tax()
-        {
-            
-        }
+        tax.CreatedAt = DateTime.UtcNow;
 
-        public Tax(Guid id, string name, string description, decimal percentage, Guid idCategory)
-        {
-            Id = id;
-            Name = name;
-            Description = description;
-            Percentage = percentage;
-            IdCategory = idCategory;
-        }
+        tax.AddEvent(new TaxCreated(tax.Id, tax.Name, tax.Description, tax.Percentage, tax.IdCategory));
 
-        public static Tax Create(string name, string description, decimal percentage, Guid idCategory)
-        {
-            var tax = new Tax(Guid.NewGuid(), name, description, percentage, idCategory);
+        return tax;
+    }
 
-            tax.CreatedAt = DateTime.UtcNow;
+    public void Update(string name, string description, decimal percentage, Guid idCategory)
+    {
+        Name = name;
+        Description = description;
+        Percentage = percentage;
+        IdCategory = idCategory;
 
-            tax.AddEvent(new TaxCreated(tax.Id, tax.Name, tax.Description, tax.Percentage, tax.IdCategory));
+        UpdatedAt = DateTime.UtcNow;
 
-            return tax;
-        }
-
-        public void Update(string name, string description, decimal percentage, Guid idCategory)
-        {
-            Name = name;
-            Description = description;
-            Percentage = percentage;
-            IdCategory = idCategory;
-
-            UpdatedAt = DateTime.UtcNow;
-
-            AddEvent(new TaxUpdated(Id, Name, Description, Percentage, IdCategory));
-        }
+        AddEvent(new TaxUpdated(Id, Name, Description, Percentage, IdCategory));
     }
 }

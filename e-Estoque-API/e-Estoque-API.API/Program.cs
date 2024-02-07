@@ -14,7 +14,6 @@ builder.Configuration
 
 builder.Services.AddMemoryCache();
 
-
 builder.Services.Configure<ApiBehaviorOptions>(options =>
 {
     options.SuppressModelStateInvalidFilter = true;
@@ -26,7 +25,6 @@ builder.Services.AddDbContextConfig(builder.Configuration);
 builder.Services.ResolveDependencies();
 builder.Services.AddMessageBus(builder.Configuration);
 builder.Services.AddApplicationServices();
-
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
@@ -68,4 +66,3 @@ app.MapControllers();
 app.UseSwaggerConfig();
 
 app.Run();
-

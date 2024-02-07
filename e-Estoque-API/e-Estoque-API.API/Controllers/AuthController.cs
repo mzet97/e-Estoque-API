@@ -3,39 +3,37 @@ using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-namespace e_Estoque_API.API.Controllers
+namespace e_Estoque_API.API.Controllers;
+
+[AllowAnonymous]
+public class AuthController : MainController
 {
-    [AllowAnonymous]
-    public class AuthController : MainController
+    private readonly IMediator _mediator;
+
+    public AuthController(IMediator mediator)
     {
+        _mediator = mediator;
+    }
 
-        private readonly IMediator _mediator;
+    [HttpPost("register")]
+    public async Task<IActionResult> Register([FromBody] RegisterUserCommand command)
+    {
+        var result = await _mediator.Send(command);
 
-        public AuthController(IMediator mediator)
-        {
-            _mediator = mediator;
-        }
+        if (result == null)
+            return CustomResponse(false, null);
 
-        [HttpPost("register")]
-        public async Task<IActionResult> Register([FromBody] RegisterUserCommand command)
-        {
-            var result = await _mediator.Send(command);
+        return CustomResponse(true, result);
+    }
 
-            if (result == null)
-                return CustomResponse(false, null);
+    [HttpPost("login")]
+    public async Task<IActionResult> Login([FromBody] LoginUserCommand command)
+    {
+        var result = await _mediator.Send(command);
 
-            return CustomResponse(true, result);
-        }
+        if (result == null)
+            return CustomResponse(false, null);
 
-        [HttpPost("login")]
-        public async Task<IActionResult> Login([FromBody] LoginUserCommand command)
-        {
-            var result = await _mediator.Send(command);
-
-            if (result == null)
-                return CustomResponse(false, null);
-
-            return CustomResponse(true, result);
-        }
+        return CustomResponse(true, result);
     }
 }

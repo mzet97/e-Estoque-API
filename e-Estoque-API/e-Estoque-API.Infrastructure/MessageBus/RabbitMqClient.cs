@@ -3,34 +3,33 @@ using System.Text;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 
-namespace e_Estoque_API.Infrastructure.MessageBus
+namespace e_Estoque_API.Infrastructure.MessageBus;
+
+public class RabbitMqClient : IMessageBusClient
 {
-    public class RabbitMqClient : IMessageBusClient
+    private readonly IConnection _connection;
+
+    public RabbitMqClient(ProducerConnection producerConnection)
     {
-        private readonly IConnection _connection;
+        _connection = producerConnection.Connection;
+    }
 
-        public RabbitMqClient(ProducerConnection producerConnection)
+    public void Publish(object message, string routingKey, string exchange)
+    {
+        var channel = _connection.CreateModel();
+
+        JsonSerializerOptions settings = new(JsonSerializerDefaults.Web)
         {
-            _connection = producerConnection.Connection;
-        }
+            WriteIndented = false,
+            DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull,
+            PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
+        };
 
-        public void Publish(object message, string routingKey, string exchange)
-        {
-            var channel = _connection.CreateModel();
+        var payload = JsonSerializer.Serialize(message, settings);
+        var body = Encoding.UTF8.GetBytes(payload);
 
-            JsonSerializerOptions settings = new(JsonSerializerDefaults.Web)
-            {
-                WriteIndented = false,
-                DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull,
-                PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
-            };
+        channel.ExchangeDeclare(exchange, "topic", true);
 
-            var payload = JsonSerializer.Serialize(message, settings);
-            var body = Encoding.UTF8.GetBytes(payload);
-
-            channel.ExchangeDeclare(exchange, "topic", true);
-
-            channel.BasicPublish(exchange, routingKey, null, body);
-        }
+        channel.BasicPublish(exchange, routingKey, null, body);
     }
 }

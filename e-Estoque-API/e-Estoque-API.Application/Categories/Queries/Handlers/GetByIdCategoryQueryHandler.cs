@@ -6,34 +6,33 @@ using e_Estoque_API.Core.Repositories;
 using e_Estoque_API.Infrastructure.MessageBus;
 using MediatR;
 
-namespace e_Estoque_API.Application.Categories.Queries.Handlers
+namespace e_Estoque_API.Application.Categories.Queries.Handlers;
+
+public class GetByIdCategoryQueryHandler : IRequestHandler<GetByIdCategoryQuery, CategoryViewModel>
 {
-    public class GetByIdCategoryQueryHandler : IRequestHandler<GetByIdCategoryQuery, CategoryViewModel>
+    private readonly ICategoryRepository _categoryRepository;
+    private readonly IMessageBusClient _messageBus;
+
+    public GetByIdCategoryQueryHandler(ICategoryRepository categoryRepository, IMessageBusClient messageBus)
     {
-        private readonly ICategoryRepository _categoryRepository;
-        private readonly IMessageBusClient _messageBus;
+        _categoryRepository = categoryRepository;
+        _messageBus = messageBus;
+    }
 
-        public GetByIdCategoryQueryHandler(ICategoryRepository categoryRepository, IMessageBusClient messageBus)
+    public async Task<CategoryViewModel> Handle(GetByIdCategoryQuery request, CancellationToken cancellationToken)
+    {
+        var entity = await _categoryRepository.GetById(request.Id);
+
+        if (entity == null)
         {
-            _categoryRepository = categoryRepository;
-            _messageBus = messageBus;
+            var noticiation = new NotificationError("Not found Category", "Not found Category");
+            var routingKey = noticiation.GetType().Name.ToDashCase();
+
+            _messageBus.Publish(noticiation, routingKey, "noticiation-service");
+
+            throw new NotFoundException("Not found");
         }
 
-        public async Task<CategoryViewModel> Handle(GetByIdCategoryQuery request, CancellationToken cancellationToken)
-        {
-            var entity = await _categoryRepository.GetById(request.Id);
-
-            if (entity == null)
-            {
-                var noticiation = new NotificationError("Not found Category", "Not found Category");
-                var routingKey = noticiation.GetType().Name.ToDashCase();
-
-                _messageBus.Publish(noticiation, routingKey, "noticiation-service");
-
-                throw new NotFoundException("Not found");
-            }
-
-            return CategoryViewModel.FromEntity(entity);
-        }
+        return CategoryViewModel.FromEntity(entity);
     }
 }
