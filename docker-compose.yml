@@ -97,7 +97,26 @@ services:
       - ./grafana/datasource:/etc/grafana/provisioning/datasources
     networks:
       - ob-network
-      
+    
+  sonarqube:
+    image: sonarqube:community
+    hostname: sonarqube
+    container_name: sonarqube
+    depends_on:
+      - postgres
+    environment:
+      SONAR_JDBC_URL: jdbc:postgresql://postgres:5432/postgres
+      SONAR_JDBC_USERNAME: postgres
+      SONAR_JDBC_PASSWORD: dsv@123
+    volumes:
+      - ./sonar:/opt/sonarqube/data
+      - ./sonar:/opt/sonarqube/extensions
+      - ./sonar:/opt/sonarqube/logs
+    ports:
+      - "9000:9000"
+    networks:
+      - ob-network
+
 networks:
   ob-network:
     driver: bridge
@@ -105,3 +124,13 @@ networks:
 
 volumes:
   grafana-storage: {}
+
+  SonarQube_data:
+
+  SonarQube_extensions:
+
+  SonarQube_logs:
+
+  postgresql:
+
+  postgresql_data:

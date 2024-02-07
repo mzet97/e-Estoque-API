@@ -54,7 +54,6 @@ public static class SwaggerConfig
 
     public static IApplicationBuilder UseSwaggerConfig(this IApplicationBuilder app)
     {
-        //app.UseMiddleware<SwaggerAuthorizedMiddleware>();
         app.UseSwagger();
         app.UseSwaggerUI();
         return app;

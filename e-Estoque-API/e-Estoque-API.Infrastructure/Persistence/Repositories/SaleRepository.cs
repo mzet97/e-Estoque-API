@@ -44,15 +44,6 @@ public class SaleRepository : Repository<Sale>, ISaleRepository
             .FirstOrDefaultAsync();
     }
 
-    public override async Task Remove(Guid id)
-    {
-        var entity = await GetById(id);
-        entity.UpdatedAt = DateTime.UtcNow;
-        entity.DeletedAt = DateTime.UtcNow;
-        DbSet.Update(entity);
-        await Db.SaveChangesAsync();
-    }
-
     public override async Task<BaseResult<Sale>> Search(
         Expression<Func<Sale, bool>>? predicate = null,
         Func<IQueryable<Sale>, IOrderedQueryable<Sale>>? orderBy = null,

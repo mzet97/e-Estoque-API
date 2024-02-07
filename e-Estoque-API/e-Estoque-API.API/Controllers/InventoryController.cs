@@ -31,9 +31,9 @@ public class InventoryController : MainController
     }
 
     [HttpGet("{id}")]
-    public async Task<IActionResult> Get(Guid id)
+    public async Task<IActionResult> Get([FromRoute] Guid id)
     {
-        var query = new GetByIdProductQuery(id);
+        var query = new GetByIdInventoryQuery(id);
 
         var result = await _mediator.Send(query);
 
@@ -54,7 +54,7 @@ public class InventoryController : MainController
 
     [Authorize(Roles = "Create")]
     [HttpPut("{id}")]
-    public async Task<IActionResult> Put([FromBody] UpdateInventoryCommand command)
+    public async Task<IActionResult> Put([FromRoute] Guid id, [FromBody] UpdateInventoryCommand command)
     {
         var result = await _mediator.Send(command);
 
@@ -63,7 +63,7 @@ public class InventoryController : MainController
 
     [Authorize(Roles = "Create")]
     [HttpDelete("{id}")]
-    public async Task<IActionResult> Delete(Guid id)
+    public async Task<IActionResult> Delete([FromRoute] Guid id)
     {
         var command = new DeleteInventoryCommand(id);
 

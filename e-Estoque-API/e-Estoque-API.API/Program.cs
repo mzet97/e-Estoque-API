@@ -19,7 +19,6 @@ builder.Services.Configure<ApiBehaviorOptions>(options =>
     options.SuppressModelStateInvalidFilter = true;
 });
 
-//builder.Services.AddMiniProfilerConfig();
 builder.Services.AddCorsConfig();
 builder.Services.AddDbContextConfig(builder.Configuration);
 builder.Services.ResolveDependencies();
@@ -37,8 +36,6 @@ builder.Services.AddObservability("E-estoque", builder.Configuration);
 var app = builder.Build();
 
 app.MapObservability();
-//app.UseHttpLogging();
-//app.UseMiniProfiler();
 
 if (app.Environment.IsDevelopment())
 {

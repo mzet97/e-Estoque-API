@@ -38,15 +38,6 @@ public class CustomerRepository : Repository<Customer>, ICustomerRepository
            .FirstOrDefaultAsync();
     }
 
-    public override async Task Remove(Guid id)
-    {
-        var entity = await GetById(id);
-        entity.UpdatedAt = DateTime.UtcNow;
-        entity.DeletedAt = DateTime.UtcNow;
-        DbSet.Update(entity);
-        await Db.SaveChangesAsync();
-    }
-
     public override async Task<BaseResult<Customer>> Search(
         Expression<Func<Customer, bool>>? predicate = null,
         Func<IQueryable<Customer>, IOrderedQueryable<Customer>>? orderBy = null,

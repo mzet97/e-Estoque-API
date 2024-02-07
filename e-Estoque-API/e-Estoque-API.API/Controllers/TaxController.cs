@@ -30,7 +30,7 @@ public class TaxController : MainController
     }
 
     [HttpGet("{id}")]
-    public async Task<IActionResult> Get(Guid id)
+    public async Task<IActionResult> Get([FromRoute] Guid id)
     {
         var query = new GetByIdTaxQuery(id);
 
@@ -53,7 +53,7 @@ public class TaxController : MainController
 
     [Authorize(Roles = "Create")]
     [HttpPut("{id}")]
-    public async Task<IActionResult> Put([FromBody] UpdateTaxCommand command)
+    public async Task<IActionResult> Put([FromRoute] Guid id, [FromBody] UpdateTaxCommand command)
     {
         var result = await _mediator.Send(command);
 
@@ -62,7 +62,7 @@ public class TaxController : MainController
 
     [Authorize(Roles = "Create")]
     [HttpDelete("{id}")]
-    public async Task<IActionResult> Delete(Guid id)
+    public async Task<IActionResult> Delete([FromRoute] Guid id)
     {
         var command = new DeleteTaxCommand(id);
 

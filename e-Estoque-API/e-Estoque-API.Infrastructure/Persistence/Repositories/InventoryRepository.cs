@@ -2,7 +2,6 @@
 using e_Estoque_API.Core.Models;
 using e_Estoque_API.Core.Repositories;
 using Microsoft.EntityFrameworkCore;
-using System.Linq;
 using System.Linq.Expressions;
 
 namespace e_Estoque_API.Infrastructure.Persistence.Repositories;
@@ -18,6 +17,9 @@ public class InventoryRepository : Repository<Inventory>, IInventoryRepository
         return await DbSet
             .AsNoTracking()
             .Include("Product")
+            .Include("Product.Category")
+            .Include("Product.Company")
+            .Include("Product.Company.CompanyAddress")
             .Where(predicate)
             .ToListAsync();
     }
@@ -26,6 +28,9 @@ public class InventoryRepository : Repository<Inventory>, IInventoryRepository
     {
         return await DbSet
             .Include("Product")
+            .Include("Product.Category")
+            .Include("Product.Company")
+            .Include("Product.Company.CompanyAddress")
             .AsNoTracking()
             .ToListAsync();
     }
@@ -34,18 +39,12 @@ public class InventoryRepository : Repository<Inventory>, IInventoryRepository
     {
         return await DbSet
             .Include("Product")
+            .Include("Product.Category")
+            .Include("Product.Company")
+            .Include("Product.Company.CompanyAddress")
             .AsNoTracking()
             .Where(x => x.Id == id)
             .FirstOrDefaultAsync();
-    }
-
-    public override async Task Remove(Guid id)
-    {
-        var entity = await GetById(id);
-        entity.UpdatedAt = DateTime.UtcNow;
-        entity.DeletedAt = DateTime.UtcNow;
-        DbSet.Update(entity);
-        await Db.SaveChangesAsync();
     }
 
     public override async Task<BaseResult<Inventory>> Search(
@@ -60,13 +59,19 @@ public class InventoryRepository : Repository<Inventory>, IInventoryRepository
         if (predicate != null)
         {
             query = query.Include("Product")
-                         .Where(predicate);
+                .Include("Product.Category")
+                .Include("Product.Company")
+                .Include("Product.Company.CompanyAddress")
+                .Where(predicate);
         }
 
         query = query.Include("Product")
-                     .OrderBy(x => x.Id)
-                     .Skip(paged.Skip())
-                     .Take(pageSize);
+            .Include("Product.Category")
+            .Include("Product.Company")
+            .Include("Product.Company.CompanyAddress")
+            .OrderBy(x => x.Id)
+            .Skip(paged.Skip())
+            .Take(pageSize);
 
         if (orderBy != null)
         {

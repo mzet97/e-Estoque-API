@@ -21,7 +21,7 @@ public class SearchCompanyQueryHandler : IRequestHandler<SearchCompanyQuery, Bas
         SearchCompanyQuery request,
         CancellationToken cancellationToken)
     {
-        Expression<Func<Company, bool>>? filter = null;
+        Expression<Func<Company, bool>>? filter = PredicateBuilder.New<Company>(true);
         Func<IQueryable<Company>, IOrderedQueryable<Company>>? ordeBy = null;
 
         if (!string.IsNullOrWhiteSpace(request.Name))
@@ -31,42 +31,42 @@ public class SearchCompanyQueryHandler : IRequestHandler<SearchCompanyQuery, Bas
 
         if (!string.IsNullOrWhiteSpace(request.Description))
         {
-            if (filter == null)
-            {
-                filter = PredicateBuilder.New<Company>(true);
-            }
-
             filter = filter.And(x => x.Description == request.Description);
         }
 
         if (!string.IsNullOrWhiteSpace(request.DocId))
         {
-            if (filter == null)
-            {
-                filter = PredicateBuilder.New<Company>(true);
-            }
-
             filter = filter.And(x => x.DocId == request.DocId);
         }
 
         if (!string.IsNullOrWhiteSpace(request.PhoneNumber))
         {
-            if (filter == null)
-            {
-                filter = PredicateBuilder.New<Company>(true);
-            }
-
             filter = filter.And(x => x.PhoneNumber == request.PhoneNumber);
         }
 
         if (!string.IsNullOrWhiteSpace(request.Email))
         {
-            if (filter == null)
-            {
-                filter = PredicateBuilder.New<Company>(true);
-            }
-
             filter = filter.And(x => x.Email == request.Email);
+        }
+
+        if (request.Id != Guid.Empty)
+        {
+            filter = filter.And(x => x.Id == request.Id);
+        }
+
+        if (request.CreatedAt != default)
+        {
+            filter = filter.And(x => x.CreatedAt == request.CreatedAt);
+        }
+
+        if (request.UpdatedAt != default)
+        {
+            filter = filter.And(x => x.UpdatedAt == request.UpdatedAt);
+        }
+
+        if (request.DeletedAt.HasValue || request.DeletedAt != default)
+        {
+            filter = filter.And(x => x.DeletedAt == request.DeletedAt);
         }
 
         if (!string.IsNullOrWhiteSpace(request.Order))
@@ -113,46 +113,6 @@ public class SearchCompanyQueryHandler : IRequestHandler<SearchCompanyQuery, Bas
                     ordeBy = x => x.OrderBy(n => n.Id);
                     break;
             }
-        }
-
-        if (request.Id != Guid.Empty)
-        {
-            if (filter == null)
-            {
-                filter = PredicateBuilder.New<Company>(true);
-            }
-
-            filter = filter.And(x => x.Id == request.Id);
-        }
-
-        if (request.CreatedAt != default)
-        {
-            if (filter == null)
-            {
-                filter = PredicateBuilder.New<Company>(true);
-            }
-
-            filter = filter.And(x => x.CreatedAt == request.CreatedAt);
-        }
-
-        if (request.UpdatedAt != default)
-        {
-            if (filter == null)
-            {
-                filter = PredicateBuilder.New<Company>(true);
-            }
-
-            filter = filter.And(x => x.UpdatedAt == request.UpdatedAt);
-        }
-
-        if (request.DeletedAt.HasValue || request.DeletedAt != default)
-        {
-            if (filter == null)
-            {
-                filter = PredicateBuilder.New<Company>(true);
-            }
-
-            filter = filter.And(x => x.DeletedAt == request.DeletedAt);
         }
 
         var result = await _companyRepository
