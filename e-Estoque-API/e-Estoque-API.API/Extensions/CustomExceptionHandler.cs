@@ -3,7 +3,7 @@ using e_Estoque_API.Core.Exceptions;
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 
-namespace e_Estoque_API.API.Infrastructure;
+namespace e_Estoque_API.API.Extensions;
 
 public class CustomExceptionHandler : IExceptionHandler
 {

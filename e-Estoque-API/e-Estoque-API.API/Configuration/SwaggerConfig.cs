@@ -1,4 +1,4 @@
-﻿using e_Estoque_API.API.Infrastructure;
+﻿using e_Estoque_API.API.Extensions;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.OpenApi.Any;
 using Microsoft.OpenApi.Models;

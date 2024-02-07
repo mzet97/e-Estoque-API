@@ -27,9 +27,6 @@
 
   <ItemGroup>
     <Folder Include="Configuration\" />
-    <Folder Include="Inventories\Commands\Handlers\" />
-    <Folder Include="Inventories\ViewModels\" />
-    <Folder Include="Inventories\Queries\Handlers\" />
     <Folder Include="Sales\Commands\Handlers\" />
     <Folder Include="Sales\ViewModels\" />
     <Folder Include="Sales\Queries\Handlers\" />
