@@ -21,7 +21,7 @@ public class SearchInventoryQueryHandler : IRequestHandler<SearchInventoryQuery,
         SearchInventoryQuery request,
         CancellationToken cancellationToken)
     {
-        Expression<Func<Inventory, bool>>? filter = null;
+        Expression<Func<Inventory, bool>>? filter = PredicateBuilder.New<Inventory>(true);
         Func<IQueryable<Inventory>, IOrderedQueryable<Inventory>>? ordeBy = null;
 
         if (request.Quantity != default)
@@ -31,12 +31,32 @@ public class SearchInventoryQueryHandler : IRequestHandler<SearchInventoryQuery,
 
         if (request.DateOrder != default)
         {
-            if (filter == null)
-            {
-                filter = PredicateBuilder.New<Inventory>(true);
-            }
-
             filter = filter.And(x => x.DateOrder == request.DateOrder);
+        }
+
+        if (request.IdProduct != Guid.Empty)
+        {
+            filter = filter.And(x => x.IdProduct == request.IdProduct);
+        }
+
+        if (request.Id != Guid.Empty)
+        {
+            filter = filter.And(x => x.Id == request.Id);
+        }
+
+        if (request.CreatedAt != default)
+        {
+            filter = filter.And(x => x.CreatedAt == request.CreatedAt);
+        }
+
+        if (request.UpdatedAt != default)
+        {
+            filter = filter.And(x => x.UpdatedAt == request.UpdatedAt);
+        }
+
+        if (request.DeletedAt.HasValue || request.DeletedAt != default)
+        {
+            filter = filter.And(x => x.DeletedAt == request.DeletedAt);
         }
 
         if (!string.IsNullOrWhiteSpace(request.Order))
@@ -71,56 +91,6 @@ public class SearchInventoryQueryHandler : IRequestHandler<SearchInventoryQuery,
                     ordeBy = x => x.OrderBy(n => n.Id);
                     break;
             }
-        }
-
-        if (request.IdProduct != Guid.Empty)
-        {
-            if (filter == null)
-            {
-                filter = PredicateBuilder.New<Inventory>(true);
-            }
-
-            filter = filter.And(x => x.IdProduct == request.IdProduct);
-        }
-
-        if (request.Id != Guid.Empty)
-        {
-            if (filter == null)
-            {
-                filter = PredicateBuilder.New<Inventory>(true);
-            }
-
-            filter = filter.And(x => x.Id == request.Id);
-        }
-
-        if (request.CreatedAt != default)
-        {
-            if (filter == null)
-            {
-                filter = PredicateBuilder.New<Inventory>(true);
-            }
-
-            filter = filter.And(x => x.CreatedAt == request.CreatedAt);
-        }
-
-        if (request.UpdatedAt != default)
-        {
-            if (filter == null)
-            {
-                filter = PredicateBuilder.New<Inventory>(true);
-            }
-
-            filter = filter.And(x => x.UpdatedAt == request.UpdatedAt);
-        }
-
-        if (request.DeletedAt.HasValue || request.DeletedAt != default)
-        {
-            if (filter == null)
-            {
-                filter = PredicateBuilder.New<Inventory>(true);
-            }
-
-            filter = filter.And(x => x.DeletedAt == request.DeletedAt);
         }
 
         var result = await _inventoryRepository

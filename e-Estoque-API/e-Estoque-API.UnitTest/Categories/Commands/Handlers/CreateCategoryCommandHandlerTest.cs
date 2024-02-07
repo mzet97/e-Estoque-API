@@ -14,7 +14,7 @@ public class CreateCategoryCommandHandlerTest
 
     [Fact(DisplayName = "Test create category success")]
     [Trait("CreateCategoryCommandHandlerTest", "CreateCategory CommandHandler Tests")]
-    public async Task CreateCategoryCommandHandler_Success()
+    public async Task CreateCategoryCommandHandlerSuccess()
     {
         // Arrange
         var categoryRepositoryMock = new Mock<ICategoryRepository>();
@@ -40,7 +40,7 @@ public class CreateCategoryCommandHandlerTest
 
     [Fact(DisplayName = "Test create category failure")]
     [Trait("CreateCategoryCommandHandlerTest", "CreateCategory CommandHandler Tests")]
-    public async Task CreateCategoryCommandHandler_Failure()
+    public async Task CreateCategoryCommandHandlerFailure()
     {
         // Arrange
         var categoryRepositoryMock = new Mock<ICategoryRepository>();

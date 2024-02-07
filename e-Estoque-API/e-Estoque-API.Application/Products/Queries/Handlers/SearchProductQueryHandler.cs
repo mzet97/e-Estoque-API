@@ -21,7 +21,7 @@ public class SearchProductQueryHandler : IRequestHandler<SearchProductQuery, Bas
         SearchProductQuery request,
         CancellationToken cancellationToken)
     {
-        Expression<Func<Product, bool>>? filter = null;
+        Expression<Func<Product, bool>>? filter = PredicateBuilder.New<Product>(true);
         Func<IQueryable<Product>, IOrderedQueryable<Product>>? ordeBy = null;
 
         if (!string.IsNullOrWhiteSpace(request.Name))
@@ -31,62 +31,62 @@ public class SearchProductQueryHandler : IRequestHandler<SearchProductQuery, Bas
 
         if (!string.IsNullOrWhiteSpace(request.Description))
         {
-            if (filter == null)
-            {
-                filter = PredicateBuilder.New<Product>(true);
-            }
-
             filter = filter.And(x => x.Description == request.Description);
         }
 
         if (!string.IsNullOrWhiteSpace(request.ShortDescription))
         {
-            if (filter == null)
-            {
-                filter = PredicateBuilder.New<Product>(true);
-            }
-
             filter = filter.And(x => x.ShortDescription == request.ShortDescription);
         }
 
         if (request.Price != default)
         {
-            if (filter == null)
-            {
-                filter = PredicateBuilder.New<Product>(true);
-            }
-
             filter = filter.And(x => x.Price == request.Price);
         }
 
         if (request.Weight != default)
         {
-            if (filter == null)
-            {
-                filter = PredicateBuilder.New<Product>(true);
-            }
-
             filter = filter.And(x => x.Weight == request.Weight);
         }
 
         if (request.Height != default)
         {
-            if (filter == null)
-            {
-                filter = PredicateBuilder.New<Product>(true);
-            }
-
             filter = filter.And(x => x.Height == request.Height);
         }
 
         if (request.Length != default)
         {
-            if (filter == null)
-            {
-                filter = PredicateBuilder.New<Product>(true);
-            }
-
             filter = filter.And(x => x.Length == request.Length);
+        }
+
+        if (request.IdCategory != Guid.Empty)
+        {
+            filter = filter.And(x => x.IdCategory == request.IdCategory);
+        }
+
+        if (request.IdCompany != Guid.Empty)
+        {
+            filter = filter.And(x => x.IdCompany == request.IdCompany);
+        }
+
+        if (request.Id != Guid.Empty)
+        {
+            filter = filter.And(x => x.Id == request.Id);
+        }
+
+        if (request.CreatedAt != default)
+        {
+            filter = filter.And(x => x.CreatedAt == request.CreatedAt);
+        }
+
+        if (request.UpdatedAt != default)
+        {
+            filter = filter.And(x => x.UpdatedAt == request.UpdatedAt);
+        }
+
+        if (request.DeletedAt.HasValue || request.DeletedAt != default)
+        {
+            filter = filter.And(x => x.DeletedAt == request.DeletedAt);
         }
 
         if (!string.IsNullOrWhiteSpace(request.Order))
@@ -141,66 +141,6 @@ public class SearchProductQueryHandler : IRequestHandler<SearchProductQuery, Bas
                     ordeBy = x => x.OrderBy(n => n.Id);
                     break;
             }
-        }
-
-        if (request.IdCategory != Guid.Empty)
-        {
-            if (filter == null)
-            {
-                filter = PredicateBuilder.New<Product>(true);
-            }
-
-            filter = filter.And(x => x.IdCategory == request.IdCategory);
-        }
-
-        if (request.IdCompany != Guid.Empty)
-        {
-            if (filter == null)
-            {
-                filter = PredicateBuilder.New<Product>(true);
-            }
-
-            filter = filter.And(x => x.IdCompany == request.IdCompany);
-        }
-
-        if (request.Id != Guid.Empty)
-        {
-            if (filter == null)
-            {
-                filter = PredicateBuilder.New<Product>(true);
-            }
-
-            filter = filter.And(x => x.Id == request.Id);
-        }
-
-        if (request.CreatedAt != default)
-        {
-            if (filter == null)
-            {
-                filter = PredicateBuilder.New<Product>(true);
-            }
-
-            filter = filter.And(x => x.CreatedAt == request.CreatedAt);
-        }
-
-        if (request.UpdatedAt != default)
-        {
-            if (filter == null)
-            {
-                filter = PredicateBuilder.New<Product>(true);
-            }
-
-            filter = filter.And(x => x.UpdatedAt == request.UpdatedAt);
-        }
-
-        if (request.DeletedAt.HasValue || request.DeletedAt != default)
-        {
-            if (filter == null)
-            {
-                filter = PredicateBuilder.New<Product>(true);
-            }
-
-            filter = filter.And(x => x.DeletedAt == request.DeletedAt);
         }
 
         var result = await _productRepository

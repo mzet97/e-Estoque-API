@@ -2,7 +2,6 @@
 using e_Estoque_API.Core.Models;
 using e_Estoque_API.Core.Repositories;
 using Microsoft.EntityFrameworkCore;
-using System.Linq;
 using System.Linq.Expressions;
 
 namespace e_Estoque_API.Infrastructure.Persistence.Repositories;
@@ -19,6 +18,7 @@ public class ProductRepository : Repository<Product>, IProductRepository
             .AsNoTracking()
             .Include("Category")
             .Include("Company")
+            .Include("Company.CompanyAddress")
             .Where(predicate)
             .ToListAsync();
     }
@@ -28,6 +28,7 @@ public class ProductRepository : Repository<Product>, IProductRepository
         return await DbSet
             .Include("Category")
             .Include("Company")
+            .Include("Company.CompanyAddress")
             .AsNoTracking()
             .ToListAsync();
     }
@@ -37,18 +38,10 @@ public class ProductRepository : Repository<Product>, IProductRepository
         return await DbSet
             .Include("Category")
             .Include("Company")
+            .Include("Company.CompanyAddress")
             .AsNoTracking()
             .Where(x => x.Id == id)
             .FirstOrDefaultAsync();
-    }
-
-    public override async Task Remove(Guid id)
-    {
-        var entity = await GetById(id);
-        entity.UpdatedAt = DateTime.UtcNow;
-        entity.DeletedAt = DateTime.UtcNow;
-        DbSet.Update(entity);
-        await Db.SaveChangesAsync();
     }
 
     public override async Task<BaseResult<Product>> Search(
@@ -64,11 +57,13 @@ public class ProductRepository : Repository<Product>, IProductRepository
         {
             query = query.Include("Category")
                          .Include("Company")
+                         .Include("Company.CompanyAddress")
                          .Where(predicate);
         }
 
         query = query.Include("Category")
                      .Include("Company")
+                     .Include("Company.CompanyAddress")
                      .OrderBy(x => x.Id)
                      .Skip(paged.Skip())
                      .Take(pageSize);

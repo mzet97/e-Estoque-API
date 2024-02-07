@@ -39,15 +39,6 @@ public class TaxRepository : Repository<Tax>, ITaxRepository
             .FirstOrDefaultAsync();
     }
 
-    public override async Task Remove(Guid id)
-    {
-        var entity = await GetById(id);
-        entity.UpdatedAt = DateTime.UtcNow;
-        entity.DeletedAt = DateTime.UtcNow;
-        DbSet.Update(entity);
-        await Db.SaveChangesAsync();
-    }
-
     public override async Task<BaseResult<Tax>> Search(
         Expression<Func<Tax, bool>>? predicate = null,
         Func<IQueryable<Tax>, IOrderedQueryable<Tax>>? orderBy = null,

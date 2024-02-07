@@ -12,6 +12,9 @@ public static class KeycloakConfig
                         .GetSection(KeycloakAuthenticationOptions.Section)
                         .Get<KeycloakAuthenticationOptions>();
 
+        if (authenticationOptions == null)
+            throw new ArgumentException("KeycloakAuthenticationOptions is required");
+
         var keycloakSection = configuration.GetSection("Keycloak");
         var keycloak = GetKeycloak(keycloakSection);
 
@@ -23,11 +26,18 @@ public static class KeycloakConfig
                         .GetSection(KeycloakProtectionClientOptions.Section)
                         .Get<KeycloakProtectionClientOptions>();
 
+        if (authorizationOptions == null)
+            throw new ArgumentException("KeycloakProtectionClientOptions is required");
+
         services.AddKeycloakAuthorization(authorizationOptions);
+
 
         var adminClientOptions = configuration
                         .GetSection(KeycloakAdminClientOptions.Section)
                         .Get<KeycloakAdminClientOptions>();
+
+        if (adminClientOptions == null)
+            throw new ArgumentException("KeycloakAdminClientOptions is required");
 
         services.AddKeycloakAdminHttpClient(adminClientOptions);
 

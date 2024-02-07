@@ -1,0 +1,1928 @@
+{
+  "$schema": "http://json.schemastore.org/sarif-1.0.0",
+  "version": "1.0.0",
+  "runs": [
+    {
+      "tool": {
+        "name": "Compilador do Microsoft (R) Visual C#",
+        "version": "4.8.0.0",
+        "fileVersion": "4.8.0-3.23524.11 (f43cd10b)",
+        "semanticVersion": "4.8.0",
+        "language": "pt-BR"
+      },
+      "results": [
+        {
+          "ruleId": "S107",
+          "level": "warning",
+          "message": "Constructor has 10 new parameters, which is greater than the 7 authorized.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///D:/TI/git/v2/e-Estoque-API/e-Estoque-API/e-Estoque-API.Application/Dtos/ViewModels/AddressViewModel.cs",
+                "region": {
+                  "startLine": 18,
+                  "startColumn": 28,
+                  "endLine": 33,
+                  "endColumn": 9
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S107",
+          "level": "warning",
+          "message": "Constructor has 12 new parameters, which is greater than the 7 authorized.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///D:/TI/git/v2/e-Estoque-API/e-Estoque-API/e-Estoque-API.Application/Products/ViewModels/ProductViewModel.cs",
+                "region": {
+                  "startLine": 26,
+                  "startColumn": 28,
+                  "endLine": 42,
+                  "endColumn": 28
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "CA2016",
+          "level": "note",
+          "message": "Encaminhe o parâmetro 'cancellationToken' para o método 'ReadAsStringAsync' ou passe o 'CancellationToken.None' explicitamente para indicar que ele está intencionalmente não propagando o token",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///D:/TI/git/v2/e-Estoque-API/e-Estoque-API/e-Estoque-API.Application/Auth/Commands/Handlers/LoginUserCommandHandler.cs",
+                "region": {
+                  "startLine": 37,
+                  "startColumn": 30,
+                  "endLine": 37,
+                  "endColumn": 92
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1,
+            "customProperties": {
+              "ArgumentName": "cancellationToken",
+              "ParameterName": null,
+              "ShouldFix": "1"
+            }
+          }
+        },
+        {
+          "ruleId": "CA2016",
+          "level": "note",
+          "message": "Encaminhe o parâmetro 'cancellationToken' para o método 'SendAsync' ou passe o 'CancellationToken.None' explicitamente para indicar que ele está intencionalmente não propagando o token",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///D:/TI/git/v2/e-Estoque-API/e-Estoque-API/e-Estoque-API.Application/Auth/Commands/Handlers/LoginUserCommandHandler.cs",
+                "region": {
+                  "startLine": 37,
+                  "startColumn": 30,
+                  "endLine": 37,
+                  "endColumn": 46
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1,
+            "customProperties": {
+              "ArgumentName": "cancellationToken",
+              "ParameterName": null,
+              "ShouldFix": "1"
+            }
+          }
+        },
+        {
+          "ruleId": "CA1869",
+          "level": "note",
+          "message": "Evite criar uma nova instância 'JsonSerializerOptions' para cada operação de serialização. Em vez disso, armazene em cache e reutilize instâncias.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///D:/TI/git/v2/e-Estoque-API/e-Estoque-API/e-Estoque-API.Application/Auth/Commands/Handlers/LoginUserCommandHandler.cs",
+                "region": {
+                  "startLine": 39,
+                  "startColumn": 32,
+                  "endLine": 43,
+                  "endColumn": 10
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "CA2016",
+          "level": "note",
+          "message": "Encaminhe o parâmetro 'cancellationToken' para o método 'SendAsync' ou passe o 'CancellationToken.None' explicitamente para indicar que ele está intencionalmente não propagando o token",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///D:/TI/git/v2/e-Estoque-API/e-Estoque-API/e-Estoque-API.Application/Auth/Commands/Handlers/RegisterUserCommandHandler.cs",
+                "region": {
+                  "startLine": 46,
+                  "startColumn": 30,
+                  "endLine": 46,
+                  "endColumn": 46
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1,
+            "customProperties": {
+              "ArgumentName": "cancellationToken",
+              "ParameterName": null,
+              "ShouldFix": "1"
+            }
+          }
+        },
+        {
+          "ruleId": "CA2016",
+          "level": "note",
+          "message": "Encaminhe o parâmetro 'cancellationToken' para o método 'Send' ou passe o 'CancellationToken.None' explicitamente para indicar que ele está intencionalmente não propagando o token",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///D:/TI/git/v2/e-Estoque-API/e-Estoque-API/e-Estoque-API.Application/Auth/Commands/Handlers/RegisterUserCommandHandler.cs",
+                "region": {
+                  "startLine": 53,
+                  "startColumn": 22,
+                  "endLine": 53,
+                  "endColumn": 36
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1,
+            "customProperties": {
+              "ArgumentName": "cancellationToken",
+              "ParameterName": null,
+              "ShouldFix": "1"
+            }
+          }
+        },
+        {
+          "ruleId": "S3776",
+          "level": "warning",
+          "message": "Refactor this method to reduce its Cognitive Complexity from 23 to the 15 allowed.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///D:/TI/git/v2/e-Estoque-API/e-Estoque-API/e-Estoque-API.Application/Inventories/Queries/Handlers/SearchInventoryQueryHandler.cs",
+                "region": {
+                  "startLine": 20,
+                  "startColumn": 55,
+                  "endLine": 20,
+                  "endColumn": 61
+                }
+              }
+            }
+          ],
+          "relatedLocations": [
+            {
+              "physicalLocation": {
+                "uri": "file:///D:/TI/git/v2/e-Estoque-API/e-Estoque-API/e-Estoque-API.Application/Inventories/Queries/Handlers/SearchInventoryQueryHandler.cs",
+                "region": {
+                  "startLine": 27,
+                  "startColumn": 9,
+                  "endLine": 27,
+                  "endColumn": 11
+                }
+              }
+            },
+            {
+              "physicalLocation": {
+                "uri": "file:///D:/TI/git/v2/e-Estoque-API/e-Estoque-API/e-Estoque-API.Application/Inventories/Queries/Handlers/SearchInventoryQueryHandler.cs",
+                "region": {
+                  "startLine": 32,
+                  "startColumn": 9,
+                  "endLine": 32,
+                  "endColumn": 11
+                }
+              }
+            },
+            {
+              "physicalLocation": {
+                "uri": "file:///D:/TI/git/v2/e-Estoque-API/e-Estoque-API/e-Estoque-API.Application/Inventories/Queries/Handlers/SearchInventoryQueryHandler.cs",
+                "region": {
+                  "startLine": 34,
+                  "startColumn": 13,
+                  "endLine": 34,
+                  "endColumn": 15
+                }
+              }
+            },
+            {
+              "physicalLocation": {
+                "uri": "file:///D:/TI/git/v2/e-Estoque-API/e-Estoque-API/e-Estoque-API.Application/Inventories/Queries/Handlers/SearchInventoryQueryHandler.cs",
+                "region": {
+                  "startLine": 42,
+                  "startColumn": 9,
+                  "endLine": 42,
+                  "endColumn": 11
+                }
+              }
+            },
+            {
+              "physicalLocation": {
+                "uri": "file:///D:/TI/git/v2/e-Estoque-API/e-Estoque-API/e-Estoque-API.Application/Inventories/Queries/Handlers/SearchInventoryQueryHandler.cs",
+                "region": {
+                  "startLine": 44,
+                  "startColumn": 13,
+                  "endLine": 44,
+                  "endColumn": 19
+                }
+              }
+            },
+            {
+              "physicalLocation": {
+                "uri": "file:///D:/TI/git/v2/e-Estoque-API/e-Estoque-API/e-Estoque-API.Application/Inventories/Queries/Handlers/SearchInventoryQueryHandler.cs",
+                "region": {
+                  "startLine": 76,
+                  "startColumn": 9,
+                  "endLine": 76,
+                  "endColumn": 11
+                }
+              }
+            },
+            {
+              "physicalLocation": {
+                "uri": "file:///D:/TI/git/v2/e-Estoque-API/e-Estoque-API/e-Estoque-API.Application/Inventories/Queries/Handlers/SearchInventoryQueryHandler.cs",
+                "region": {
+                  "startLine": 78,
+                  "startColumn": 13,
+                  "endLine": 78,
+                  "endColumn": 15
+                }
+              }
+            },
+            {
+              "physicalLocation": {
+                "uri": "file:///D:/TI/git/v2/e-Estoque-API/e-Estoque-API/e-Estoque-API.Application/Inventories/Queries/Handlers/SearchInventoryQueryHandler.cs",
+                "region": {
+                  "startLine": 86,
+                  "startColumn": 9,
+                  "endLine": 86,
+                  "endColumn": 11
+                }
+              }
+            },
+            {
+              "physicalLocation": {
+                "uri": "file:///D:/TI/git/v2/e-Estoque-API/e-Estoque-API/e-Estoque-API.Application/Inventories/Queries/Handlers/SearchInventoryQueryHandler.cs",
+                "region": {
+                  "startLine": 88,
+                  "startColumn": 13,
+                  "endLine": 88,
+                  "endColumn": 15
+                }
+              }
+            },
+            {
+              "physicalLocation": {
+                "uri": "file:///D:/TI/git/v2/e-Estoque-API/e-Estoque-API/e-Estoque-API.Application/Inventories/Queries/Handlers/SearchInventoryQueryHandler.cs",
+                "region": {
+                  "startLine": 96,
+                  "startColumn": 9,
+                  "endLine": 96,
+                  "endColumn": 11
+                }
+              }
+            },
+            {
+              "physicalLocation": {
+                "uri": "file:///D:/TI/git/v2/e-Estoque-API/e-Estoque-API/e-Estoque-API.Application/Inventories/Queries/Handlers/SearchInventoryQueryHandler.cs",
+                "region": {
+                  "startLine": 98,
+                  "startColumn": 13,
+                  "endLine": 98,
+                  "endColumn": 15
+                }
+              }
+            },
+            {
+              "physicalLocation": {
+                "uri": "file:///D:/TI/git/v2/e-Estoque-API/e-Estoque-API/e-Estoque-API.Application/Inventories/Queries/Handlers/SearchInventoryQueryHandler.cs",
+                "region": {
+                  "startLine": 106,
+                  "startColumn": 9,
+                  "endLine": 106,
+                  "endColumn": 11
+                }
+              }
+            },
+            {
+              "physicalLocation": {
+                "uri": "file:///D:/TI/git/v2/e-Estoque-API/e-Estoque-API/e-Estoque-API.Application/Inventories/Queries/Handlers/SearchInventoryQueryHandler.cs",
+                "region": {
+                  "startLine": 108,
+                  "startColumn": 13,
+                  "endLine": 108,
+                  "endColumn": 15
+                }
+              }
+            },
+            {
+              "physicalLocation": {
+                "uri": "file:///D:/TI/git/v2/e-Estoque-API/e-Estoque-API/e-Estoque-API.Application/Inventories/Queries/Handlers/SearchInventoryQueryHandler.cs",
+                "region": {
+                  "startLine": 116,
+                  "startColumn": 9,
+                  "endLine": 116,
+                  "endColumn": 11
+                }
+              }
+            },
+            {
+              "physicalLocation": {
+                "uri": "file:///D:/TI/git/v2/e-Estoque-API/e-Estoque-API/e-Estoque-API.Application/Inventories/Queries/Handlers/SearchInventoryQueryHandler.cs",
+                "region": {
+                  "startLine": 116,
+                  "startColumn": 40,
+                  "endLine": 116,
+                  "endColumn": 42
+                }
+              }
+            },
+            {
+              "physicalLocation": {
+                "uri": "file:///D:/TI/git/v2/e-Estoque-API/e-Estoque-API/e-Estoque-API.Application/Inventories/Queries/Handlers/SearchInventoryQueryHandler.cs",
+                "region": {
+                  "startLine": 118,
+                  "startColumn": 13,
+                  "endLine": 118,
+                  "endColumn": 15
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1,
+            "customProperties": {
+              "0": "+1",
+              "1": "+1",
+              "10": "+2 (incl 1 for nesting)",
+              "11": "+1",
+              "12": "+2 (incl 1 for nesting)",
+              "13": "+1",
+              "14": "+1",
+              "15": "+2 (incl 1 for nesting)",
+              "2": "+2 (incl 1 for nesting)",
+              "3": "+1",
+              "4": "+2 (incl 1 for nesting)",
+              "5": "+1",
+              "6": "+2 (incl 1 for nesting)",
+              "7": "+1",
+              "8": "+2 (incl 1 for nesting)",
+              "9": "+1"
+            }
+          }
+        },
+        {
+          "ruleId": "S3776",
+          "level": "warning",
+          "message": "Refactor this method to reduce its Cognitive Complexity from 23 to the 15 allowed.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///D:/TI/git/v2/e-Estoque-API/e-Estoque-API/e-Estoque-API.Application/Categories/Queries/Handlers/SearchCategoryQueryHandler.cs",
+                "region": {
+                  "startLine": 20,
+                  "startColumn": 54,
+                  "endLine": 20,
+                  "endColumn": 60
+                }
+              }
+            }
+          ],
+          "relatedLocations": [
+            {
+              "physicalLocation": {
+                "uri": "file:///D:/TI/git/v2/e-Estoque-API/e-Estoque-API/e-Estoque-API.Application/Categories/Queries/Handlers/SearchCategoryQueryHandler.cs",
+                "region": {
+                  "startLine": 27,
+                  "startColumn": 9,
+                  "endLine": 27,
+                  "endColumn": 11
+                }
+              }
+            },
+            {
+              "physicalLocation": {
+                "uri": "file:///D:/TI/git/v2/e-Estoque-API/e-Estoque-API/e-Estoque-API.Application/Categories/Queries/Handlers/SearchCategoryQueryHandler.cs",
+                "region": {
+                  "startLine": 32,
+                  "startColumn": 9,
+                  "endLine": 32,
+                  "endColumn": 11
+                }
+              }
+            },
+            {
+              "physicalLocation": {
+                "uri": "file:///D:/TI/git/v2/e-Estoque-API/e-Estoque-API/e-Estoque-API.Application/Categories/Queries/Handlers/SearchCategoryQueryHandler.cs",
+                "region": {
+                  "startLine": 34,
+                  "startColumn": 13,
+                  "endLine": 34,
+                  "endColumn": 15
+                }
+              }
+            },
+            {
+              "physicalLocation": {
+                "uri": "file:///D:/TI/git/v2/e-Estoque-API/e-Estoque-API/e-Estoque-API.Application/Categories/Queries/Handlers/SearchCategoryQueryHandler.cs",
+                "region": {
+                  "startLine": 42,
+                  "startColumn": 9,
+                  "endLine": 42,
+                  "endColumn": 11
+                }
+              }
+            },
+            {
+              "physicalLocation": {
+                "uri": "file:///D:/TI/git/v2/e-Estoque-API/e-Estoque-API/e-Estoque-API.Application/Categories/Queries/Handlers/SearchCategoryQueryHandler.cs",
+                "region": {
+                  "startLine": 44,
+                  "startColumn": 13,
+                  "endLine": 44,
+                  "endColumn": 15
+                }
+              }
+            },
+            {
+              "physicalLocation": {
+                "uri": "file:///D:/TI/git/v2/e-Estoque-API/e-Estoque-API/e-Estoque-API.Application/Categories/Queries/Handlers/SearchCategoryQueryHandler.cs",
+                "region": {
+                  "startLine": 52,
+                  "startColumn": 9,
+                  "endLine": 52,
+                  "endColumn": 11
+                }
+              }
+            },
+            {
+              "physicalLocation": {
+                "uri": "file:///D:/TI/git/v2/e-Estoque-API/e-Estoque-API/e-Estoque-API.Application/Categories/Queries/Handlers/SearchCategoryQueryHandler.cs",
+                "region": {
+                  "startLine": 54,
+                  "startColumn": 13,
+                  "endLine": 54,
+                  "endColumn": 19
+                }
+              }
+            },
+            {
+              "physicalLocation": {
+                "uri": "file:///D:/TI/git/v2/e-Estoque-API/e-Estoque-API/e-Estoque-API.Application/Categories/Queries/Handlers/SearchCategoryQueryHandler.cs",
+                "region": {
+                  "startLine": 90,
+                  "startColumn": 9,
+                  "endLine": 90,
+                  "endColumn": 11
+                }
+              }
+            },
+            {
+              "physicalLocation": {
+                "uri": "file:///D:/TI/git/v2/e-Estoque-API/e-Estoque-API/e-Estoque-API.Application/Categories/Queries/Handlers/SearchCategoryQueryHandler.cs",
+                "region": {
+                  "startLine": 92,
+                  "startColumn": 13,
+                  "endLine": 92,
+                  "endColumn": 15
+                }
+              }
+            },
+            {
+              "physicalLocation": {
+                "uri": "file:///D:/TI/git/v2/e-Estoque-API/e-Estoque-API/e-Estoque-API.Application/Categories/Queries/Handlers/SearchCategoryQueryHandler.cs",
+                "region": {
+                  "startLine": 100,
+                  "startColumn": 9,
+                  "endLine": 100,
+                  "endColumn": 11
+                }
+              }
+            },
+            {
+              "physicalLocation": {
+                "uri": "file:///D:/TI/git/v2/e-Estoque-API/e-Estoque-API/e-Estoque-API.Application/Categories/Queries/Handlers/SearchCategoryQueryHandler.cs",
+                "region": {
+                  "startLine": 102,
+                  "startColumn": 13,
+                  "endLine": 102,
+                  "endColumn": 15
+                }
+              }
+            },
+            {
+              "physicalLocation": {
+                "uri": "file:///D:/TI/git/v2/e-Estoque-API/e-Estoque-API/e-Estoque-API.Application/Categories/Queries/Handlers/SearchCategoryQueryHandler.cs",
+                "region": {
+                  "startLine": 110,
+                  "startColumn": 9,
+                  "endLine": 110,
+                  "endColumn": 11
+                }
+              }
+            },
+            {
+              "physicalLocation": {
+                "uri": "file:///D:/TI/git/v2/e-Estoque-API/e-Estoque-API/e-Estoque-API.Application/Categories/Queries/Handlers/SearchCategoryQueryHandler.cs",
+                "region": {
+                  "startLine": 112,
+                  "startColumn": 13,
+                  "endLine": 112,
+                  "endColumn": 15
+                }
+              }
+            },
+            {
+              "physicalLocation": {
+                "uri": "file:///D:/TI/git/v2/e-Estoque-API/e-Estoque-API/e-Estoque-API.Application/Categories/Queries/Handlers/SearchCategoryQueryHandler.cs",
+                "region": {
+                  "startLine": 120,
+                  "startColumn": 9,
+                  "endLine": 120,
+                  "endColumn": 11
+                }
+              }
+            },
+            {
+              "physicalLocation": {
+                "uri": "file:///D:/TI/git/v2/e-Estoque-API/e-Estoque-API/e-Estoque-API.Application/Categories/Queries/Handlers/SearchCategoryQueryHandler.cs",
+                "region": {
+                  "startLine": 120,
+                  "startColumn": 40,
+                  "endLine": 120,
+                  "endColumn": 42
+                }
+              }
+            },
+            {
+              "physicalLocation": {
+                "uri": "file:///D:/TI/git/v2/e-Estoque-API/e-Estoque-API/e-Estoque-API.Application/Categories/Queries/Handlers/SearchCategoryQueryHandler.cs",
+                "region": {
+                  "startLine": 122,
+                  "startColumn": 13,
+                  "endLine": 122,
+                  "endColumn": 15
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1,
+            "customProperties": {
+              "0": "+1",
+              "1": "+1",
+              "10": "+2 (incl 1 for nesting)",
+              "11": "+1",
+              "12": "+2 (incl 1 for nesting)",
+              "13": "+1",
+              "14": "+1",
+              "15": "+2 (incl 1 for nesting)",
+              "2": "+2 (incl 1 for nesting)",
+              "3": "+1",
+              "4": "+2 (incl 1 for nesting)",
+              "5": "+1",
+              "6": "+2 (incl 1 for nesting)",
+              "7": "+1",
+              "8": "+2 (incl 1 for nesting)",
+              "9": "+1"
+            }
+          }
+        },
+        {
+          "ruleId": "S3776",
+          "level": "warning",
+          "message": "Refactor this method to reduce its Cognitive Complexity from 29 to the 15 allowed.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///D:/TI/git/v2/e-Estoque-API/e-Estoque-API/e-Estoque-API.Application/Companies/Queries/Handlers/SearchCompanyQueryHandler.cs",
+                "region": {
+                  "startLine": 20,
+                  "startColumn": 53,
+                  "endLine": 20,
+                  "endColumn": 59
+                }
+              }
+            }
+          ],
+          "relatedLocations": [
+            {
+              "physicalLocation": {
+                "uri": "file:///D:/TI/git/v2/e-Estoque-API/e-Estoque-API/e-Estoque-API.Application/Companies/Queries/Handlers/SearchCompanyQueryHandler.cs",
+                "region": {
+                  "startLine": 27,
+                  "startColumn": 9,
+                  "endLine": 27,
+                  "endColumn": 11
+                }
+              }
+            },
+            {
+              "physicalLocation": {
+                "uri": "file:///D:/TI/git/v2/e-Estoque-API/e-Estoque-API/e-Estoque-API.Application/Companies/Queries/Handlers/SearchCompanyQueryHandler.cs",
+                "region": {
+                  "startLine": 32,
+                  "startColumn": 9,
+                  "endLine": 32,
+                  "endColumn": 11
+                }
+              }
+            },
+            {
+              "physicalLocation": {
+                "uri": "file:///D:/TI/git/v2/e-Estoque-API/e-Estoque-API/e-Estoque-API.Application/Companies/Queries/Handlers/SearchCompanyQueryHandler.cs",
+                "region": {
+                  "startLine": 34,
+                  "startColumn": 13,
+                  "endLine": 34,
+                  "endColumn": 15
+                }
+              }
+            },
+            {
+              "physicalLocation": {
+                "uri": "file:///D:/TI/git/v2/e-Estoque-API/e-Estoque-API/e-Estoque-API.Application/Companies/Queries/Handlers/SearchCompanyQueryHandler.cs",
+                "region": {
+                  "startLine": 42,
+                  "startColumn": 9,
+                  "endLine": 42,
+                  "endColumn": 11
+                }
+              }
+            },
+            {
+              "physicalLocation": {
+                "uri": "file:///D:/TI/git/v2/e-Estoque-API/e-Estoque-API/e-Estoque-API.Application/Companies/Queries/Handlers/SearchCompanyQueryHandler.cs",
+                "region": {
+                  "startLine": 44,
+                  "startColumn": 13,
+                  "endLine": 44,
+                  "endColumn": 15
+                }
+              }
+            },
+            {
+              "physicalLocation": {
+                "uri": "file:///D:/TI/git/v2/e-Estoque-API/e-Estoque-API/e-Estoque-API.Application/Companies/Queries/Handlers/SearchCompanyQueryHandler.cs",
+                "region": {
+                  "startLine": 52,
+                  "startColumn": 9,
+                  "endLine": 52,
+                  "endColumn": 11
+                }
+              }
+            },
+            {
+              "physicalLocation": {
+                "uri": "file:///D:/TI/git/v2/e-Estoque-API/e-Estoque-API/e-Estoque-API.Application/Companies/Queries/Handlers/SearchCompanyQueryHandler.cs",
+                "region": {
+                  "startLine": 54,
+                  "startColumn": 13,
+                  "endLine": 54,
+                  "endColumn": 15
+                }
+              }
+            },
+            {
+              "physicalLocation": {
+                "uri": "file:///D:/TI/git/v2/e-Estoque-API/e-Estoque-API/e-Estoque-API.Application/Companies/Queries/Handlers/SearchCompanyQueryHandler.cs",
+                "region": {
+                  "startLine": 62,
+                  "startColumn": 9,
+                  "endLine": 62,
+                  "endColumn": 11
+                }
+              }
+            },
+            {
+              "physicalLocation": {
+                "uri": "file:///D:/TI/git/v2/e-Estoque-API/e-Estoque-API/e-Estoque-API.Application/Companies/Queries/Handlers/SearchCompanyQueryHandler.cs",
+                "region": {
+                  "startLine": 64,
+                  "startColumn": 13,
+                  "endLine": 64,
+                  "endColumn": 15
+                }
+              }
+            },
+            {
+              "physicalLocation": {
+                "uri": "file:///D:/TI/git/v2/e-Estoque-API/e-Estoque-API/e-Estoque-API.Application/Companies/Queries/Handlers/SearchCompanyQueryHandler.cs",
+                "region": {
+                  "startLine": 72,
+                  "startColumn": 9,
+                  "endLine": 72,
+                  "endColumn": 11
+                }
+              }
+            },
+            {
+              "physicalLocation": {
+                "uri": "file:///D:/TI/git/v2/e-Estoque-API/e-Estoque-API/e-Estoque-API.Application/Companies/Queries/Handlers/SearchCompanyQueryHandler.cs",
+                "region": {
+                  "startLine": 74,
+                  "startColumn": 13,
+                  "endLine": 74,
+                  "endColumn": 19
+                }
+              }
+            },
+            {
+              "physicalLocation": {
+                "uri": "file:///D:/TI/git/v2/e-Estoque-API/e-Estoque-API/e-Estoque-API.Application/Companies/Queries/Handlers/SearchCompanyQueryHandler.cs",
+                "region": {
+                  "startLine": 118,
+                  "startColumn": 9,
+                  "endLine": 118,
+                  "endColumn": 11
+                }
+              }
+            },
+            {
+              "physicalLocation": {
+                "uri": "file:///D:/TI/git/v2/e-Estoque-API/e-Estoque-API/e-Estoque-API.Application/Companies/Queries/Handlers/SearchCompanyQueryHandler.cs",
+                "region": {
+                  "startLine": 120,
+                  "startColumn": 13,
+                  "endLine": 120,
+                  "endColumn": 15
+                }
+              }
+            },
+            {
+              "physicalLocation": {
+                "uri": "file:///D:/TI/git/v2/e-Estoque-API/e-Estoque-API/e-Estoque-API.Application/Companies/Queries/Handlers/SearchCompanyQueryHandler.cs",
+                "region": {
+                  "startLine": 128,
+                  "startColumn": 9,
+                  "endLine": 128,
+                  "endColumn": 11
+                }
+              }
+            },
+            {
+              "physicalLocation": {
+                "uri": "file:///D:/TI/git/v2/e-Estoque-API/e-Estoque-API/e-Estoque-API.Application/Companies/Queries/Handlers/SearchCompanyQueryHandler.cs",
+                "region": {
+                  "startLine": 130,
+                  "startColumn": 13,
+                  "endLine": 130,
+                  "endColumn": 15
+                }
+              }
+            },
+            {
+              "physicalLocation": {
+                "uri": "file:///D:/TI/git/v2/e-Estoque-API/e-Estoque-API/e-Estoque-API.Application/Companies/Queries/Handlers/SearchCompanyQueryHandler.cs",
+                "region": {
+                  "startLine": 138,
+                  "startColumn": 9,
+                  "endLine": 138,
+                  "endColumn": 11
+                }
+              }
+            },
+            {
+              "physicalLocation": {
+                "uri": "file:///D:/TI/git/v2/e-Estoque-API/e-Estoque-API/e-Estoque-API.Application/Companies/Queries/Handlers/SearchCompanyQueryHandler.cs",
+                "region": {
+                  "startLine": 140,
+                  "startColumn": 13,
+                  "endLine": 140,
+                  "endColumn": 15
+                }
+              }
+            },
+            {
+              "physicalLocation": {
+                "uri": "file:///D:/TI/git/v2/e-Estoque-API/e-Estoque-API/e-Estoque-API.Application/Companies/Queries/Handlers/SearchCompanyQueryHandler.cs",
+                "region": {
+                  "startLine": 148,
+                  "startColumn": 9,
+                  "endLine": 148,
+                  "endColumn": 11
+                }
+              }
+            },
+            {
+              "physicalLocation": {
+                "uri": "file:///D:/TI/git/v2/e-Estoque-API/e-Estoque-API/e-Estoque-API.Application/Companies/Queries/Handlers/SearchCompanyQueryHandler.cs",
+                "region": {
+                  "startLine": 148,
+                  "startColumn": 40,
+                  "endLine": 148,
+                  "endColumn": 42
+                }
+              }
+            },
+            {
+              "physicalLocation": {
+                "uri": "file:///D:/TI/git/v2/e-Estoque-API/e-Estoque-API/e-Estoque-API.Application/Companies/Queries/Handlers/SearchCompanyQueryHandler.cs",
+                "region": {
+                  "startLine": 150,
+                  "startColumn": 13,
+                  "endLine": 150,
+                  "endColumn": 15
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1,
+            "customProperties": {
+              "0": "+1",
+              "1": "+1",
+              "10": "+2 (incl 1 for nesting)",
+              "11": "+1",
+              "12": "+2 (incl 1 for nesting)",
+              "13": "+1",
+              "14": "+2 (incl 1 for nesting)",
+              "15": "+1",
+              "16": "+2 (incl 1 for nesting)",
+              "17": "+1",
+              "18": "+1",
+              "19": "+2 (incl 1 for nesting)",
+              "2": "+2 (incl 1 for nesting)",
+              "3": "+1",
+              "4": "+2 (incl 1 for nesting)",
+              "5": "+1",
+              "6": "+2 (incl 1 for nesting)",
+              "7": "+1",
+              "8": "+2 (incl 1 for nesting)",
+              "9": "+1"
+            }
+          }
+        },
+        {
+          "ruleId": "S3776",
+          "level": "warning",
+          "message": "Refactor this method to reduce its Cognitive Complexity from 26 to the 15 allowed.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///D:/TI/git/v2/e-Estoque-API/e-Estoque-API/e-Estoque-API.Application/Taxes/Queries/Handlers/SearchTaxQueryHandler.cs",
+                "region": {
+                  "startLine": 20,
+                  "startColumn": 49,
+                  "endLine": 20,
+                  "endColumn": 55
+                }
+              }
+            }
+          ],
+          "relatedLocations": [
+            {
+              "physicalLocation": {
+                "uri": "file:///D:/TI/git/v2/e-Estoque-API/e-Estoque-API/e-Estoque-API.Application/Taxes/Queries/Handlers/SearchTaxQueryHandler.cs",
+                "region": {
+                  "startLine": 27,
+                  "startColumn": 9,
+                  "endLine": 27,
+                  "endColumn": 11
+                }
+              }
+            },
+            {
+              "physicalLocation": {
+                "uri": "file:///D:/TI/git/v2/e-Estoque-API/e-Estoque-API/e-Estoque-API.Application/Taxes/Queries/Handlers/SearchTaxQueryHandler.cs",
+                "region": {
+                  "startLine": 32,
+                  "startColumn": 9,
+                  "endLine": 32,
+                  "endColumn": 11
+                }
+              }
+            },
+            {
+              "physicalLocation": {
+                "uri": "file:///D:/TI/git/v2/e-Estoque-API/e-Estoque-API/e-Estoque-API.Application/Taxes/Queries/Handlers/SearchTaxQueryHandler.cs",
+                "region": {
+                  "startLine": 34,
+                  "startColumn": 13,
+                  "endLine": 34,
+                  "endColumn": 15
+                }
+              }
+            },
+            {
+              "physicalLocation": {
+                "uri": "file:///D:/TI/git/v2/e-Estoque-API/e-Estoque-API/e-Estoque-API.Application/Taxes/Queries/Handlers/SearchTaxQueryHandler.cs",
+                "region": {
+                  "startLine": 42,
+                  "startColumn": 9,
+                  "endLine": 42,
+                  "endColumn": 11
+                }
+              }
+            },
+            {
+              "physicalLocation": {
+                "uri": "file:///D:/TI/git/v2/e-Estoque-API/e-Estoque-API/e-Estoque-API.Application/Taxes/Queries/Handlers/SearchTaxQueryHandler.cs",
+                "region": {
+                  "startLine": 44,
+                  "startColumn": 13,
+                  "endLine": 44,
+                  "endColumn": 15
+                }
+              }
+            },
+            {
+              "physicalLocation": {
+                "uri": "file:///D:/TI/git/v2/e-Estoque-API/e-Estoque-API/e-Estoque-API.Application/Taxes/Queries/Handlers/SearchTaxQueryHandler.cs",
+                "region": {
+                  "startLine": 52,
+                  "startColumn": 9,
+                  "endLine": 52,
+                  "endColumn": 11
+                }
+              }
+            },
+            {
+              "physicalLocation": {
+                "uri": "file:///D:/TI/git/v2/e-Estoque-API/e-Estoque-API/e-Estoque-API.Application/Taxes/Queries/Handlers/SearchTaxQueryHandler.cs",
+                "region": {
+                  "startLine": 54,
+                  "startColumn": 13,
+                  "endLine": 54,
+                  "endColumn": 19
+                }
+              }
+            },
+            {
+              "physicalLocation": {
+                "uri": "file:///D:/TI/git/v2/e-Estoque-API/e-Estoque-API/e-Estoque-API.Application/Taxes/Queries/Handlers/SearchTaxQueryHandler.cs",
+                "region": {
+                  "startLine": 86,
+                  "startColumn": 9,
+                  "endLine": 86,
+                  "endColumn": 11
+                }
+              }
+            },
+            {
+              "physicalLocation": {
+                "uri": "file:///D:/TI/git/v2/e-Estoque-API/e-Estoque-API/e-Estoque-API.Application/Taxes/Queries/Handlers/SearchTaxQueryHandler.cs",
+                "region": {
+                  "startLine": 88,
+                  "startColumn": 13,
+                  "endLine": 88,
+                  "endColumn": 15
+                }
+              }
+            },
+            {
+              "physicalLocation": {
+                "uri": "file:///D:/TI/git/v2/e-Estoque-API/e-Estoque-API/e-Estoque-API.Application/Taxes/Queries/Handlers/SearchTaxQueryHandler.cs",
+                "region": {
+                  "startLine": 96,
+                  "startColumn": 9,
+                  "endLine": 96,
+                  "endColumn": 11
+                }
+              }
+            },
+            {
+              "physicalLocation": {
+                "uri": "file:///D:/TI/git/v2/e-Estoque-API/e-Estoque-API/e-Estoque-API.Application/Taxes/Queries/Handlers/SearchTaxQueryHandler.cs",
+                "region": {
+                  "startLine": 98,
+                  "startColumn": 13,
+                  "endLine": 98,
+                  "endColumn": 15
+                }
+              }
+            },
+            {
+              "physicalLocation": {
+                "uri": "file:///D:/TI/git/v2/e-Estoque-API/e-Estoque-API/e-Estoque-API.Application/Taxes/Queries/Handlers/SearchTaxQueryHandler.cs",
+                "region": {
+                  "startLine": 106,
+                  "startColumn": 9,
+                  "endLine": 106,
+                  "endColumn": 11
+                }
+              }
+            },
+            {
+              "physicalLocation": {
+                "uri": "file:///D:/TI/git/v2/e-Estoque-API/e-Estoque-API/e-Estoque-API.Application/Taxes/Queries/Handlers/SearchTaxQueryHandler.cs",
+                "region": {
+                  "startLine": 108,
+                  "startColumn": 13,
+                  "endLine": 108,
+                  "endColumn": 15
+                }
+              }
+            },
+            {
+              "physicalLocation": {
+                "uri": "file:///D:/TI/git/v2/e-Estoque-API/e-Estoque-API/e-Estoque-API.Application/Taxes/Queries/Handlers/SearchTaxQueryHandler.cs",
+                "region": {
+                  "startLine": 116,
+                  "startColumn": 9,
+                  "endLine": 116,
+                  "endColumn": 11
+                }
+              }
+            },
+            {
+              "physicalLocation": {
+                "uri": "file:///D:/TI/git/v2/e-Estoque-API/e-Estoque-API/e-Estoque-API.Application/Taxes/Queries/Handlers/SearchTaxQueryHandler.cs",
+                "region": {
+                  "startLine": 118,
+                  "startColumn": 13,
+                  "endLine": 118,
+                  "endColumn": 15
+                }
+              }
+            },
+            {
+              "physicalLocation": {
+                "uri": "file:///D:/TI/git/v2/e-Estoque-API/e-Estoque-API/e-Estoque-API.Application/Taxes/Queries/Handlers/SearchTaxQueryHandler.cs",
+                "region": {
+                  "startLine": 126,
+                  "startColumn": 9,
+                  "endLine": 126,
+                  "endColumn": 11
+                }
+              }
+            },
+            {
+              "physicalLocation": {
+                "uri": "file:///D:/TI/git/v2/e-Estoque-API/e-Estoque-API/e-Estoque-API.Application/Taxes/Queries/Handlers/SearchTaxQueryHandler.cs",
+                "region": {
+                  "startLine": 126,
+                  "startColumn": 40,
+                  "endLine": 126,
+                  "endColumn": 42
+                }
+              }
+            },
+            {
+              "physicalLocation": {
+                "uri": "file:///D:/TI/git/v2/e-Estoque-API/e-Estoque-API/e-Estoque-API.Application/Taxes/Queries/Handlers/SearchTaxQueryHandler.cs",
+                "region": {
+                  "startLine": 128,
+                  "startColumn": 13,
+                  "endLine": 128,
+                  "endColumn": 15
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1,
+            "customProperties": {
+              "0": "+1",
+              "1": "+1",
+              "10": "+2 (incl 1 for nesting)",
+              "11": "+1",
+              "12": "+2 (incl 1 for nesting)",
+              "13": "+1",
+              "14": "+2 (incl 1 for nesting)",
+              "15": "+1",
+              "16": "+1",
+              "17": "+2 (incl 1 for nesting)",
+              "2": "+2 (incl 1 for nesting)",
+              "3": "+1",
+              "4": "+2 (incl 1 for nesting)",
+              "5": "+1",
+              "6": "+2 (incl 1 for nesting)",
+              "7": "+1",
+              "8": "+2 (incl 1 for nesting)",
+              "9": "+1"
+            }
+          }
+        },
+        {
+          "ruleId": "S3776",
+          "level": "warning",
+          "message": "Refactor this method to reduce its Cognitive Complexity from 29 to the 15 allowed.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///D:/TI/git/v2/e-Estoque-API/e-Estoque-API/e-Estoque-API.Application/Customers/Queries/Handlers/SearchCompanyQueryHandler.cs",
+                "region": {
+                  "startLine": 20,
+                  "startColumn": 54,
+                  "endLine": 20,
+                  "endColumn": 60
+                }
+              }
+            }
+          ],
+          "relatedLocations": [
+            {
+              "physicalLocation": {
+                "uri": "file:///D:/TI/git/v2/e-Estoque-API/e-Estoque-API/e-Estoque-API.Application/Customers/Queries/Handlers/SearchCompanyQueryHandler.cs",
+                "region": {
+                  "startLine": 27,
+                  "startColumn": 9,
+                  "endLine": 27,
+                  "endColumn": 11
+                }
+              }
+            },
+            {
+              "physicalLocation": {
+                "uri": "file:///D:/TI/git/v2/e-Estoque-API/e-Estoque-API/e-Estoque-API.Application/Customers/Queries/Handlers/SearchCompanyQueryHandler.cs",
+                "region": {
+                  "startLine": 32,
+                  "startColumn": 9,
+                  "endLine": 32,
+                  "endColumn": 11
+                }
+              }
+            },
+            {
+              "physicalLocation": {
+                "uri": "file:///D:/TI/git/v2/e-Estoque-API/e-Estoque-API/e-Estoque-API.Application/Customers/Queries/Handlers/SearchCompanyQueryHandler.cs",
+                "region": {
+                  "startLine": 34,
+                  "startColumn": 13,
+                  "endLine": 34,
+                  "endColumn": 15
+                }
+              }
+            },
+            {
+              "physicalLocation": {
+                "uri": "file:///D:/TI/git/v2/e-Estoque-API/e-Estoque-API/e-Estoque-API.Application/Customers/Queries/Handlers/SearchCompanyQueryHandler.cs",
+                "region": {
+                  "startLine": 42,
+                  "startColumn": 9,
+                  "endLine": 42,
+                  "endColumn": 11
+                }
+              }
+            },
+            {
+              "physicalLocation": {
+                "uri": "file:///D:/TI/git/v2/e-Estoque-API/e-Estoque-API/e-Estoque-API.Application/Customers/Queries/Handlers/SearchCompanyQueryHandler.cs",
+                "region": {
+                  "startLine": 44,
+                  "startColumn": 13,
+                  "endLine": 44,
+                  "endColumn": 15
+                }
+              }
+            },
+            {
+              "physicalLocation": {
+                "uri": "file:///D:/TI/git/v2/e-Estoque-API/e-Estoque-API/e-Estoque-API.Application/Customers/Queries/Handlers/SearchCompanyQueryHandler.cs",
+                "region": {
+                  "startLine": 52,
+                  "startColumn": 9,
+                  "endLine": 52,
+                  "endColumn": 11
+                }
+              }
+            },
+            {
+              "physicalLocation": {
+                "uri": "file:///D:/TI/git/v2/e-Estoque-API/e-Estoque-API/e-Estoque-API.Application/Customers/Queries/Handlers/SearchCompanyQueryHandler.cs",
+                "region": {
+                  "startLine": 54,
+                  "startColumn": 13,
+                  "endLine": 54,
+                  "endColumn": 15
+                }
+              }
+            },
+            {
+              "physicalLocation": {
+                "uri": "file:///D:/TI/git/v2/e-Estoque-API/e-Estoque-API/e-Estoque-API.Application/Customers/Queries/Handlers/SearchCompanyQueryHandler.cs",
+                "region": {
+                  "startLine": 62,
+                  "startColumn": 9,
+                  "endLine": 62,
+                  "endColumn": 11
+                }
+              }
+            },
+            {
+              "physicalLocation": {
+                "uri": "file:///D:/TI/git/v2/e-Estoque-API/e-Estoque-API/e-Estoque-API.Application/Customers/Queries/Handlers/SearchCompanyQueryHandler.cs",
+                "region": {
+                  "startLine": 64,
+                  "startColumn": 13,
+                  "endLine": 64,
+                  "endColumn": 15
+                }
+              }
+            },
+            {
+              "physicalLocation": {
+                "uri": "file:///D:/TI/git/v2/e-Estoque-API/e-Estoque-API/e-Estoque-API.Application/Customers/Queries/Handlers/SearchCompanyQueryHandler.cs",
+                "region": {
+                  "startLine": 72,
+                  "startColumn": 9,
+                  "endLine": 72,
+                  "endColumn": 11
+                }
+              }
+            },
+            {
+              "physicalLocation": {
+                "uri": "file:///D:/TI/git/v2/e-Estoque-API/e-Estoque-API/e-Estoque-API.Application/Customers/Queries/Handlers/SearchCompanyQueryHandler.cs",
+                "region": {
+                  "startLine": 74,
+                  "startColumn": 13,
+                  "endLine": 74,
+                  "endColumn": 19
+                }
+              }
+            },
+            {
+              "physicalLocation": {
+                "uri": "file:///D:/TI/git/v2/e-Estoque-API/e-Estoque-API/e-Estoque-API.Application/Customers/Queries/Handlers/SearchCompanyQueryHandler.cs",
+                "region": {
+                  "startLine": 118,
+                  "startColumn": 9,
+                  "endLine": 118,
+                  "endColumn": 11
+                }
+              }
+            },
+            {
+              "physicalLocation": {
+                "uri": "file:///D:/TI/git/v2/e-Estoque-API/e-Estoque-API/e-Estoque-API.Application/Customers/Queries/Handlers/SearchCompanyQueryHandler.cs",
+                "region": {
+                  "startLine": 120,
+                  "startColumn": 13,
+                  "endLine": 120,
+                  "endColumn": 15
+                }
+              }
+            },
+            {
+              "physicalLocation": {
+                "uri": "file:///D:/TI/git/v2/e-Estoque-API/e-Estoque-API/e-Estoque-API.Application/Customers/Queries/Handlers/SearchCompanyQueryHandler.cs",
+                "region": {
+                  "startLine": 128,
+                  "startColumn": 9,
+                  "endLine": 128,
+                  "endColumn": 11
+                }
+              }
+            },
+            {
+              "physicalLocation": {
+                "uri": "file:///D:/TI/git/v2/e-Estoque-API/e-Estoque-API/e-Estoque-API.Application/Customers/Queries/Handlers/SearchCompanyQueryHandler.cs",
+                "region": {
+                  "startLine": 130,
+                  "startColumn": 13,
+                  "endLine": 130,
+                  "endColumn": 15
+                }
+              }
+            },
+            {
+              "physicalLocation": {
+                "uri": "file:///D:/TI/git/v2/e-Estoque-API/e-Estoque-API/e-Estoque-API.Application/Customers/Queries/Handlers/SearchCompanyQueryHandler.cs",
+                "region": {
+                  "startLine": 138,
+                  "startColumn": 9,
+                  "endLine": 138,
+                  "endColumn": 11
+                }
+              }
+            },
+            {
+              "physicalLocation": {
+                "uri": "file:///D:/TI/git/v2/e-Estoque-API/e-Estoque-API/e-Estoque-API.Application/Customers/Queries/Handlers/SearchCompanyQueryHandler.cs",
+                "region": {
+                  "startLine": 140,
+                  "startColumn": 13,
+                  "endLine": 140,
+                  "endColumn": 15
+                }
+              }
+            },
+            {
+              "physicalLocation": {
+                "uri": "file:///D:/TI/git/v2/e-Estoque-API/e-Estoque-API/e-Estoque-API.Application/Customers/Queries/Handlers/SearchCompanyQueryHandler.cs",
+                "region": {
+                  "startLine": 148,
+                  "startColumn": 9,
+                  "endLine": 148,
+                  "endColumn": 11
+                }
+              }
+            },
+            {
+              "physicalLocation": {
+                "uri": "file:///D:/TI/git/v2/e-Estoque-API/e-Estoque-API/e-Estoque-API.Application/Customers/Queries/Handlers/SearchCompanyQueryHandler.cs",
+                "region": {
+                  "startLine": 148,
+                  "startColumn": 40,
+                  "endLine": 148,
+                  "endColumn": 42
+                }
+              }
+            },
+            {
+              "physicalLocation": {
+                "uri": "file:///D:/TI/git/v2/e-Estoque-API/e-Estoque-API/e-Estoque-API.Application/Customers/Queries/Handlers/SearchCompanyQueryHandler.cs",
+                "region": {
+                  "startLine": 150,
+                  "startColumn": 13,
+                  "endLine": 150,
+                  "endColumn": 15
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1,
+            "customProperties": {
+              "0": "+1",
+              "1": "+1",
+              "10": "+2 (incl 1 for nesting)",
+              "11": "+1",
+              "12": "+2 (incl 1 for nesting)",
+              "13": "+1",
+              "14": "+2 (incl 1 for nesting)",
+              "15": "+1",
+              "16": "+2 (incl 1 for nesting)",
+              "17": "+1",
+              "18": "+1",
+              "19": "+2 (incl 1 for nesting)",
+              "2": "+2 (incl 1 for nesting)",
+              "3": "+1",
+              "4": "+2 (incl 1 for nesting)",
+              "5": "+1",
+              "6": "+2 (incl 1 for nesting)",
+              "7": "+1",
+              "8": "+2 (incl 1 for nesting)",
+              "9": "+1"
+            }
+          }
+        },
+        {
+          "ruleId": "S3776",
+          "level": "warning",
+          "message": "Refactor this method to reduce its Cognitive Complexity from 41 to the 15 allowed.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///D:/TI/git/v2/e-Estoque-API/e-Estoque-API/e-Estoque-API.Application/Products/Queries/Handlers/SearchProductQueryHandler.cs",
+                "region": {
+                  "startLine": 20,
+                  "startColumn": 53,
+                  "endLine": 20,
+                  "endColumn": 59
+                }
+              }
+            }
+          ],
+          "relatedLocations": [
+            {
+              "physicalLocation": {
+                "uri": "file:///D:/TI/git/v2/e-Estoque-API/e-Estoque-API/e-Estoque-API.Application/Products/Queries/Handlers/SearchProductQueryHandler.cs",
+                "region": {
+                  "startLine": 27,
+                  "startColumn": 9,
+                  "endLine": 27,
+                  "endColumn": 11
+                }
+              }
+            },
+            {
+              "physicalLocation": {
+                "uri": "file:///D:/TI/git/v2/e-Estoque-API/e-Estoque-API/e-Estoque-API.Application/Products/Queries/Handlers/SearchProductQueryHandler.cs",
+                "region": {
+                  "startLine": 32,
+                  "startColumn": 9,
+                  "endLine": 32,
+                  "endColumn": 11
+                }
+              }
+            },
+            {
+              "physicalLocation": {
+                "uri": "file:///D:/TI/git/v2/e-Estoque-API/e-Estoque-API/e-Estoque-API.Application/Products/Queries/Handlers/SearchProductQueryHandler.cs",
+                "region": {
+                  "startLine": 34,
+                  "startColumn": 13,
+                  "endLine": 34,
+                  "endColumn": 15
+                }
+              }
+            },
+            {
+              "physicalLocation": {
+                "uri": "file:///D:/TI/git/v2/e-Estoque-API/e-Estoque-API/e-Estoque-API.Application/Products/Queries/Handlers/SearchProductQueryHandler.cs",
+                "region": {
+                  "startLine": 42,
+                  "startColumn": 9,
+                  "endLine": 42,
+                  "endColumn": 11
+                }
+              }
+            },
+            {
+              "physicalLocation": {
+                "uri": "file:///D:/TI/git/v2/e-Estoque-API/e-Estoque-API/e-Estoque-API.Application/Products/Queries/Handlers/SearchProductQueryHandler.cs",
+                "region": {
+                  "startLine": 44,
+                  "startColumn": 13,
+                  "endLine": 44,
+                  "endColumn": 15
+                }
+              }
+            },
+            {
+              "physicalLocation": {
+                "uri": "file:///D:/TI/git/v2/e-Estoque-API/e-Estoque-API/e-Estoque-API.Application/Products/Queries/Handlers/SearchProductQueryHandler.cs",
+                "region": {
+                  "startLine": 52,
+                  "startColumn": 9,
+                  "endLine": 52,
+                  "endColumn": 11
+                }
+              }
+            },
+            {
+              "physicalLocation": {
+                "uri": "file:///D:/TI/git/v2/e-Estoque-API/e-Estoque-API/e-Estoque-API.Application/Products/Queries/Handlers/SearchProductQueryHandler.cs",
+                "region": {
+                  "startLine": 54,
+                  "startColumn": 13,
+                  "endLine": 54,
+                  "endColumn": 15
+                }
+              }
+            },
+            {
+              "physicalLocation": {
+                "uri": "file:///D:/TI/git/v2/e-Estoque-API/e-Estoque-API/e-Estoque-API.Application/Products/Queries/Handlers/SearchProductQueryHandler.cs",
+                "region": {
+                  "startLine": 62,
+                  "startColumn": 9,
+                  "endLine": 62,
+                  "endColumn": 11
+                }
+              }
+            },
+            {
+              "physicalLocation": {
+                "uri": "file:///D:/TI/git/v2/e-Estoque-API/e-Estoque-API/e-Estoque-API.Application/Products/Queries/Handlers/SearchProductQueryHandler.cs",
+                "region": {
+                  "startLine": 64,
+                  "startColumn": 13,
+                  "endLine": 64,
+                  "endColumn": 15
+                }
+              }
+            },
+            {
+              "physicalLocation": {
+                "uri": "file:///D:/TI/git/v2/e-Estoque-API/e-Estoque-API/e-Estoque-API.Application/Products/Queries/Handlers/SearchProductQueryHandler.cs",
+                "region": {
+                  "startLine": 72,
+                  "startColumn": 9,
+                  "endLine": 72,
+                  "endColumn": 11
+                }
+              }
+            },
+            {
+              "physicalLocation": {
+                "uri": "file:///D:/TI/git/v2/e-Estoque-API/e-Estoque-API/e-Estoque-API.Application/Products/Queries/Handlers/SearchProductQueryHandler.cs",
+                "region": {
+                  "startLine": 74,
+                  "startColumn": 13,
+                  "endLine": 74,
+                  "endColumn": 15
+                }
+              }
+            },
+            {
+              "physicalLocation": {
+                "uri": "file:///D:/TI/git/v2/e-Estoque-API/e-Estoque-API/e-Estoque-API.Application/Products/Queries/Handlers/SearchProductQueryHandler.cs",
+                "region": {
+                  "startLine": 82,
+                  "startColumn": 9,
+                  "endLine": 82,
+                  "endColumn": 11
+                }
+              }
+            },
+            {
+              "physicalLocation": {
+                "uri": "file:///D:/TI/git/v2/e-Estoque-API/e-Estoque-API/e-Estoque-API.Application/Products/Queries/Handlers/SearchProductQueryHandler.cs",
+                "region": {
+                  "startLine": 84,
+                  "startColumn": 13,
+                  "endLine": 84,
+                  "endColumn": 15
+                }
+              }
+            },
+            {
+              "physicalLocation": {
+                "uri": "file:///D:/TI/git/v2/e-Estoque-API/e-Estoque-API/e-Estoque-API.Application/Products/Queries/Handlers/SearchProductQueryHandler.cs",
+                "region": {
+                  "startLine": 92,
+                  "startColumn": 9,
+                  "endLine": 92,
+                  "endColumn": 11
+                }
+              }
+            },
+            {
+              "physicalLocation": {
+                "uri": "file:///D:/TI/git/v2/e-Estoque-API/e-Estoque-API/e-Estoque-API.Application/Products/Queries/Handlers/SearchProductQueryHandler.cs",
+                "region": {
+                  "startLine": 94,
+                  "startColumn": 13,
+                  "endLine": 94,
+                  "endColumn": 19
+                }
+              }
+            },
+            {
+              "physicalLocation": {
+                "uri": "file:///D:/TI/git/v2/e-Estoque-API/e-Estoque-API/e-Estoque-API.Application/Products/Queries/Handlers/SearchProductQueryHandler.cs",
+                "region": {
+                  "startLine": 146,
+                  "startColumn": 9,
+                  "endLine": 146,
+                  "endColumn": 11
+                }
+              }
+            },
+            {
+              "physicalLocation": {
+                "uri": "file:///D:/TI/git/v2/e-Estoque-API/e-Estoque-API/e-Estoque-API.Application/Products/Queries/Handlers/SearchProductQueryHandler.cs",
+                "region": {
+                  "startLine": 148,
+                  "startColumn": 13,
+                  "endLine": 148,
+                  "endColumn": 15
+                }
+              }
+            },
+            {
+              "physicalLocation": {
+                "uri": "file:///D:/TI/git/v2/e-Estoque-API/e-Estoque-API/e-Estoque-API.Application/Products/Queries/Handlers/SearchProductQueryHandler.cs",
+                "region": {
+                  "startLine": 156,
+                  "startColumn": 9,
+                  "endLine": 156,
+                  "endColumn": 11
+                }
+              }
+            },
+            {
+              "physicalLocation": {
+                "uri": "file:///D:/TI/git/v2/e-Estoque-API/e-Estoque-API/e-Estoque-API.Application/Products/Queries/Handlers/SearchProductQueryHandler.cs",
+                "region": {
+                  "startLine": 158,
+                  "startColumn": 13,
+                  "endLine": 158,
+                  "endColumn": 15
+                }
+              }
+            },
+            {
+              "physicalLocation": {
+                "uri": "file:///D:/TI/git/v2/e-Estoque-API/e-Estoque-API/e-Estoque-API.Application/Products/Queries/Handlers/SearchProductQueryHandler.cs",
+                "region": {
+                  "startLine": 166,
+                  "startColumn": 9,
+                  "endLine": 166,
+                  "endColumn": 11
+                }
+              }
+            },
+            {
+              "physicalLocation": {
+                "uri": "file:///D:/TI/git/v2/e-Estoque-API/e-Estoque-API/e-Estoque-API.Application/Products/Queries/Handlers/SearchProductQueryHandler.cs",
+                "region": {
+                  "startLine": 168,
+                  "startColumn": 13,
+                  "endLine": 168,
+                  "endColumn": 15
+                }
+              }
+            },
+            {
+              "physicalLocation": {
+                "uri": "file:///D:/TI/git/v2/e-Estoque-API/e-Estoque-API/e-Estoque-API.Application/Products/Queries/Handlers/SearchProductQueryHandler.cs",
+                "region": {
+                  "startLine": 176,
+                  "startColumn": 9,
+                  "endLine": 176,
+                  "endColumn": 11
+                }
+              }
+            },
+            {
+              "physicalLocation": {
+                "uri": "file:///D:/TI/git/v2/e-Estoque-API/e-Estoque-API/e-Estoque-API.Application/Products/Queries/Handlers/SearchProductQueryHandler.cs",
+                "region": {
+                  "startLine": 178,
+                  "startColumn": 13,
+                  "endLine": 178,
+                  "endColumn": 15
+                }
+              }
+            },
+            {
+              "physicalLocation": {
+                "uri": "file:///D:/TI/git/v2/e-Estoque-API/e-Estoque-API/e-Estoque-API.Application/Products/Queries/Handlers/SearchProductQueryHandler.cs",
+                "region": {
+                  "startLine": 186,
+                  "startColumn": 9,
+                  "endLine": 186,
+                  "endColumn": 11
+                }
+              }
+            },
+            {
+              "physicalLocation": {
+                "uri": "file:///D:/TI/git/v2/e-Estoque-API/e-Estoque-API/e-Estoque-API.Application/Products/Queries/Handlers/SearchProductQueryHandler.cs",
+                "region": {
+                  "startLine": 188,
+                  "startColumn": 13,
+                  "endLine": 188,
+                  "endColumn": 15
+                }
+              }
+            },
+            {
+              "physicalLocation": {
+                "uri": "file:///D:/TI/git/v2/e-Estoque-API/e-Estoque-API/e-Estoque-API.Application/Products/Queries/Handlers/SearchProductQueryHandler.cs",
+                "region": {
+                  "startLine": 196,
+                  "startColumn": 9,
+                  "endLine": 196,
+                  "endColumn": 11
+                }
+              }
+            },
+            {
+              "physicalLocation": {
+                "uri": "file:///D:/TI/git/v2/e-Estoque-API/e-Estoque-API/e-Estoque-API.Application/Products/Queries/Handlers/SearchProductQueryHandler.cs",
+                "region": {
+                  "startLine": 196,
+                  "startColumn": 40,
+                  "endLine": 196,
+                  "endColumn": 42
+                }
+              }
+            },
+            {
+              "physicalLocation": {
+                "uri": "file:///D:/TI/git/v2/e-Estoque-API/e-Estoque-API/e-Estoque-API.Application/Products/Queries/Handlers/SearchProductQueryHandler.cs",
+                "region": {
+                  "startLine": 198,
+                  "startColumn": 13,
+                  "endLine": 198,
+                  "endColumn": 15
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1,
+            "customProperties": {
+              "0": "+1",
+              "1": "+1",
+              "10": "+2 (incl 1 for nesting)",
+              "11": "+1",
+              "12": "+2 (incl 1 for nesting)",
+              "13": "+1",
+              "14": "+2 (incl 1 for nesting)",
+              "15": "+1",
+              "16": "+2 (incl 1 for nesting)",
+              "17": "+1",
+              "18": "+2 (incl 1 for nesting)",
+              "19": "+1",
+              "2": "+2 (incl 1 for nesting)",
+              "20": "+2 (incl 1 for nesting)",
+              "21": "+1",
+              "22": "+2 (incl 1 for nesting)",
+              "23": "+1",
+              "24": "+2 (incl 1 for nesting)",
+              "25": "+1",
+              "26": "+1",
+              "27": "+2 (incl 1 for nesting)",
+              "3": "+1",
+              "4": "+2 (incl 1 for nesting)",
+              "5": "+1",
+              "6": "+2 (incl 1 for nesting)",
+              "7": "+1",
+              "8": "+2 (incl 1 for nesting)",
+              "9": "+1"
+            }
+          }
+        },
+        {
+          "ruleId": "CA1510",
+          "level": "note",
+          "message": "Use 'ArgumentNullException.ThrowIfNull' em vez de lançar explicitamente uma nova instância de exceção",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///D:/TI/git/v2/e-Estoque-API/e-Estoque-API/e-Estoque-API.Application/Extensions/ExtensionsConfig.cs",
+                "region": {
+                  "startLine": 9,
+                  "startColumn": 9,
+                  "endLine": 12,
+                  "endColumn": 10
+                }
+              }
+            }
+          ],
+          "relatedLocations": [
+            {
+              "physicalLocation": {
+                "uri": "file:///D:/TI/git/v2/e-Estoque-API/e-Estoque-API/e-Estoque-API.Application/Extensions/ExtensionsConfig.cs",
+                "region": {
+                  "startLine": 9,
+                  "startColumn": 13,
+                  "endLine": 9,
+                  "endColumn": 17
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "CA1860",
+          "level": "note",
+          "message": "Prefira comparar 'Count' com 0 em vez de usar 'Any()', tanto para clareza quanto para desempenho",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///D:/TI/git/v2/e-Estoque-API/e-Estoque-API/e-Estoque-API.Application/Common/Behaviours/ValidationBehaviour.cs",
+                "region": {
+                  "startLine": 27,
+                  "startColumn": 29,
+                  "endLine": 27,
+                  "endColumn": 43
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1,
+            "customProperties": {
+              "DiagnosticPropertyKey": "Count"
+            }
+          }
+        },
+        {
+          "ruleId": "CA1860",
+          "level": "note",
+          "message": "Prefira comparar 'Count' com 0 em vez de usar 'Any()', tanto para clareza quanto para desempenho",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///D:/TI/git/v2/e-Estoque-API/e-Estoque-API/e-Estoque-API.Application/Common/Behaviours/ValidationBehaviour.cs",
+                "region": {
+                  "startLine": 31,
+                  "startColumn": 17,
+                  "endLine": 31,
+                  "endColumn": 31
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1,
+            "customProperties": {
+              "DiagnosticPropertyKey": "Count"
+            }
+          }
+        }
+      ],
+      "rules": {
+        "CA1510": {
+          "id": "CA1510",
+          "shortDescription": "Usar o auxiliar de lançamento de ArgumentNullException",
+          "fullDescription": "Auxiliares de lançamento são mais simples e eficientes do que um bloco if que constrói uma nova instância de exceção.",
+          "defaultLevel": "note",
+          "helpUri": "https://learn.microsoft.com/dotnet/fundamentals/code-analysis/quality-rules/ca1510",
+          "properties": {
+            "category": "Maintainability",
+            "isEnabledByDefault": true,
+            "tags": [
+              "Telemetry",
+              "EnabledRuleInAggressiveMode"
+            ]
+          }
+        },
+        "CA1860": {
+          "id": "CA1860",
+          "shortDescription": "Evite usar o método de extensão 'Enumerable.Any()'",
+          "fullDescription": "Prefira usar as propriedades 'IsEmpty', 'Count' ou 'Length', conforme disponível, em vez de chamar 'Enumerable.Any()'. A intenção é mais clara e tem mais desempenho do que usar o método de extensão 'Enumerable.Any()'.",
+          "defaultLevel": "note",
+          "helpUri": "https://learn.microsoft.com/dotnet/fundamentals/code-analysis/quality-rules/ca1860",
+          "properties": {
+            "category": "Performance",
+            "isEnabledByDefault": true,
+            "tags": [
+              "Telemetry",
+              "EnabledRuleInAggressiveMode"
+            ]
+          }
+        },
+        "CA1869": {
+          "id": "CA1869",
+          "shortDescription": "Armazenar em cache e reutilizar instâncias 'JsonSerializerOptions'",
+          "fullDescription": "Evite criar uma nova instância 'JsonSerializerOptions' para cada operação de serialização. Em vez disso, armazene em cache e reutilize instâncias. Instâncias 'JsonSerializerOptions' de uso único podem degradar substancialmente o desempenho de seu aplicativo.",
+          "defaultLevel": "note",
+          "helpUri": "https://learn.microsoft.com/dotnet/fundamentals/code-analysis/quality-rules/ca1869",
+          "properties": {
+            "category": "Performance",
+            "isEnabledByDefault": true,
+            "tags": [
+              "Telemetry",
+              "EnabledRuleInAggressiveMode"
+            ]
+          }
+        },
+        "CA2016": {
+          "id": "CA2016",
+          "shortDescription": "Encaminhe o parâmetro 'CancellationToken' para os métodos",
+          "fullDescription": "Encaminhe o parâmetro 'CancellationToken' para os métodos para garantir que as notificações de cancelamento da operação sejam propagadas corretamente ou passe o 'CancellationToken.None' explicitamente para indicar que ele está intencionalmente não propagando o token.",
+          "defaultLevel": "note",
+          "helpUri": "https://learn.microsoft.com/dotnet/fundamentals/code-analysis/quality-rules/ca2016",
+          "properties": {
+            "category": "Reliability",
+            "isEnabledByDefault": true,
+            "tags": [
+              "Telemetry",
+              "EnabledRuleInAggressiveMode"
+            ]
+          }
+        },
+        "S107": {
+          "id": "S107",
+          "shortDescription": "Methods should not have too many parameters",
+          "fullDescription": "Methods with a long parameter list are difficult to use, as maintainers must figure out the role of each parameter and keep track of their position.",
+          "defaultLevel": "warning",
+          "helpUri": "https://rules.sonarsource.com/csharp/RSPEC-107",
+          "properties": {
+            "category": "Major Code Smell",
+            "isEnabledByDefault": false,
+            "tags": [
+              "C#",
+              "MainSourceScope",
+              "TestSourceScope",
+              "SonarWay"
+            ]
+          }
+        },
+        "S3776": {
+          "id": "S3776",
+          "shortDescription": "Cognitive Complexity of methods should not be too high",
+          "fullDescription": "This rule raises an issue when the code cognitive complexity of a function is above a certain threshold.",
+          "defaultLevel": "warning",
+          "helpUri": "https://rules.sonarsource.com/csharp/RSPEC-3776",
+          "properties": {
+            "category": "Critical Code Smell",
+            "isEnabledByDefault": false,
+            "tags": [
+              "C#",
+              "MainSourceScope",
+              "TestSourceScope",
+              "SonarWay"
+            ]
+          }
+        }
+      }
+    }
+  ]
+}

@@ -2,7 +2,6 @@
 using e_Estoque_API.Core.Models;
 using e_Estoque_API.Core.Repositories;
 using Microsoft.EntityFrameworkCore;
-using System.Linq;
 using System.Linq.Expressions;
 
 namespace e_Estoque_API.Infrastructure.Persistence.Repositories;
@@ -21,15 +20,6 @@ public class CategoryRepository : Repository<Category>, ICategoryRepository
             .Include("Taxs")
             .Where(x => x.Id == id)
             .FirstOrDefaultAsync();
-    }
-
-    public override async Task Remove(Guid id)
-    {
-        var entity = await GetById(id);
-        entity.UpdatedAt = DateTime.UtcNow;
-        entity.DeletedAt = DateTime.UtcNow;
-        DbSet.Update(entity);
-        await Db.SaveChangesAsync();
     }
 
     public override async Task<IEnumerable<Category>> GetAll()

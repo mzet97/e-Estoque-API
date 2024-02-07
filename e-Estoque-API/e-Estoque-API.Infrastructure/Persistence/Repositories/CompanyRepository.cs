@@ -38,15 +38,6 @@ public class CompanyRepository : Repository<Company>, ICompanyRepository
            .FirstOrDefaultAsync();
     }
 
-    public override async Task Remove(Guid id)
-    {
-        var entity = await GetById(id);
-        entity.UpdatedAt = DateTime.UtcNow;
-        entity.DeletedAt = DateTime.UtcNow;
-        DbSet.Update(entity);
-        await Db.SaveChangesAsync();
-    }
-
     public override async Task<BaseResult<Company>> Search(
         Expression<Func<Company, bool>>? predicate = null,
         Func<IQueryable<Company>, IOrderedQueryable<Company>>? orderBy = null,

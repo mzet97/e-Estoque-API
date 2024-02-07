@@ -30,7 +30,7 @@ public class CompanyController : MainController
     }
 
     [HttpGet("{id}")]
-    public async Task<IActionResult> Get(Guid id)
+    public async Task<IActionResult> Get([FromRoute] Guid id)
     {
         var query = new GetByIdCompanyQuery(id);
 
@@ -53,7 +53,7 @@ public class CompanyController : MainController
 
     [Authorize(Roles = "Create")]
     [HttpPut("{id}")]
-    public async Task<IActionResult> Put([FromBody] UpdateCompanyCommand command)
+    public async Task<IActionResult> Put([FromRoute] Guid id, [FromBody] UpdateCompanyCommand command)
     {
         var result = await _mediator.Send(command);
 
@@ -62,7 +62,7 @@ public class CompanyController : MainController
 
     [Authorize(Roles = "Create")]
     [HttpDelete("{id}")]
-    public async Task<IActionResult> Delete(Guid id)
+    public async Task<IActionResult> Delete([FromRoute] Guid id)
     {
         var command = new DeleteCompanyCommand(id);
 

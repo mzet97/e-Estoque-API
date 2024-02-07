@@ -21,7 +21,7 @@ public class SearchTaxQueryHandler : IRequestHandler<SearchTaxQuery, BaseResult<
         SearchTaxQuery request,
         CancellationToken cancellationToken)
     {
-        Expression<Func<Tax, bool>>? filter = null;
+        Expression<Func<Tax, bool>>? filter = PredicateBuilder.New<Tax>(true);
         Func<IQueryable<Tax>, IOrderedQueryable<Tax>>? ordeBy = null;
 
         if (!string.IsNullOrWhiteSpace(request.Name))
@@ -31,22 +31,37 @@ public class SearchTaxQueryHandler : IRequestHandler<SearchTaxQuery, BaseResult<
 
         if (!string.IsNullOrWhiteSpace(request.Description))
         {
-            if (filter == null)
-            {
-                filter = PredicateBuilder.New<Tax>(true);
-            }
-
             filter = filter.And(x => x.Description == request.Description);
         }
 
         if (request.Percentage != 0)
         {
-            if (filter == null)
-            {
-                filter = PredicateBuilder.New<Tax>(true);
-            }
-
             filter = filter.And(x => x.Percentage == request.Percentage);
+        }
+
+        if (request.IdCategory != Guid.Empty)
+        {
+            filter = filter.And(x => x.IdCategory == request.IdCategory);
+        }
+
+        if (request.Id != Guid.Empty)
+        {
+            filter = filter.And(x => x.Id == request.Id);
+        }
+
+        if (request.CreatedAt != default)
+        {
+            filter = filter.And(x => x.CreatedAt == request.CreatedAt);
+        }
+
+        if (request.UpdatedAt != default)
+        {
+            filter = filter.And(x => x.UpdatedAt == request.UpdatedAt);
+        }
+
+        if (request.DeletedAt.HasValue || request.DeletedAt != default)
+        {
+            filter = filter.And(x => x.DeletedAt == request.DeletedAt);
         }
 
         if (!string.IsNullOrWhiteSpace(request.Order))
@@ -81,56 +96,6 @@ public class SearchTaxQueryHandler : IRequestHandler<SearchTaxQuery, BaseResult<
                     ordeBy = x => x.OrderBy(n => n.Id);
                     break;
             }
-        }
-
-        if (request.IdCategory != Guid.Empty)
-        {
-            if (filter == null)
-            {
-                filter = PredicateBuilder.New<Tax>(true);
-            }
-
-            filter = filter.And(x => x.IdCategory == request.IdCategory);
-        }
-
-        if (request.Id != Guid.Empty)
-        {
-            if (filter == null)
-            {
-                filter = PredicateBuilder.New<Tax>(true);
-            }
-
-            filter = filter.And(x => x.Id == request.Id);
-        }
-
-        if (request.CreatedAt != default)
-        {
-            if (filter == null)
-            {
-                filter = PredicateBuilder.New<Tax>(true);
-            }
-
-            filter = filter.And(x => x.CreatedAt == request.CreatedAt);
-        }
-
-        if (request.UpdatedAt != default)
-        {
-            if (filter == null)
-            {
-                filter = PredicateBuilder.New<Tax>(true);
-            }
-
-            filter = filter.And(x => x.UpdatedAt == request.UpdatedAt);
-        }
-
-        if (request.DeletedAt.HasValue || request.DeletedAt != default)
-        {
-            if (filter == null)
-            {
-                filter = PredicateBuilder.New<Tax>(true);
-            }
-
-            filter = filter.And(x => x.DeletedAt == request.DeletedAt);
         }
 
         var result = await _taxRepository
