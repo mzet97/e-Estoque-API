@@ -75,6 +75,16 @@ namespace e_Estoque_API.Application.Taxes.Queries.Handlers
                 }
             }
 
+            if (request.IdCategory != Guid.Empty)
+            {
+                if (filter == null)
+                {
+                    filter = PredicateBuilder.New<Tax>(true);
+                }
+
+                filter = filter.And(x => x.IdCategory == request.IdCategory);
+            }
+
             if (request.Id != Guid.Empty)
             {
                 if (filter == null)

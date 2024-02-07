@@ -30,9 +30,6 @@
     <Folder Include="Inventories\Commands\Handlers\" />
     <Folder Include="Inventories\ViewModels\" />
     <Folder Include="Inventories\Queries\Handlers\" />
-    <Folder Include="Products\Commands\Handlers\" />
-    <Folder Include="Products\ViewModels\" />
-    <Folder Include="Products\Queries\Handlers\" />
     <Folder Include="Sales\Commands\Handlers\" />
     <Folder Include="Sales\ViewModels\" />
     <Folder Include="Sales\Queries\Handlers\" />

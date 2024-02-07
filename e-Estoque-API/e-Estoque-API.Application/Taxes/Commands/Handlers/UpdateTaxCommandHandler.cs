@@ -11,12 +11,17 @@ namespace e_Estoque_API.Application.Taxes.Commands.Handlers
     public class UpdateTaxCommandHandler : IRequestHandler<UpdateTaxCommand, Guid>
     {
         private readonly ITaxRepository _taxRepository;
+        private readonly ICategoryRepository _categoryRepository; 
         private readonly IMessageBusClient _messageBus;
 
-        public UpdateTaxCommandHandler(ITaxRepository taxRepository, IMessageBusClient messageBus)
+        public UpdateTaxCommandHandler(
+            ITaxRepository taxRepository,
+            IMessageBusClient messageBus,
+            ICategoryRepository categoryRepository)
         {
             _taxRepository = taxRepository;
             _messageBus = messageBus;
+            _categoryRepository = categoryRepository;
         }
 
         public async Task<Guid> Handle(UpdateTaxCommand request, CancellationToken cancellationToken)
@@ -33,6 +38,9 @@ namespace e_Estoque_API.Application.Taxes.Commands.Handlers
                 throw new NotFoundException("Find Error");
             }
 
+            entity
+                .Update(request.Name, request.Description, request.Percentage, request.IdCategory);
+
             if (!Validator.Validate(new TaxValidation(), entity))
             {
                 var noticiation = new NotificationError("Validate Tax has error", "Validate Tax has error");
@@ -43,8 +51,17 @@ namespace e_Estoque_API.Application.Taxes.Commands.Handlers
                 throw new ValidationException("Validate Error");
             }
 
-            entity
-                .Update(request.Name, request.Description, request.Percentage, request.IdCategory);
+            var category = await _categoryRepository.GetById(request.IdCategory);
+
+            if (category == null)
+            {
+                var noticiation = new NotificationError("Category not found", "Category not found");
+                var routingKey = noticiation.GetType().Name.ToDashCase();
+
+                _messageBus.Publish(noticiation, routingKey, "noticiation-service");
+
+                throw new ValidationException("Category not found");
+            }
 
             await _taxRepository.Update(entity);
 

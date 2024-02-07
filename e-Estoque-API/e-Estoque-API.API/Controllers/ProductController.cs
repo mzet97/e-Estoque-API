@@ -1,5 +1,5 @@
-﻿using e_Estoque_API.Application.Taxes.Commands;
-using e_Estoque_API.Application.Taxes.Queries;
+﻿using e_Estoque_API.Application.Products.Commands;
+using e_Estoque_API.Application.Products.Queries;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -9,17 +9,17 @@ namespace e_Estoque_API.API.Controllers
     [Authorize]
     [Route("api/[controller]")]
     [ApiController]
-    public class TaxController : MainController
+    public class ProductController : MainController
     {
         private readonly IMediator _mediator;
 
-        public TaxController(IMediator mediator)
+        public ProductController(IMediator mediator)
         {
             _mediator = mediator;
         }
 
         [HttpGet]
-        public async Task<IActionResult> Get([FromQuery] SearchTaxQuery query)
+        public async Task<IActionResult> Get([FromQuery] SearchProductQuery query)
         {
             var result = await _mediator.Send(query);
 
@@ -32,7 +32,7 @@ namespace e_Estoque_API.API.Controllers
         [HttpGet("{id}")]
         public async Task<IActionResult> Get(Guid id)
         {
-            var query = new GetByIdTaxQuery(id);
+            var query = new GetByIdProductQuery(id);
 
             var result = await _mediator.Send(query);
 
@@ -44,7 +44,7 @@ namespace e_Estoque_API.API.Controllers
 
         [Authorize(Roles = "Create")]
         [HttpPost]
-        public async Task<IActionResult> Post([FromBody] CreateTaxCommand command)
+        public async Task<IActionResult> Post([FromBody] CreateProductCommand command)
         {
             var id = await _mediator.Send(command);
 
@@ -53,7 +53,7 @@ namespace e_Estoque_API.API.Controllers
 
         [Authorize(Roles = "Create")]
         [HttpPut("{id}")]
-        public async Task<IActionResult> Put([FromBody] UpdateTaxCommand command)
+        public async Task<IActionResult> Put([FromBody] UpdateProductCommand command)
         {
             var result = await _mediator.Send(command);
 
@@ -64,11 +64,12 @@ namespace e_Estoque_API.API.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(Guid id)
         {
-            var command = new DeleteTaxCommand(id);
+            var command = new DeleteProductCommand(id);
 
             var result = await _mediator.Send(command);
 
             return CustomResponse(true, result);
         }
+
     }
 }

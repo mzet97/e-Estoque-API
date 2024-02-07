@@ -11,7 +11,6 @@ namespace e_Estoque_API.Application.Categories.Commands.Handlers
     public class UpdateCategoryCommandHandler : IRequestHandler<UpdateCategoryCommand, Guid>
     {
         private readonly ICategoryRepository _categoryRepository;
-
         private readonly IMessageBusClient _messageBus;
 
         public UpdateCategoryCommandHandler(
