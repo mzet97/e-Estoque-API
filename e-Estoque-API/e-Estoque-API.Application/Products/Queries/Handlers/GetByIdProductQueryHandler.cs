@@ -21,7 +21,9 @@ public class GetByIdProductQueryHandler : IRequestHandler<GetByIdProductQuery, P
         _messageBus = messageBus;
     }
 
-    public async Task<ProductViewModel> Handle(GetByIdProductQuery request, CancellationToken cancellationToken)
+    public async Task<ProductViewModel> Handle(
+        GetByIdProductQuery request,
+        CancellationToken cancellationToken)
     {
         var entity = await _productRepository.GetById(request.Id);
 

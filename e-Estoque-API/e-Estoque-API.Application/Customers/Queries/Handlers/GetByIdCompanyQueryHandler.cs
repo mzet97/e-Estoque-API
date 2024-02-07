@@ -13,13 +13,17 @@ public class GetByICustomerQueryHandler : IRequestHandler<GetByIdCustomerQuery, 
     private readonly ICustomerRepository _customerRepository;
     private readonly IMessageBusClient _messageBus;
 
-    public GetByICustomerQueryHandler(ICustomerRepository customerRepository, IMessageBusClient messageBus)
+    public GetByICustomerQueryHandler(
+        ICustomerRepository customerRepository,
+        IMessageBusClient messageBus)
     {
         _customerRepository = customerRepository;
         _messageBus = messageBus;
     }
 
-    public async Task<CustomerViewModel> Handle(GetByIdCustomerQuery request, CancellationToken cancellationToken)
+    public async Task<CustomerViewModel> Handle(
+        GetByIdCustomerQuery request,
+        CancellationToken cancellationToken)
     {
         var entity = await _customerRepository.GetById(request.Id);
 

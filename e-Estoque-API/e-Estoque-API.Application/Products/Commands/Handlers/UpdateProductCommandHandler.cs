@@ -27,7 +27,9 @@ public class UpdateProductCommandHandler : IRequestHandler<UpdateProductCommand,
         _companyRepository = companyRepository;
     }
 
-    public async Task<Guid> Handle(UpdateProductCommand request, CancellationToken cancellationToken)
+    public async Task<Guid> Handle(
+        UpdateProductCommand request,
+        CancellationToken cancellationToken)
     {
         var entity = await _productRepository.GetById(request.Id);
 

@@ -60,13 +60,7 @@ public class SaleRepository : Repository<Sale>, ISaleRepository
     {
         var query = DbSet.AsQueryable();
 
-        var paged = new PagedResult();
-        paged.CurrentPage = page;
-        paged.PageSize = pageSize;
-        paged.RowCount = query.Count();
-        var pageCount = (double)paged.RowCount / pageSize;
-        paged.PageCount = (int)Math.Ceiling(pageCount);
-        var skip = (page - 1) * pageSize;
+        var paged = PagedResult.Create(page, pageSize, query.Count());
 
         if (predicate != null)
         {
@@ -80,7 +74,7 @@ public class SaleRepository : Repository<Sale>, ISaleRepository
                      .Include("SaleProduct")
                      .Include("SaleProduct.Product")
                      .OrderBy(x => x.Id)
-                     .Skip(skip)
+                     .Skip(paged.Skip())
                      .Take(pageSize);
 
         if (orderBy != null)

@@ -19,7 +19,9 @@ public class GetByIdCategoryQueryHandler : IRequestHandler<GetByIdCategoryQuery,
         _messageBus = messageBus;
     }
 
-    public async Task<CategoryViewModel> Handle(GetByIdCategoryQuery request, CancellationToken cancellationToken)
+    public async Task<CategoryViewModel> Handle(
+        GetByIdCategoryQuery request,
+        CancellationToken cancellationToken)
     {
         var entity = await _categoryRepository.GetById(request.Id);
 

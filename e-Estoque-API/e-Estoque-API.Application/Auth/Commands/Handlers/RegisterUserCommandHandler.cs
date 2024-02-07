@@ -20,7 +20,9 @@ public class RegisterUserCommandHandler : IRequestHandler<RegisterUserCommand, T
         _mediator = mediator;
     }
 
-    public async Task<TokenViewModel> Handle(RegisterUserCommand request, CancellationToken cancellationToken)
+    public async Task<TokenViewModel> Handle(
+        RegisterUserCommand request,
+        CancellationToken cancellationToken)
     {
         var client = _clientFactory.CreateClient();
         var url = $"{_keycloak.AuthServerUrl}admin/realms/{_keycloak.Realm}/users";

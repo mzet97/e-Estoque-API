@@ -17,7 +17,9 @@ public class SearchInventoryQueryHandler : IRequestHandler<SearchInventoryQuery,
         _inventoryRepository = inventoryRepository;
     }
 
-    public async Task<BaseResult<InventoryViewModel>> Handle(SearchInventoryQuery request, CancellationToken cancellationToken)
+    public async Task<BaseResult<InventoryViewModel>> Handle(
+        SearchInventoryQuery request,
+        CancellationToken cancellationToken)
     {
         Expression<Func<Inventory, bool>>? filter = null;
         Func<IQueryable<Inventory>, IOrderedQueryable<Inventory>>? ordeBy = null;
@@ -63,6 +65,10 @@ public class SearchInventoryQueryHandler : IRequestHandler<SearchInventoryQuery,
 
                 case "DeletedAt":
                     ordeBy = x => x.OrderBy(n => n.DeletedAt);
+                    break;
+
+                default:
+                    ordeBy = x => x.OrderBy(n => n.Id);
                     break;
             }
         }

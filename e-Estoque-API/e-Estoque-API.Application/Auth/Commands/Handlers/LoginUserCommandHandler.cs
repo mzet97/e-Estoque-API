@@ -17,7 +17,9 @@ public class LoginUserCommandHandler : IRequestHandler<LoginUserCommand, TokenVi
         _keycloak = keycloak;
     }
 
-    public async Task<TokenViewModel> Handle(LoginUserCommand request, CancellationToken cancellationToken)
+    public async Task<TokenViewModel> Handle(
+        LoginUserCommand request,
+        CancellationToken cancellationToken)
     {
         var client = _clientFactory.CreateClient();
         var url = $"{_keycloak.AuthServerUrl}realms/{_keycloak.Realm}/protocol/openid-connect/token";

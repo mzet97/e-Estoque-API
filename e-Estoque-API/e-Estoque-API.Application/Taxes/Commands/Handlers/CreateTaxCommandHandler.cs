@@ -25,9 +25,15 @@ public class CreateTaxCommandHandler : IRequestHandler<CreateTaxCommand, Guid>
         _categoryRepository = categoryRepository;
     }
 
-    public async Task<Guid> Handle(CreateTaxCommand request, CancellationToken cancellationToken)
+    public async Task<Guid> Handle(
+        CreateTaxCommand request,
+        CancellationToken cancellationToken)
     {
-        var entity = Tax.Create(request.Name, request.Description, request.Percentage, request.IdCategory);
+        var entity = Tax.Create(
+            request.Name,
+            request.Description,
+            request.Percentage,
+            request.IdCategory);
 
         if (!Validator.Validate(new TaxValidation(), entity))
         {

@@ -17,7 +17,9 @@ public class SearchCustomerQueryHandler : IRequestHandler<SearchCustomerQuery, B
         _customerRepository = customerRepository;
     }
 
-    public async Task<BaseResult<CustomerViewModel>> Handle(SearchCustomerQuery request, CancellationToken cancellationToken)
+    public async Task<BaseResult<CustomerViewModel>> Handle(
+        SearchCustomerQuery request,
+        CancellationToken cancellationToken)
     {
         Expression<Func<Customer, bool>>? filter = null;
         Func<IQueryable<Customer>, IOrderedQueryable<Customer>>? ordeBy = null;
@@ -105,6 +107,10 @@ public class SearchCustomerQueryHandler : IRequestHandler<SearchCustomerQuery, B
 
                 case "DeletedAt":
                     ordeBy = x => x.OrderBy(n => n.DeletedAt);
+                    break;
+
+                default:
+                    ordeBy = x => x.OrderBy(n => n.Id);
                     break;
             }
         }

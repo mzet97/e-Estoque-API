@@ -24,7 +24,9 @@ public class UpdateTaxCommandHandler : IRequestHandler<UpdateTaxCommand, Guid>
         _categoryRepository = categoryRepository;
     }
 
-    public async Task<Guid> Handle(UpdateTaxCommand request, CancellationToken cancellationToken)
+    public async Task<Guid> Handle(
+        UpdateTaxCommand request,
+        CancellationToken cancellationToken)
     {
         var entity = await _taxRepository.GetById(request.Id);
 
@@ -39,7 +41,11 @@ public class UpdateTaxCommandHandler : IRequestHandler<UpdateTaxCommand, Guid>
         }
 
         entity
-            .Update(request.Name, request.Description, request.Percentage, request.IdCategory);
+            .Update(
+            request.Name,
+            request.Description,
+            request.Percentage,
+            request.IdCategory);
 
         if (!Validator.Validate(new TaxValidation(), entity))
         {

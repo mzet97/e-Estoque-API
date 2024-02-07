@@ -17,7 +17,9 @@ public class SearchProductQueryHandler : IRequestHandler<SearchProductQuery, Bas
         _productRepository = productRepository;
     }
 
-    public async Task<BaseResult<ProductViewModel>> Handle(SearchProductQuery request, CancellationToken cancellationToken)
+    public async Task<BaseResult<ProductViewModel>> Handle(
+        SearchProductQuery request,
+        CancellationToken cancellationToken)
     {
         Expression<Func<Product, bool>>? filter = null;
         Func<IQueryable<Product>, IOrderedQueryable<Product>>? ordeBy = null;
@@ -133,6 +135,10 @@ public class SearchProductQueryHandler : IRequestHandler<SearchProductQuery, Bas
 
                 case "DeletedAt":
                     ordeBy = x => x.OrderBy(n => n.DeletedAt);
+                    break;
+
+                default:
+                    ordeBy = x => x.OrderBy(n => n.Id);
                     break;
             }
         }

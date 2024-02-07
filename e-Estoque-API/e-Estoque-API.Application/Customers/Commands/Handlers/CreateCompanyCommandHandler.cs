@@ -14,13 +14,17 @@ public class CreateCustomerCommandHandler : IRequestHandler<CreateCustomerComman
     private readonly ICustomerRepository _customerRepository;
     private readonly IMessageBusClient _messageBus;
 
-    public CreateCustomerCommandHandler(ICustomerRepository customerRepository, IMessageBusClient messageBus)
+    public CreateCustomerCommandHandler(
+        ICustomerRepository customerRepository,
+        IMessageBusClient messageBus)
     {
         _customerRepository = customerRepository;
         _messageBus = messageBus;
     }
 
-    public async Task<Guid> Handle(CreateCustomerCommand request, CancellationToken cancellationToken)
+    public async Task<Guid> Handle(
+        CreateCustomerCommand request,
+        CancellationToken cancellationToken)
     {
         var entity = Customer.Create(
             request.Name,

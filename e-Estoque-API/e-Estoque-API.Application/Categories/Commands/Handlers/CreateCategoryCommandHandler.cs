@@ -21,9 +21,14 @@ public class CreateCategoryCommandHandler : IRequestHandler<CreateCategoryComman
         _messageBus = messageBus;
     }
 
-    public async Task<Guid> Handle(CreateCategoryCommand request, CancellationToken cancellationToken)
+    public async Task<Guid> Handle(
+        CreateCategoryCommand request,
+        CancellationToken cancellationToken)
     {
-        var entity = Category.Create(request.Name, request.Description, request.ShortDescription);
+        var entity = Category.Create(
+            request.Name,
+            request.Description,
+            request.ShortDescription);
 
         if (!Validator.Validate(new CategoryValidation(), entity))
         {

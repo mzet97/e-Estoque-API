@@ -21,7 +21,9 @@ public class DeleteCategoryHandler : IRequestHandler<DeleteCategoryCommand, Unit
         _messageBus = messageBus;
     }
 
-    public async Task<Unit> Handle(DeleteCategoryCommand request, CancellationToken cancellationToken)
+    public async Task<Unit> Handle(
+        DeleteCategoryCommand request,
+        CancellationToken cancellationToken)
     {
         var entity = await _categoryRepository.GetById(request.Id);
 

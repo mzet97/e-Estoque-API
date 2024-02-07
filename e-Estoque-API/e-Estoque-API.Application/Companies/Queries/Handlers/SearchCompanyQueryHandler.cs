@@ -17,7 +17,9 @@ public class SearchCompanyQueryHandler : IRequestHandler<SearchCompanyQuery, Bas
         _companyRepository = companyRepository;
     }
 
-    public async Task<BaseResult<CompanyViewModel>> Handle(SearchCompanyQuery request, CancellationToken cancellationToken)
+    public async Task<BaseResult<CompanyViewModel>> Handle(
+        SearchCompanyQuery request,
+        CancellationToken cancellationToken)
     {
         Expression<Func<Company, bool>>? filter = null;
         Func<IQueryable<Company>, IOrderedQueryable<Company>>? ordeBy = null;
@@ -105,6 +107,10 @@ public class SearchCompanyQueryHandler : IRequestHandler<SearchCompanyQuery, Bas
 
                 case "DeletedAt":
                     ordeBy = x => x.OrderBy(n => n.DeletedAt);
+                    break;
+
+                default:
+                    ordeBy = x => x.OrderBy(n => n.Id);
                     break;
             }
         }

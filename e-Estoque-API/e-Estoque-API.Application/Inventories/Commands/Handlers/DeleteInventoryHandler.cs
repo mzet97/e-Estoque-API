@@ -12,13 +12,17 @@ public class DeleteInventoryHandler : IRequestHandler<DeleteInventoryCommand, Un
     private readonly IInventoryRepository _inventoryRepository;
     private readonly IMessageBusClient _messageBus;
 
-    public DeleteInventoryHandler(IInventoryRepository inventoryRepository, IMessageBusClient messageBus)
+    public DeleteInventoryHandler(
+        IInventoryRepository inventoryRepository,
+        IMessageBusClient messageBus)
     {
         _inventoryRepository = inventoryRepository;
         _messageBus = messageBus;
     }
 
-    public async Task<Unit> Handle(DeleteInventoryCommand request, CancellationToken cancellationToken)
+    public async Task<Unit> Handle(
+        DeleteInventoryCommand request,
+        CancellationToken cancellationToken)
     {
         var entity = await _inventoryRepository.GetById(request.Id);
 

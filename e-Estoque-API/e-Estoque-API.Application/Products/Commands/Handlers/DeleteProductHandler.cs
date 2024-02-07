@@ -12,13 +12,17 @@ public class DeleteProductHandler : IRequestHandler<DeleteProductCommand, Unit>
     private readonly IProductRepository _productRepository;
     private readonly IMessageBusClient _messageBus;
 
-    public DeleteProductHandler(IProductRepository productRepository, IMessageBusClient messageBus)
+    public DeleteProductHandler(
+        IProductRepository productRepository,
+        IMessageBusClient messageBus)
     {
         _productRepository = productRepository;
         _messageBus = messageBus;
     }
 
-    public async Task<Unit> Handle(DeleteProductCommand request, CancellationToken cancellationToken)
+    public async Task<Unit> Handle(
+        DeleteProductCommand request,
+        CancellationToken cancellationToken)
     {
         var entity = await _productRepository.GetById(request.Id);
 

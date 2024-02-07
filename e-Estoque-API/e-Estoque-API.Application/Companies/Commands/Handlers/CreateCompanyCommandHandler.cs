@@ -14,13 +14,17 @@ public class CreateCompanyCommandHandler : IRequestHandler<CreateCompanyCommand,
     private readonly ICompanyRepository _companyRepository;
     private readonly IMessageBusClient _messageBus;
 
-    public CreateCompanyCommandHandler(ICompanyRepository companyRepository, IMessageBusClient messageBus)
+    public CreateCompanyCommandHandler(
+        ICompanyRepository companyRepository,
+        IMessageBusClient messageBus)
     {
         _companyRepository = companyRepository;
         _messageBus = messageBus;
     }
 
-    public async Task<Guid> Handle(CreateCompanyCommand request, CancellationToken cancellationToken)
+    public async Task<Guid> Handle(
+        CreateCompanyCommand request,
+        CancellationToken cancellationToken)
     {
         var entity = Company.Create(
             request.Name,

@@ -13,13 +13,17 @@ public class GetByIdTaxQueryHandler : IRequestHandler<GetByIdTaxQuery, TaxViewMo
     private readonly ITaxRepository _taxRepository;
     private readonly IMessageBusClient _messageBus;
 
-    public GetByIdTaxQueryHandler(ITaxRepository taxRepository, IMessageBusClient messageBus)
+    public GetByIdTaxQueryHandler(
+        ITaxRepository taxRepository,
+        IMessageBusClient messageBus)
     {
         _taxRepository = taxRepository;
         _messageBus = messageBus;
     }
 
-    public async Task<TaxViewModel> Handle(GetByIdTaxQuery request, CancellationToken cancellationToken)
+    public async Task<TaxViewModel> Handle(
+        GetByIdTaxQuery request,
+        CancellationToken cancellationToken)
     {
         var entity = await _taxRepository.GetById(request.Id);
 

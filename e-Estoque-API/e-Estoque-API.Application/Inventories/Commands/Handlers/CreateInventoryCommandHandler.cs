@@ -26,7 +26,9 @@ public class CreateInventoryCommandHandler : IRequestHandler<CreateInventoryComm
         _messageBus = messageBus;
     }
 
-    public async Task<Guid> Handle(CreateInventoryCommand request, CancellationToken cancellationToken)
+    public async Task<Guid> Handle(
+        CreateInventoryCommand request,
+        CancellationToken cancellationToken)
     {
         var entity = Inventory.Create(request.Quantity, request.DateOrder, request.IdProduct);
 

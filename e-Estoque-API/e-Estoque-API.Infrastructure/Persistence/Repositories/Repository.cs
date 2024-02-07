@@ -2,6 +2,7 @@
 using e_Estoque_API.Core.Models;
 using e_Estoque_API.Core.Repositories;
 using Microsoft.EntityFrameworkCore;
+using System.Linq;
 using System.Linq.Expressions;
 
 namespace e_Estoque_API.Infrastructure.Persistence.Repositories;
@@ -32,20 +33,14 @@ public abstract class Repository<TEntity> : IRepository<TEntity> where TEntity :
     {
         var query = DbSet.AsQueryable();
 
-        var paged = new PagedResult();
-        paged.CurrentPage = page;
-        paged.PageSize = pageSize;
-        paged.RowCount = query.Count();
-        var pageCount = (double)paged.RowCount / pageSize;
-        paged.PageCount = (int)Math.Ceiling(pageCount);
-        var skip = (page - 1) * pageSize;
+        var paged = PagedResult.Create(page, pageSize, query.Count());
 
         if (predicate != null)
         {
             query = query.Where(predicate);
         }
 
-        query = query.OrderBy(x => x.Id).Skip(skip).Take(pageSize);
+        query = query.OrderBy(x => x.Id).Skip(paged.Skip()).Take(pageSize);
 
         if (orderBy != null)
         {
@@ -90,8 +85,15 @@ public abstract class Repository<TEntity> : IRepository<TEntity> where TEntity :
         }
     }
 
+    public virtual void Dispose(bool disposing)
+    {
+        if(disposing)
+            Db?.Dispose();
+    }
+
     public virtual void Dispose()
     {
-        Db?.Dispose();
+        Dispose(true);
+        GC.SuppressFinalize(this);
     }
 }

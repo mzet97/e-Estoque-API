@@ -21,7 +21,9 @@ public class GetByIdInventoryQueryHandler : IRequestHandler<GetByIdInventoryQuer
         _messageBus = messageBus;
     }
 
-    public async Task<InventoryViewModel> Handle(GetByIdInventoryQuery request, CancellationToken cancellationToken)
+    public async Task<InventoryViewModel> Handle(
+        GetByIdInventoryQuery request,
+        CancellationToken cancellationToken)
     {
         var entity = await _inventoryRepository.GetById(request.Id);
 

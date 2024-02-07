@@ -18,7 +18,9 @@ public class DeleteTaxHandler : IRequestHandler<DeleteTaxCommand, Unit>
         _messageBus = messageBus;
     }
 
-    public async Task<Unit> Handle(DeleteTaxCommand request, CancellationToken cancellationToken)
+    public async Task<Unit> Handle(
+        DeleteTaxCommand request,
+        CancellationToken cancellationToken)
     {
         var entity = await _taxRepository.GetById(request.Id);
 

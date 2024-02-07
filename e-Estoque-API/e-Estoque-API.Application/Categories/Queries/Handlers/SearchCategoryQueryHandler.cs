@@ -17,7 +17,9 @@ public class SearchCategoryQueryHandler : IRequestHandler<SearchCategoryQuery, B
         _categoryRepository = categoryRepository;
     }
 
-    public async Task<BaseResult<CategoryViewModel>> Handle(SearchCategoryQuery request, CancellationToken cancellationToken)
+    public async Task<BaseResult<CategoryViewModel>> Handle(
+        SearchCategoryQuery request,
+        CancellationToken cancellationToken)
     {
         Expression<Func<Category, bool>>? filter = null;
         Func<IQueryable<Category>, IOrderedQueryable<Category>>? ordeBy = null;
@@ -77,6 +79,10 @@ public class SearchCategoryQueryHandler : IRequestHandler<SearchCategoryQuery, B
 
                 case "DeletedAt":
                     ordeBy = x => x.OrderBy(n => n.DeletedAt);
+                    break;
+
+                default:
+                    ordeBy = x => x.OrderBy(n => n.Id);
                     break;
             }
         }

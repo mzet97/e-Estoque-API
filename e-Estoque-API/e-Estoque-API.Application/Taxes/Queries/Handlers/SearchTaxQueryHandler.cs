@@ -17,7 +17,9 @@ public class SearchTaxQueryHandler : IRequestHandler<SearchTaxQuery, BaseResult<
         _taxRepository = taxRepository;
     }
 
-    public async Task<BaseResult<TaxViewModel>> Handle(SearchTaxQuery request, CancellationToken cancellationToken)
+    public async Task<BaseResult<TaxViewModel>> Handle(
+        SearchTaxQuery request,
+        CancellationToken cancellationToken)
     {
         Expression<Func<Tax, bool>>? filter = null;
         Func<IQueryable<Tax>, IOrderedQueryable<Tax>>? ordeBy = null;
@@ -51,10 +53,6 @@ public class SearchTaxQueryHandler : IRequestHandler<SearchTaxQuery, BaseResult<
         {
             switch (request.Order)
             {
-                case "Id":
-                    ordeBy = x => x.OrderBy(n => n.Id);
-                    break;
-
                 case "Name":
                     ordeBy = x => x.OrderBy(n => n.Name);
                     break;
@@ -77,6 +75,10 @@ public class SearchTaxQueryHandler : IRequestHandler<SearchTaxQuery, BaseResult<
 
                 case "DeletedAt":
                     ordeBy = x => x.OrderBy(n => n.DeletedAt);
+                    break;
+
+                default:
+                    ordeBy = x => x.OrderBy(n => n.Id);
                     break;
             }
         }

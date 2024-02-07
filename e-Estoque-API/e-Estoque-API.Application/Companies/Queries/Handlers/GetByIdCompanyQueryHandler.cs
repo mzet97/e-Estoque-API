@@ -13,13 +13,17 @@ public class GetByIdCompanyQueryHandler : IRequestHandler<GetByIdCompanyQuery, C
     private readonly ICompanyRepository _companyRepository;
     private readonly IMessageBusClient _messageBus;
 
-    public GetByIdCompanyQueryHandler(ICompanyRepository companyRepository, IMessageBusClient messageBus)
+    public GetByIdCompanyQueryHandler(
+        ICompanyRepository companyRepository,
+        IMessageBusClient messageBus)
     {
         _companyRepository = companyRepository;
         _messageBus = messageBus;
     }
 
-    public async Task<CompanyViewModel> Handle(GetByIdCompanyQuery request, CancellationToken cancellationToken)
+    public async Task<CompanyViewModel> Handle(
+        GetByIdCompanyQuery request,
+        CancellationToken cancellationToken)
     {
         var entity = await _companyRepository.GetById(request.Id);
 

@@ -14,13 +14,17 @@ public class UpdateCustomerCommandHandler : IRequestHandler<UpdateCustomerComman
     private readonly ICustomerRepository _customerRepository;
     private readonly IMessageBusClient _messageBus;
 
-    public UpdateCustomerCommandHandler(ICustomerRepository customerRepository, IMessageBusClient messageBus)
+    public UpdateCustomerCommandHandler(
+        ICustomerRepository customerRepository,
+        IMessageBusClient messageBus)
     {
         _customerRepository = customerRepository;
         _messageBus = messageBus;
     }
 
-    public async Task<Guid> Handle(UpdateCustomerCommand request, CancellationToken cancellationToken)
+    public async Task<Guid> Handle(
+        UpdateCustomerCommand request,
+        CancellationToken cancellationToken)
     {
         var entity = await _customerRepository.GetById(request.Id);
 

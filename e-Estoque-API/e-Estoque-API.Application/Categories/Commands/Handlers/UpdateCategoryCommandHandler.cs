@@ -21,7 +21,9 @@ public class UpdateCategoryCommandHandler : IRequestHandler<UpdateCategoryComman
         _messageBus = messageBus;
     }
 
-    public async Task<Guid> Handle(UpdateCategoryCommand request, CancellationToken cancellationToken)
+    public async Task<Guid> Handle(
+        UpdateCategoryCommand request,
+        CancellationToken cancellationToken)
     {
         var entity = await _categoryRepository.GetById(request.Id);
 
@@ -36,7 +38,10 @@ public class UpdateCategoryCommandHandler : IRequestHandler<UpdateCategoryComman
         }
 
         entity
-           .Update(request.Name, request.ShortDescription, request.Description);
+           .Update(
+            request.Name,
+            request.ShortDescription,
+            request.Description);
 
         if (!Validator.Validate(new CategoryValidation(), entity))
         {

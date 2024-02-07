@@ -2,6 +2,7 @@
 using e_Estoque_API.Core.Models;
 using e_Estoque_API.Core.Repositories;
 using Microsoft.EntityFrameworkCore;
+using System.Linq;
 using System.Linq.Expressions;
 
 namespace e_Estoque_API.Infrastructure.Persistence.Repositories;
@@ -54,13 +55,7 @@ public class InventoryRepository : Repository<Inventory>, IInventoryRepository
     {
         var query = DbSet.AsQueryable();
 
-        var paged = new PagedResult();
-        paged.CurrentPage = page;
-        paged.PageSize = pageSize;
-        paged.RowCount = query.Count();
-        var pageCount = (double)paged.RowCount / pageSize;
-        paged.PageCount = (int)Math.Ceiling(pageCount);
-        var skip = (page - 1) * pageSize;
+        var paged = PagedResult.Create(page, pageSize, query.Count());
 
         if (predicate != null)
         {
@@ -70,7 +65,7 @@ public class InventoryRepository : Repository<Inventory>, IInventoryRepository
 
         query = query.Include("Product")
                      .OrderBy(x => x.Id)
-                     .Skip(skip)
+                     .Skip(paged.Skip())
                      .Take(pageSize);
 
         if (orderBy != null)

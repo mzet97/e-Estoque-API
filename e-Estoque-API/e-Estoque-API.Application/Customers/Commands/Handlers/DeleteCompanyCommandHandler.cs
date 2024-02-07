@@ -12,13 +12,17 @@ public class DeleteCustomerCommandHandler : IRequestHandler<DeleteCustomerComman
     private readonly ICustomerRepository _customerRepository;
     private readonly IMessageBusClient _messageBus;
 
-    public DeleteCustomerCommandHandler(ICustomerRepository customerRepository, IMessageBusClient messageBus)
+    public DeleteCustomerCommandHandler(
+        ICustomerRepository customerRepository,
+        IMessageBusClient messageBus)
     {
         _customerRepository = customerRepository;
         _messageBus = messageBus;
     }
 
-    public async Task<Unit> Handle(DeleteCustomerCommand request, CancellationToken cancellationToken)
+    public async Task<Unit> Handle(
+        DeleteCustomerCommand request,
+        CancellationToken cancellationToken)
     {
         var entity = await _customerRepository.GetById(request.Id);
 

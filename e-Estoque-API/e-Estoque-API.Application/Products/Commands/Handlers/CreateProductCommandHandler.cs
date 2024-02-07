@@ -29,7 +29,9 @@ public class CreateProductCommandHandler : IRequestHandler<CreateProductCommand,
         _companyRepository = companyRepository;
     }
 
-    public async Task<Guid> Handle(CreateProductCommand request, CancellationToken cancellationToken)
+    public async Task<Guid> Handle(
+        CreateProductCommand request,
+        CancellationToken cancellationToken)
     {
         var entity = Product.Create(
             request.Name,

@@ -24,7 +24,9 @@ public class UpdateInventoryCommandHandler : IRequestHandler<UpdateInventoryComm
         _messageBus = messageBus;
     }
 
-    public async Task<Guid> Handle(UpdateInventoryCommand request, CancellationToken cancellationToken)
+    public async Task<Guid> Handle(
+        UpdateInventoryCommand request,
+        CancellationToken cancellationToken)
     {
         var entity = await _inventoryRepository.GetById(request.Id);
 
@@ -38,7 +40,10 @@ public class UpdateInventoryCommandHandler : IRequestHandler<UpdateInventoryComm
             throw new NotFoundException("Find Error");
         }
 
-        entity.Update(request.Quantity, request.DateOrder, request.IdProduct);
+        entity.Update(
+            request.Quantity,
+            request.DateOrder,
+            request.IdProduct);
 
         if (!Validator.Validate(new InventoryValidation(), entity))
         {
