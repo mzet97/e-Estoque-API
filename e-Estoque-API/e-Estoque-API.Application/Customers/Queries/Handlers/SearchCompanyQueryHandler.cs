@@ -1,4 +1,4 @@
-﻿using e_Estoque_API.Application.Taxes.ViewModels;
+﻿using e_Estoque_API.Application.Customers.ViewModels;
 using e_Estoque_API.Core.Entities;
 using e_Estoque_API.Core.Models;
 using e_Estoque_API.Core.Repositories;
@@ -6,21 +6,21 @@ using LinqKit;
 using MediatR;
 using System.Linq.Expressions;
 
-namespace e_Estoque_API.Application.Taxes.Queries.Handlers
+namespace e_Estoque_API.Application.Customers.Queries.Handlers
 {
-    public class SearchTaxQueryHandler : IRequestHandler<SearchTaxQuery, BaseResult<TaxViewModel>>
+    public class SearchCustomerQueryHandler : IRequestHandler<SearchCustomerQuery, BaseResult<CustomerViewModel>>
     {
-        private readonly ITaxRepository _taxRepository;
+        private readonly ICustomerRepository _customerRepository;
 
-        public SearchTaxQueryHandler(ITaxRepository taxRepository)
+        public SearchCustomerQueryHandler(ICustomerRepository customerRepository)
         {
-            _taxRepository = taxRepository;
+            _customerRepository = customerRepository;
         }
 
-        public async Task<BaseResult<TaxViewModel>> Handle(SearchTaxQuery request, CancellationToken cancellationToken)
+        public async Task<BaseResult<CustomerViewModel>> Handle(SearchCustomerQuery request, CancellationToken cancellationToken)
         {
-            Expression<Func<Tax, bool>>? filter = null;
-            Func<IQueryable<Tax>, IOrderedQueryable<Tax>>? ordeBy = null;
+            Expression<Func<Customer, bool>>? filter = null;
+            Func<IQueryable<Customer>, IOrderedQueryable<Customer>>? ordeBy = null;
 
             if (!string.IsNullOrWhiteSpace(request.Name))
             {
@@ -31,20 +31,40 @@ namespace e_Estoque_API.Application.Taxes.Queries.Handlers
             {
                 if (filter == null)
                 {
-                    filter = PredicateBuilder.New<Tax>(true);
+                    filter = PredicateBuilder.New<Customer>(true);
                 }
 
                 filter = filter.And(x => x.Description == request.Description);
             }
 
-            if (request.Percentage != 0)
+            if (!string.IsNullOrWhiteSpace(request.DocId))
             {
                 if (filter == null)
                 {
-                    filter = PredicateBuilder.New<Tax>(true);
+                    filter = PredicateBuilder.New<Customer>(true);
                 }
 
-                filter = filter.And(x => x.Percentage == request.Percentage);
+                filter = filter.And(x => x.DocId == request.DocId);
+            }
+
+            if (!string.IsNullOrWhiteSpace(request.PhoneNumber))
+            {
+                if (filter == null)
+                {
+                    filter = PredicateBuilder.New<Customer>(true);
+                }
+
+                filter = filter.And(x => x.PhoneNumber == request.PhoneNumber);
+            }
+
+            if (!string.IsNullOrWhiteSpace(request.Email))
+            {
+                if (filter == null)
+                {
+                    filter = PredicateBuilder.New<Customer>(true);
+                }
+
+                filter = filter.And(x => x.Email == request.Email);
             }
 
             if (!string.IsNullOrWhiteSpace(request.Order))
@@ -60,8 +80,14 @@ namespace e_Estoque_API.Application.Taxes.Queries.Handlers
                     case "Description":
                         ordeBy = x => x.OrderBy(n => n.Description);
                         break;
-                    case "Percentage":
-                        ordeBy = x => x.OrderBy(n => n.Percentage);
+                    case "DocId":
+                        ordeBy = x => x.OrderBy(n => n.DocId);
+                        break;
+                    case "Email":
+                        ordeBy = x => x.OrderBy(n => n.Email);
+                        break;
+                    case "PhoneNumber":
+                        ordeBy = x => x.OrderBy(n => n.PhoneNumber);
                         break;
                     case "CreatedAt":
                         ordeBy = x => x.OrderBy(n => n.CreatedAt);
@@ -79,7 +105,7 @@ namespace e_Estoque_API.Application.Taxes.Queries.Handlers
             {
                 if (filter == null)
                 {
-                    filter = PredicateBuilder.New<Tax>(true);
+                    filter = PredicateBuilder.New<Customer>(true);
                 }
 
                 filter = filter.And(x => x.Id == request.Id);
@@ -90,7 +116,7 @@ namespace e_Estoque_API.Application.Taxes.Queries.Handlers
             {
                 if (filter == null)
                 {
-                    filter = PredicateBuilder.New<Tax>(true);
+                    filter = PredicateBuilder.New<Customer>(true);
                 }
 
                 filter = filter.And(x => x.CreatedAt == request.CreatedAt);
@@ -100,7 +126,7 @@ namespace e_Estoque_API.Application.Taxes.Queries.Handlers
             {
                 if (filter == null)
                 {
-                    filter = PredicateBuilder.New<Tax>(true);
+                    filter = PredicateBuilder.New<Customer>(true);
                 }
 
                 filter = filter.And(x => x.UpdatedAt == request.UpdatedAt);
@@ -110,21 +136,21 @@ namespace e_Estoque_API.Application.Taxes.Queries.Handlers
             {
                 if (filter == null)
                 {
-                    filter = PredicateBuilder.New<Tax>(true);
+                    filter = PredicateBuilder.New<Customer>(true);
                 }
 
                 filter = filter.And(x => x.DeletedAt == request.DeletedAt);
             }
 
-            var result = await _taxRepository
+            var result = await _customerRepository
                 .Search(
                     filter,
                     ordeBy,
                     request.PageSize,
                     request.PageIndex);
 
-            return new BaseResult<TaxViewModel>(
-                result.Data.Select(x => TaxViewModel.FromEntity(x)).ToList(), result.PagedResult);
+            return new BaseResult<CustomerViewModel>(
+                result.Data.Select(x => CustomerViewModel.FromEntity(x)).ToList(), result.PagedResult);
         }
     }
 }

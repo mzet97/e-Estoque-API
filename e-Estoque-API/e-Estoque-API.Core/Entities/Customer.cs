@@ -28,9 +28,9 @@ namespace e_Estoque_API.Core.Entities
             CustomerAddress = customerAddress;
         }
 
-        public static Customer Create(string name, string docId, string email, string description, string phoneNumber, Guid idCustomerAddress, CustomerAddress customerAddress)
+        public static Customer Create(string name, string docId, string email, string description, string phoneNumber, CustomerAddress customerAddress)
         {
-            var company = new Customer(Guid.NewGuid(), name, docId, email, description, phoneNumber, idCustomerAddress, customerAddress);
+            var company = new Customer(Guid.NewGuid(), name, docId, email, description, phoneNumber, Guid.NewGuid(), customerAddress);
 
             company.CreatedAt = DateTime.UtcNow;
 

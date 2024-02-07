@@ -13,12 +13,10 @@ namespace e_Estoque_API.Application.Companies.Queries.Handlers
     public class SearchCompanyQueryHandler : IRequestHandler<SearchCompanyQuery, BaseResult<CompanyViewModel>>
     {
         private readonly ICompanyRepository _companyRepository;
-        private readonly IMessageBusClient _messageBus;
 
-        public SearchCompanyQueryHandler(ICompanyRepository companyRepository, IMessageBusClient messageBus)
+        public SearchCompanyQueryHandler(ICompanyRepository companyRepository)
         {
             _companyRepository = companyRepository;
-            _messageBus = messageBus;
         }
 
         public async Task<BaseResult<CompanyViewModel>> Handle(SearchCompanyQuery request, CancellationToken cancellationToken)
@@ -28,11 +26,6 @@ namespace e_Estoque_API.Application.Companies.Queries.Handlers
 
             if (!string.IsNullOrWhiteSpace(request.Name))
             {
-                if (filter == null)
-                {
-                    filter = PredicateBuilder.New<Company>(true);
-                }
-
                 filter = filter.And(x => x.Name == request.Name);
             }
 

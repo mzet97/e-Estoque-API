@@ -24,11 +24,6 @@ namespace e_Estoque_API.Application.Categories.Queries.Handlers
 
             if (!string.IsNullOrWhiteSpace(request.Name))
             {
-                if (filter == null)
-                {
-                    filter = PredicateBuilder.New<Category>(true);
-                }
-
                 filter = filter.And(x => x.Name == request.Name);
             }
 

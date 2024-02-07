@@ -1,7 +1,6 @@
 using e_Estoque_API.API.Configuration;
 using e_Estoque_API.API.Extensions;
 using e_Estoque_API.Application;
-using e_Estoque_API.Application.Configuration;
 using e_Estoque_API.Infrastructure.Configuration;
 using Microsoft.AspNetCore.Mvc;
 
@@ -26,7 +25,6 @@ builder.Services.AddCorsConfig();
 builder.Services.AddDbContextConfig(builder.Configuration);
 builder.Services.ResolveDependencies();
 builder.Services.AddMessageBus(builder.Configuration);
-builder.Services.AddHandlers();
 builder.Services.AddApplicationServices();
 
 
@@ -36,7 +34,7 @@ builder.Services.AddSwaggerConfig();
 builder.Services.AddSwaggerGen();
 builder.Services.AddKeycloakConfig(builder.Configuration);
 
-builder.Services.AddObservability("Category", builder.Configuration);
+builder.Services.AddObservability("E-estoque", builder.Configuration);
 
 var app = builder.Build();
 
