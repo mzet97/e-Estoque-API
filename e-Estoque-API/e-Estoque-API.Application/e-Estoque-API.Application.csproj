@@ -26,6 +26,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Categories\Notifications\" />
     <Folder Include="Configuration\" />
     <Folder Include="Sales\Commands\Handlers\" />
     <Folder Include="Sales\ViewModels\" />

@@ -1,5 +1,7 @@
-﻿using e_Estoque_API.Application.Auth.ViewModels;
+﻿using e_Estoque_API.Application.Auth.Notifications;
+using e_Estoque_API.Application.Auth.ViewModels;
 using e_Estoque_API.Application.Common.Behaviours;
+using e_Estoque_API.Application.Common.Notifications;
 using e_Estoque_API.Core.Models;
 using MediatR;
 using System.Text.Json;
@@ -10,11 +12,16 @@ public class LoginUserCommandHandler : IRequestHandler<LoginUserCommand, TokenVi
 {
     private readonly IHttpClientFactory _clientFactory;
     private readonly Keycloak _keycloak;
+    private readonly IMediator _mediator;
 
-    public LoginUserCommandHandler(IHttpClientFactory httpClientFactory, Keycloak keycloak)
+    public LoginUserCommandHandler(
+        IHttpClientFactory httpClientFactory,
+        Keycloak keycloak,
+        IMediator mediator)
     {
         _clientFactory = httpClientFactory;
         _keycloak = keycloak;
+        _mediator = mediator;
     }
 
     public async Task<TokenViewModel> Handle(
@@ -45,7 +52,12 @@ public class LoginUserCommandHandler : IRequestHandler<LoginUserCommand, TokenVi
         var token = JsonSerializer.Deserialize<TokenViewModel>(response, serializeOptions);
 
         if (token == null)
+        {
+            await _mediator.Publish(new ErrorNotification { Message = "Invalid username or password", StackTrace = "" });
             throw new ForbiddenAccessException("Invalid username or password");
+        }
+        
+        await _mediator.Publish(new LoginUserNotification { Username = request.Username });
 
         return token;
     }

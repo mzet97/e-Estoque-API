@@ -31,7 +31,8 @@ builder.Services.AddSwaggerConfig();
 builder.Services.AddSwaggerGen();
 builder.Services.AddKeycloakConfig(builder.Configuration);
 
-builder.Services.AddObservability("E-estoque", builder.Configuration);
+builder.Services.AddObservability("E-estoque", "1", builder.Configuration);
+builder.Logging.AddLogginOpenTelemetry("E-estoque", "1", builder.Configuration);
 
 var app = builder.Build();
 
