@@ -39,12 +39,12 @@ app.MapObservability();
 
 if (app.Environment.IsDevelopment())
 {
-    //app.UseCors("Development");
+    app.UseCors("Development");
     app.UseDeveloperExceptionPage();
 }
 else
 {
-    //app.UseCors("Production");
+    app.UseCors("Production");
     app.UseHsts();
 }
 

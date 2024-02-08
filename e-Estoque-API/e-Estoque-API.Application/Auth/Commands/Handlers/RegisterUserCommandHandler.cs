@@ -24,6 +24,8 @@ public class RegisterUserCommandHandler : IRequestHandler<RegisterUserCommand, T
         RegisterUserCommand request,
         CancellationToken cancellationToken)
     {
+        var systemToken = await _mediator.Send(new SystemLoginCommand());
+
         var client = _clientFactory.CreateClient();
         var url = $"{_keycloak.AuthServerUrl}admin/realms/{_keycloak.Realm}/users";
         var httpRequest = new HttpRequestMessage(HttpMethod.Post, url);
@@ -42,7 +44,7 @@ public class RegisterUserCommandHandler : IRequestHandler<RegisterUserCommand, T
 
         httpRequest.Content = new StringContent(JsonSerializer.Serialize(user), Encoding.UTF8, "application/json");
 
-        httpRequest.Headers.Add("Authorization", $"Bearer {request.Token}");
+        httpRequest.Headers.Add("Authorization", $"Bearer {systemToken.AccessToken}");
         var response = await client.SendAsync(httpRequest);
 
         if (!response.IsSuccessStatusCode)

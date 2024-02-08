@@ -6,6 +6,8 @@ using Microsoft.AspNetCore.Mvc;
 namespace e_Estoque_API.API.Controllers;
 
 [AllowAnonymous]
+[Route("api/[controller]")]
+[ApiController]
 public class AuthController : MainController
 {
     private readonly IMediator _mediator;
@@ -28,6 +30,17 @@ public class AuthController : MainController
 
     [HttpPost("login")]
     public async Task<IActionResult> Login([FromBody] LoginUserCommand command)
+    {
+        var result = await _mediator.Send(command);
+
+        if (result == null)
+            return CustomResponse(false, null);
+
+        return CustomResponse(true, result);
+    }
+
+    [HttpPost("refresh_token")]
+    public async Task<IActionResult> RefreshToken([FromBody] RefreshTokenCommand command)
     {
         var result = await _mediator.Send(command);
 
