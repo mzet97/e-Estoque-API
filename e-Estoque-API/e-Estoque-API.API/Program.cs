@@ -2,6 +2,7 @@ using e_Estoque_API.API.Configuration;
 using e_Estoque_API.API.Extensions;
 using e_Estoque_API.Application;
 using e_Estoque_API.Infrastructure.Configuration;
+using e_Estoque_API.Infrastructure.Persistence;
 using Microsoft.AspNetCore.Mvc;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -30,6 +31,11 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerConfig();
 builder.Services.AddSwaggerGen();
 builder.Services.AddKeycloakConfig(builder.Configuration);
+//builder.Services.AddWso2Config(builder.Configuration);
+
+builder.Services.AddHealthChecks();
+
+
 
 builder.Services.AddObservability("E-estoque", "1", builder.Configuration);
 builder.Logging.AddLogginOpenTelemetry("E-estoque", "1", builder.Configuration);

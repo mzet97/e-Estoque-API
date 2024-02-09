@@ -131,6 +131,13 @@ services:
       - LOG_LEVEL=debug
     networks:
       - ob-network
+  wso2:
+    container_name: wso2-identity-server
+    image: wso2/wso2is:5.11.0
+    ports:
+      - '9443:9443'
+    networks:
+      - ob-network
 
 networks:
   ob-network:
