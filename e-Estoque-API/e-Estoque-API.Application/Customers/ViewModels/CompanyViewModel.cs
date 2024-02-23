@@ -11,8 +11,8 @@ public class CustomerViewModel : BaseViewModel
     public string Description { get; set; }
     public string PhoneNumber { get; set; }
 
-    public Guid IdCompanyAddress { get; set; }
-    public AddressViewModel CompanyAddress { get; set; }
+    public Guid IdCustomerAddress { get; set; }
+    public AddressViewModel CustomerAddress { get; set; }
 
     public CustomerViewModel(
         Guid id,
@@ -33,8 +33,8 @@ public class CustomerViewModel : BaseViewModel
         Email = email;
         Description = description;
         PhoneNumber = phoneNumber;
-        IdCompanyAddress = idCompanyAddress;
-        CompanyAddress = companyAddress;
+        IdCustomerAddress = idCompanyAddress;
+        CustomerAddress = companyAddress;
     }
 
     public static CustomerViewModel FromEntity(Customer entity)
