@@ -4,6 +4,7 @@ using e_Estoque_API.Application.Common.Behaviours;
 using e_Estoque_API.Application.Common.Notifications;
 using e_Estoque_API.Core.Models;
 using MediatR;
+using Microsoft.IdentityModel.Tokens;
 using System.Text.Json;
 
 namespace e_Estoque_API.Application.Auth.Commands.Handlers;
@@ -36,7 +37,7 @@ public class LoginUserCommandHandler : IRequestHandler<LoginUserCommand, TokenVi
         {
             { "grant_type", "password" },
             { "client_id", _keycloak.Resource },
-            { "username", request.Username },
+            { "username", request.Email },
             { "password", request.Password },
             { "client_secret", _keycloak.Credentials.Secret },
         };
@@ -51,13 +52,13 @@ public class LoginUserCommandHandler : IRequestHandler<LoginUserCommand, TokenVi
 
         var token = JsonSerializer.Deserialize<TokenViewModel>(response, serializeOptions);
 
-        if (token == null)
+        if (token == null || string.IsNullOrEmpty(token.AccessToken))
         {
             await _mediator.Publish(new ErrorNotification { Message = "Invalid username or password", StackTrace = "" });
             throw new ForbiddenAccessException("Invalid username or password");
         }
         
-        await _mediator.Publish(new LoginUserNotification { Username = request.Username });
+        await _mediator.Publish(new LoginUserNotification { Username = request.Email });
 
         return token;
     }

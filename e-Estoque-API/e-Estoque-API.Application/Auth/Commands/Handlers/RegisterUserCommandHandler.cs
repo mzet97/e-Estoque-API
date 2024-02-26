@@ -52,6 +52,6 @@ public class RegisterUserCommandHandler : IRequestHandler<RegisterUserCommand, T
             throw new ForbiddenAccessException("Error creating user");
         }
 
-        return await _mediator.Send(new LoginUserCommand() { Username = request.Username, Password = request.Password });
+        return await _mediator.Send(new LoginUserCommand() { Email = request.Username, Password = request.Password });
     }
 }
