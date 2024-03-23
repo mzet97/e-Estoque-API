@@ -1,6 +1,5 @@
 ﻿using e_Estoque_API.Application.Inventories.Commands;
 using e_Estoque_API.Application.Inventories.Queries;
-using e_Estoque_API.Application.Products.Queries;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;

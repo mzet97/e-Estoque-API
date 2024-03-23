@@ -401,3 +401,4 @@ Data/*
 .sonarqube/*
 sonar/*
 sonar
+*/.sonarqube/*

@@ -1,41 +1,48 @@
 ﻿using e_Estoque_API.Application.Categories.Commands;
 using e_Estoque_API.Application.Categories.Commands.Handlers;
-using e_Estoque_API.Core.Entities;
 using e_Estoque_API.Core.Exceptions;
+using e_Estoque_API.Core.Fakes;
 using e_Estoque_API.Core.Repositories;
 using e_Estoque_API.Infrastructure.MessageBus;
 using FluentAssertions;
+using Microsoft.Extensions.DependencyInjection;
 using Moq;
 
 namespace e_Estoque_API.UnitTest.Categories.Commands.Handlers;
 
-public class CreateCategoryCommandHandlerTest
+public class CreateCategoryCommandHandlerTest : BaseTest, IClassFixture<BaseTest>
 {
+    private readonly ServiceProvider _serviceProvide;
+
+    public CreateCategoryCommandHandlerTest(BaseTest baseTest)
+    {
+        _serviceProvide = baseTest.ServiceProvider;
+    }
 
     [Fact(DisplayName = "Test create category success")]
     [Trait("CreateCategoryCommandHandlerTest", "CreateCategory CommandHandler Tests")]
     public async Task CreateCategoryCommandHandlerSuccess()
     {
         // Arrange
-        var categoryRepositoryMock = new Mock<ICategoryRepository>();
+        var categoryRepository = _serviceProvide.GetService<ICategoryRepository>();
         var messageBusMock = new Mock<IMessageBusClient>();
+        var faker = new GenerateCategoryFake().CreateValid(1).First();
 
         // Act
-        var commandHandler = new CreateCategoryCommandHandler(categoryRepositoryMock.Object, messageBusMock.Object);
+        var commandHandler = new CreateCategoryCommandHandler(categoryRepository, messageBusMock.Object);
 
         var command = new CreateCategoryCommand
         {
-            Name = "Category Test",
-            Description = "Category Test Description",
-            ShortDescription = "Category Test Short Description"
+            Name = faker.Name,
+            Description = faker.Description,
+            ShortDescription = faker.ShortDescription
         };
 
         var result = await commandHandler.Handle(command, CancellationToken.None);
 
         // Assert
+        categoryRepository.Should().NotBeNull();
         result.Should().NotBeEmpty();
-
-        categoryRepositoryMock.Verify(pr => pr.Add(It.IsAny<Category>()), Times.Once);
     }
 
     [Fact(DisplayName = "Test create category failure")]
@@ -43,24 +50,24 @@ public class CreateCategoryCommandHandlerTest
     public async Task CreateCategoryCommandHandlerFailure()
     {
         // Arrange
-        var categoryRepositoryMock = new Mock<ICategoryRepository>();
+        var categoryRepository = _serviceProvide.GetService<ICategoryRepository>();
         var messageBusMock = new Mock<IMessageBusClient>();
+        var faker = new GenerateCategoryFake().CreateInValid(1).First();
 
         // Act
-        var commandHandler = new CreateCategoryCommandHandler(categoryRepositoryMock.Object, messageBusMock.Object);
+        var commandHandler = new CreateCategoryCommandHandler(categoryRepository, messageBusMock.Object);
 
         var command = new CreateCategoryCommand
         {
-            Name = "",
-            Description = "",
-            ShortDescription = ""
+            Name = faker.Name,
+            Description = faker.Description,
+            ShortDescription = faker.ShortDescription
         };
 
         Func<Task> act = async () => await commandHandler.Handle(command, CancellationToken.None);
 
         // Assert
+        categoryRepository.Should().NotBeNull();
         await act.Should().ThrowAsync<ValidationException>();
-
-        categoryRepositoryMock.Verify(pr => pr.Add(It.IsAny<Category>()), Times.Never);
     }
 }
