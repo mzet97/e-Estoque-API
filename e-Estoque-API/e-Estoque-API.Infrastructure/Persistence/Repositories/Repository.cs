@@ -58,7 +58,7 @@ public abstract class Repository<TEntity> : IRepository<TEntity> where TEntity :
 
     public virtual async Task<IEnumerable<TEntity>> GetAll()
     {
-        return await DbSet.ToListAsync();
+        return await DbSet.AsNoTracking().ToListAsync();
     }
 
     public virtual async Task<TEntity?> GetById(Guid id)

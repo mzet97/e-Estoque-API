@@ -6,7 +6,7 @@ namespace e_Estoque_API.Core.Fakes
     {
         public IEnumerable<Category> CreateValid(int qtd)
         {
-            var lorem = new Bogus.DataSets.Lorem("pt-Br");
+            var lorem = new Bogus.DataSets.Lorem();
             var list = new List<Category>();
 
             for (int i = 0; i < qtd; i++)
@@ -14,8 +14,8 @@ namespace e_Estoque_API.Core.Fakes
                 var category = new Category(
                         Guid.NewGuid(),
                         lorem.Word(),
-                        lorem.Sentence(1, 5),
-                        lorem.Sentence(1, 2)
+                        lorem.Sentence(1, 2),
+                        lorem.Sentence(1, 5)
                     );
 
                 list.Add(category);

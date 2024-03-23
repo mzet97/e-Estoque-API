@@ -13,10 +13,10 @@ namespace e_Estoque_API.UnitTest
         {
             var serviceCollection = new ServiceCollection();
 
-            serviceCollection.AddDbContext<EstoqueDbContext>(o =>
-                o.UseNpgsql($"Host=localhost;Port=5432;Pooling=true;Database=e-estoque-test;User Id=postgres;Password=dsv@123;"),
-                  ServiceLifetime.Transient
-            );
+            serviceCollection.AddDbContext<EstoqueDbContext>(options =>
+            {
+                options.UseNpgsql($"Host=localhost;Port=5432;Pooling=true;Database=e-estoque-test;User Id=postgres;Password=dsv@123;");
+            },ServiceLifetime.Scoped);
 
             serviceCollection.ResolveDependencies();
 
