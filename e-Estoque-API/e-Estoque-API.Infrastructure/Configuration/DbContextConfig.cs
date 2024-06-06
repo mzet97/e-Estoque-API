@@ -13,7 +13,7 @@ public static class DbContextConfig
         services.AddDbContext<EstoqueDbContext>(options =>
         {
             options.UseNpgsql(configuration.GetConnectionString("DefaultConnection"));
-            //options.EnableSensitiveDataLogging(true);
+            options.EnableSensitiveDataLogging(true);
         });
 
         services.AddHealthChecks()

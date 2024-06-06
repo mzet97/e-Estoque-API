@@ -35,8 +35,6 @@ builder.Services.AddKeycloakConfig(builder.Configuration);
 
 builder.Services.AddHealthChecks();
 
-
-
 builder.Services.AddObservability("E-estoque", "1", builder.Configuration);
 builder.Logging.AddLogginOpenTelemetry("E-estoque", "1", builder.Configuration);
 

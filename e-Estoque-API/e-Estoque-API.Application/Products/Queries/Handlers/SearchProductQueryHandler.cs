@@ -18,139 +18,76 @@ public class SearchProductQueryHandler : IRequestHandler<SearchProductQuery, Bas
     }
 
     public async Task<BaseResult<ProductViewModel>> Handle(
-        SearchProductQuery request,
-        CancellationToken cancellationToken)
+     SearchProductQuery request,
+     CancellationToken cancellationToken)
     {
         Expression<Func<Product, bool>>? filter = PredicateBuilder.New<Product>(true);
-        Func<IQueryable<Product>, IOrderedQueryable<Product>>? ordeBy = null;
+        Func<IQueryable<Product>, IOrderedQueryable<Product>>? orderBy = null;
 
-        if (!string.IsNullOrWhiteSpace(request.Name))
-        {
-            filter = filter.And(x => x.Name == request.Name);
-        }
+        filter = AddFilterIfNotNullOrWhiteSpace(request.Name, filter, x => x.Name == request.Name);
+        filter = AddFilterIfNotNullOrWhiteSpace(request.Description, filter, x => x.Description == request.Description);
+        filter = AddFilterIfNotNullOrWhiteSpace(request.ShortDescription, filter, x => x.ShortDescription == request.ShortDescription);
 
-        if (!string.IsNullOrWhiteSpace(request.Description))
-        {
-            filter = filter.And(x => x.Description == request.Description);
-        }
+        filter = AddFilterIfNotDefault(request.Price, filter, x => x.Price == request.Price);
+        filter = AddFilterIfNotDefault(request.Weight, filter, x => x.Weight == request.Weight);
+        filter = AddFilterIfNotDefault(request.Height, filter, x => x.Height == request.Height);
+        filter = AddFilterIfNotDefault(request.Length, filter, x => x.Length == request.Length);
+        filter = AddFilterIfNotDefault(request.CreatedAt, filter, x => x.CreatedAt == request.CreatedAt);
+        filter = AddFilterIfNotDefault(request.UpdatedAt, filter, x => x.UpdatedAt == request.UpdatedAt);
 
-        if (!string.IsNullOrWhiteSpace(request.ShortDescription))
-        {
-            filter = filter.And(x => x.ShortDescription == request.ShortDescription);
-        }
-
-        if (request.Price != default)
-        {
-            filter = filter.And(x => x.Price == request.Price);
-        }
-
-        if (request.Weight != default)
-        {
-            filter = filter.And(x => x.Weight == request.Weight);
-        }
-
-        if (request.Height != default)
-        {
-            filter = filter.And(x => x.Height == request.Height);
-        }
-
-        if (request.Length != default)
-        {
-            filter = filter.And(x => x.Length == request.Length);
-        }
-
-        if (request.IdCategory != Guid.Empty)
-        {
-            filter = filter.And(x => x.IdCategory == request.IdCategory);
-        }
-
-        if (request.IdCompany != Guid.Empty)
-        {
-            filter = filter.And(x => x.IdCompany == request.IdCompany);
-        }
-
-        if (request.Id != Guid.Empty)
-        {
-            filter = filter.And(x => x.Id == request.Id);
-        }
-
-        if (request.CreatedAt != default)
-        {
-            filter = filter.And(x => x.CreatedAt == request.CreatedAt);
-        }
-
-        if (request.UpdatedAt != default)
-        {
-            filter = filter.And(x => x.UpdatedAt == request.UpdatedAt);
-        }
+        filter = AddFilterIfNotEmptyGuid(request.IdCategory, filter, x => x.IdCategory == request.IdCategory);
+        filter = AddFilterIfNotEmptyGuid(request.IdCompany, filter, x => x.IdCompany == request.IdCompany);
+        filter = AddFilterIfNotEmptyGuid(request.Id, filter, x => x.Id == request.Id);
 
         if (request.DeletedAt.HasValue || request.DeletedAt != default)
         {
             filter = filter.And(x => x.DeletedAt == request.DeletedAt);
         }
 
-        if (!string.IsNullOrWhiteSpace(request.Order))
-        {
-            switch (request.Order)
-            {
-                case "Id":
-                    ordeBy = x => x.OrderBy(n => n.Id);
-                    break;
-
-                case "Name":
-                    ordeBy = x => x.OrderBy(n => n.Name);
-                    break;
-
-                case "Description":
-                    ordeBy = x => x.OrderBy(n => n.Description);
-                    break;
-
-                case "ShortDescription":
-                    ordeBy = x => x.OrderBy(n => n.ShortDescription);
-                    break;
-
-                case "Price":
-                    ordeBy = x => x.OrderBy(n => n.Price);
-                    break;
-
-                case "Weight":
-                    ordeBy = x => x.OrderBy(n => n.Weight);
-                    break;
-
-                case "Height":
-                    ordeBy = x => x.OrderBy(n => n.Height);
-                    break;
-
-                case "Length":
-                    ordeBy = x => x.OrderBy(n => n.Length);
-                    break;
-
-                case "CreatedAt":
-                    ordeBy = x => x.OrderBy(n => n.CreatedAt);
-                    break;
-
-                case "UpdatedAt":
-                    ordeBy = x => x.OrderBy(n => n.UpdatedAt);
-                    break;
-
-                case "DeletedAt":
-                    ordeBy = x => x.OrderBy(n => n.DeletedAt);
-                    break;
-
-                default:
-                    ordeBy = x => x.OrderBy(n => n.Id);
-                    break;
-            }
-        }
+        orderBy = GetOrderByFunc(request.Order);
 
         var result = await _productRepository
             .Search(
                 filter,
-                ordeBy,
+                orderBy,
                 request.PageSize,
                 request.PageIndex);
 
         return new BaseResult<ProductViewModel>(
             result.Data.Select(x => ProductViewModel.FromEntity(x)).ToList(), result.PagedResult);
     }
+
+    private Expression<Func<Product, bool>> AddFilterIfNotNullOrWhiteSpace(string value, Expression<Func<Product, bool>> filter, Expression<Func<Product, bool>> predicate)
+    {
+        return !string.IsNullOrWhiteSpace(value) ? filter.And(predicate) : filter;
+    }
+
+    private Expression<Func<Product, bool>> AddFilterIfNotDefault<T>(T value, Expression<Func<Product, bool>> filter, Expression<Func<Product, bool>> predicate) where T : struct
+    {
+        return !EqualityComparer<T>.Default.Equals(value, default) ? filter.And(predicate) : filter;
+    }
+
+    private Expression<Func<Product, bool>> AddFilterIfNotEmptyGuid(Guid value, Expression<Func<Product, bool>> filter, Expression<Func<Product, bool>> predicate)
+    {
+        return value != Guid.Empty ? filter.And(predicate) : filter;
+    }
+
+    private Func<IQueryable<Product>, IOrderedQueryable<Product>> GetOrderByFunc(string? order)
+    {
+        return order switch
+        {
+            "Name" => x => x.OrderBy(n => n.Name),
+            "Description" => x => x.OrderBy(n => n.Description),
+            "ShortDescription" => x => x.OrderBy(n => n.ShortDescription),
+            "Price" => x => x.OrderBy(n => n.Price),
+            "Weight" => x => x.OrderBy(n => n.Weight),
+            "Height" => x => x.OrderBy(n => n.Height),
+            "Length" => x => x.OrderBy(n => n.Length),
+            "CreatedAt" => x => x.OrderBy(n => n.CreatedAt),
+            "UpdatedAt" => x => x.OrderBy(n => n.UpdatedAt),
+            "DeletedAt" => x => x.OrderBy(n => n.DeletedAt),
+            _ => x => x.OrderBy(n => n.Id),
+        };
+    }
+
 }

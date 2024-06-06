@@ -15,7 +15,7 @@ namespace e_Estoque_API.UnitTest
 
             serviceCollection.AddDbContext<EstoqueDbContext>(options =>
             {
-                options.UseNpgsql($"Host=localhost;Port=5432;Pooling=true;Database=e-estoque-test;User Id=postgres;Password=dsv@123;");
+                options.UseNpgsql($"Host=ZETDEVSERVER;Port=5432;Pooling=true;Database=e-estoque;User Id=postgres;Password=dsv@123;");
             },ServiceLifetime.Scoped);
 
             serviceCollection.ResolveDependencies();

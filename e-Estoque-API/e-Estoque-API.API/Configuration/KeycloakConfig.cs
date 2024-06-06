@@ -1,6 +1,7 @@
 ﻿using Keycloak.AuthServices.Authentication;
 using Keycloak.AuthServices.Authorization;
-using Keycloak.AuthServices.Sdk.Admin;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+
 
 namespace e_Estoque_API.API.Configuration;
 
@@ -8,6 +9,7 @@ public static class KeycloakConfig
 {
     public static IServiceCollection AddKeycloakConfig(this IServiceCollection services, IConfiguration configuration)
     {
+        
         var authenticationOptions = configuration
                         .GetSection(KeycloakAuthenticationOptions.Section)
                         .Get<KeycloakAuthenticationOptions>();
@@ -15,31 +17,18 @@ public static class KeycloakConfig
         if (authenticationOptions == null)
             throw new ArgumentException("KeycloakAuthenticationOptions is required");
 
+        services.AddKeycloakWebApiAuthentication(
+            configuration.GetSection(KeycloakAuthenticationOptions.Section));
+
         var keycloakSection = configuration.GetSection("Keycloak");
         var keycloak = GetKeycloak(keycloakSection);
 
         services.AddSingleton(keycloak);
 
-        services.AddKeycloakAuthentication(authenticationOptions);
+        //services
+        //    .AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+        //    .AddKeycloakWebApi(configuration);
 
-        var authorizationOptions = configuration
-                        .GetSection(KeycloakProtectionClientOptions.Section)
-                        .Get<KeycloakProtectionClientOptions>();
-
-        if (authorizationOptions == null)
-            throw new ArgumentException("KeycloakProtectionClientOptions is required");
-
-        services.AddKeycloakAuthorization(authorizationOptions);
-
-
-        var adminClientOptions = configuration
-                        .GetSection(KeycloakAdminClientOptions.Section)
-                        .Get<KeycloakAdminClientOptions>();
-
-        if (adminClientOptions == null)
-            throw new ArgumentException("KeycloakAdminClientOptions is required");
-
-        services.AddKeycloakAdminHttpClient(adminClientOptions);
 
         return services;
     }

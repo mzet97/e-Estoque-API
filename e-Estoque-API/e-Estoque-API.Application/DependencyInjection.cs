@@ -10,8 +10,12 @@ public static class DependencyInjection
 {
     public static IServiceCollection AddApplicationServices(this IServiceCollection services)
     {
+        services.AddHttpClient();
+
+        // Registrar os validadores do FluentValidation
         services.AddValidatorsFromAssembly(typeof(BaseViewModel).Assembly);
 
+        // Configurar o MediatR
         services.AddMediatR(cfg =>
         {
             cfg.RegisterServicesFromAssembly(typeof(BaseViewModel).Assembly);
@@ -19,6 +23,13 @@ public static class DependencyInjection
             cfg.AddBehavior(typeof(IPipelineBehavior<,>), typeof(ValidationBehaviour<,>));
         });
 
+        // Configurar o AutoMapper
+        services.AddAutoMapper(cfg =>
+        {
+            cfg.AddMaps(typeof(BaseViewModel).Assembly);
+        });
+
         return services;
     }
+
 }

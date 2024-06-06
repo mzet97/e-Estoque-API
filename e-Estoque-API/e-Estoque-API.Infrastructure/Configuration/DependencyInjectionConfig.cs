@@ -1,6 +1,7 @@
 ﻿using e_Estoque_API.Core.Repositories;
 using e_Estoque_API.Infrastructure.Persistence;
 using e_Estoque_API.Infrastructure.Persistence.Repositories;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace e_Estoque_API.Infrastructure.Configuration;
@@ -9,7 +10,7 @@ public static class DependencyInjectionConfig
 {
     public static IServiceCollection ResolveDependencies(this IServiceCollection services)
     {
-        services.AddScoped<EstoqueDbContext>();
+        services.AddScoped<DbContext, EstoqueDbContext>();
 
         #region Repository
 
