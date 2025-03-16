@@ -7,7 +7,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "e-Estoque-API.API", "e-Esto
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "e-Estoque-API.Application", "e-Estoque-API.Application\e-Estoque-API.Application.csproj", "{6D71585B-559A-475B-AA7C-AF441C533561}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "e-Estoque-API.Core", "e-Estoque-API.Core\e-Estoque-API.Core.csproj", "{2F9C7DEF-DE5D-46BF-B824-4E300209CC99}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "e-Estoque-API.Domain", "e-Estoque-API.Core\e-Estoque-API.Domain.csproj", "{2F9C7DEF-DE5D-46BF-B824-4E300209CC99}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "e-Estoque-API.Infrastructure", "e-Estoque-API.Infrastructure\e-Estoque-API.Infrastructure.csproj", "{64DB2C82-4A2D-4235-9FDF-6FD10F4A3AFE}"
 EndProject

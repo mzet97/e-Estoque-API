@@ -1,6 +1,8 @@
-﻿namespace e_Estoque_API.Core.Events.Products;
+﻿using e_Estoque_API.Domain.Events;
 
-public class ProductUpdated : IDomainEvent
+namespace e_Estoque_API.Core.Events.Products;
+
+public class ProductUpdated : DomainEvent
 {
     public Guid Id { get; private set; }
     public string Name { get; private set; }
@@ -24,7 +26,7 @@ public class ProductUpdated : IDomainEvent
         decimal length,
         string image,
         Guid idCategory,
-        Guid idCompany)
+        Guid idCompany) : base()
     {
         Id = id;
         Name = name;

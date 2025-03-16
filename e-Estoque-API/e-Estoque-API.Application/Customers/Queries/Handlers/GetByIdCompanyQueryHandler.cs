@@ -25,7 +25,7 @@ public class GetByICustomerQueryHandler : IRequestHandler<GetByIdCustomerQuery, 
         GetByIdCustomerQuery request,
         CancellationToken cancellationToken)
     {
-        var entity = await _customerRepository.GetById(request.Id);
+        var entity = await _customerRepository.GetByIdAsync(request.Id);
 
         if (entity == null)
         {

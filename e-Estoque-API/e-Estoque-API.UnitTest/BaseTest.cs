@@ -3,38 +3,37 @@ using e_Estoque_API.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace e_Estoque_API.UnitTest
+namespace e_Estoque_API.UnitTest;
+
+public class BaseTest : IDisposable
 {
-    public class BaseTest : IDisposable
+    public ServiceProvider ServiceProvider { get; private set; }
+
+    public BaseTest()
     {
-        public ServiceProvider ServiceProvider { get; private set; }
+        var serviceCollection = new ServiceCollection();
 
-        public BaseTest()
+        serviceCollection.AddDbContext<EstoqueDbContext>(options =>
         {
-            var serviceCollection = new ServiceCollection();
+            options.UseNpgsql($"Host=ZETDEVSERVER;Port=5432;Pooling=true;Database=e-estoque;User Id=postgres;Password=dsv@123;");
+        },ServiceLifetime.Scoped);
 
-            serviceCollection.AddDbContext<EstoqueDbContext>(options =>
-            {
-                options.UseNpgsql($"Host=ZETDEVSERVER;Port=5432;Pooling=true;Database=e-estoque;User Id=postgres;Password=dsv@123;");
-            },ServiceLifetime.Scoped);
+        serviceCollection.ResolveDependenciesInfrastructure();
 
-            serviceCollection.ResolveDependencies();
+        ServiceProvider = serviceCollection.BuildServiceProvider();
+    }
 
-            ServiceProvider = serviceCollection.BuildServiceProvider();
-        }
-
-        public void Dispose(bool disposing)
+    public void Dispose(bool disposing)
+    {
+        if (disposing)
         {
-            if (disposing)
-            {
-                ServiceProvider?.Dispose();
-            }
+            ServiceProvider?.Dispose();
         }
+    }
 
-        public void Dispose()
-        {
-            Dispose(true);
-            GC.SuppressFinalize(this);
-        }
+    public void Dispose()
+    {
+        Dispose(true);
+        GC.SuppressFinalize(this);
     }
 }

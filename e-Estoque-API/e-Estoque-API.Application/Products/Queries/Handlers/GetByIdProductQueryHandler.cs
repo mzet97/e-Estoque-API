@@ -25,7 +25,7 @@ public class GetByIdProductQueryHandler : IRequestHandler<GetByIdProductQuery, P
         GetByIdProductQuery request,
         CancellationToken cancellationToken)
     {
-        var entity = await _productRepository.GetById(request.Id);
+        var entity = await _productRepository.GetByIdAsync(request.Id);
 
         if (entity == null)
         {

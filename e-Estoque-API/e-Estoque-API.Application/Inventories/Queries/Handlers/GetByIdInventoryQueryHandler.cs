@@ -25,7 +25,7 @@ public class GetByIdInventoryQueryHandler : IRequestHandler<GetByIdInventoryQuer
         GetByIdInventoryQuery request,
         CancellationToken cancellationToken)
     {
-        var entity = await _inventoryRepository.GetById(request.Id);
+        var entity = await _inventoryRepository.GetByIdAsync(request.Id);
 
         if (entity == null)
         {

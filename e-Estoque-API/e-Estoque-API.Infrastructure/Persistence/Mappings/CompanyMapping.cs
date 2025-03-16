@@ -39,11 +39,45 @@ public class CompanyMapping : IEntityTypeConfiguration<Company>
         builder.Property(p => p.DeletedAt)
             .IsRequired(false);
 
-        builder.Property(x => x.IdCompanyAddress).IsRequired();
+        builder.Property(a => a.CompanyAddress.Street)
+            .HasColumnName("CompanyAddress_Street")
+            .HasColumnType("varchar(80)");
 
-        builder
-            .HasOne(x => x.CompanyAddress)
-            .WithMany()
-            .HasForeignKey(x => x.IdCompanyAddress);
+        builder.Property(a => a.CompanyAddress.Number)
+            .HasColumnName("CompanyAddress_Number")
+            .HasColumnType("varchar(80)");
+
+        builder.Property(a => a.CompanyAddress.Complement)
+            .HasColumnName("CompanyAddress_Complement")
+            .HasColumnType("varchar(80)");
+
+        builder.Property(a => a.CompanyAddress.Neighborhood)
+            .HasColumnName("CompanyAddress_Neighborhood")
+            .HasColumnType("varchar(80)");
+
+        builder.Property(a => a.CompanyAddress.District)
+            .HasColumnName("CompanyAddress_District")
+            .HasColumnType("varchar(80)");
+
+        builder.Property(a => a.CompanyAddress.City)
+            .HasColumnName("CompanyAddress_City")
+            .HasColumnType("varchar(80)");
+
+        builder.Property(a => a.CompanyAddress.County)
+            .HasColumnName("CompanyAddress_County")
+            .HasColumnType("varchar(80)");
+
+        builder.Property(a => a.CompanyAddress.ZipCode)
+            .HasColumnName("CompanyAddress_ZipCode")
+            .HasColumnType("varchar(80)");
+
+        builder.Property(a => a.CompanyAddress.Latitude)
+            .HasColumnName("CompanyAddress_Latitude")
+            .HasColumnType("varchar(80)");
+
+        builder.Property(a => a.CompanyAddress.Longitude)
+            .HasColumnName("CompanyAddress_Longitude")
+            .HasColumnType("varchar(80)");
+
     }
 }

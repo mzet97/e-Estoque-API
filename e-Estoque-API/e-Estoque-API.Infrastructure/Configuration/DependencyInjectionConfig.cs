@@ -8,7 +8,7 @@ namespace e_Estoque_API.Infrastructure.Configuration;
 
 public static class DependencyInjectionConfig
 {
-    public static IServiceCollection ResolveDependencies(this IServiceCollection services)
+    public static IServiceCollection ResolveDependenciesInfrastructure(this IServiceCollection services)
     {
         services.AddScoped<DbContext, EstoqueDbContext>();
 

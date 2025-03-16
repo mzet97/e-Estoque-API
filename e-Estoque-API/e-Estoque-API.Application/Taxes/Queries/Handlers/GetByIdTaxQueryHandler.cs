@@ -25,7 +25,7 @@ public class GetByIdTaxQueryHandler : IRequestHandler<GetByIdTaxQuery, TaxViewMo
         GetByIdTaxQuery request,
         CancellationToken cancellationToken)
     {
-        var entity = await _taxRepository.GetById(request.Id);
+        var entity = await _taxRepository.GetByIdAsync(request.Id);
 
         if (entity == null)
         {

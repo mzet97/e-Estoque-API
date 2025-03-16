@@ -8,7 +8,7 @@ using System.Linq.Expressions;
 
 namespace e_Estoque_API.Application.Companies.Queries.Handlers;
 
-public class SearchCompanyQueryHandler : IRequestHandler<SearchCompanyQuery, BaseResult<CompanyViewModel>>
+public class SearchCompanyQueryHandler : IRequestHandler<SearchCompanyQuery, BaseResultList<CompanyViewModel>>
 {
     private readonly ICompanyRepository _companyRepository;
 
@@ -17,7 +17,7 @@ public class SearchCompanyQueryHandler : IRequestHandler<SearchCompanyQuery, Bas
         _companyRepository = companyRepository;
     }
 
-    public async Task<BaseResult<CompanyViewModel>> Handle(
+    public async Task<BaseResultList<CompanyViewModel>> Handle(
         SearchCompanyQuery request,
         CancellationToken cancellationToken)
     {
@@ -116,13 +116,14 @@ public class SearchCompanyQueryHandler : IRequestHandler<SearchCompanyQuery, Bas
         }
 
         var result = await _companyRepository
-            .Search(
+            .SearchAsync(
                 filter,
                 ordeBy,
+                "",
                 request.PageSize,
                 request.PageIndex);
 
-        return new BaseResult<CompanyViewModel>(
+        return new BaseResultList<CompanyViewModel>(
             result.Data.Select(x => CompanyViewModel.FromEntity(x)).ToList(), result.PagedResult);
     }
 }

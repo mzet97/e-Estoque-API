@@ -8,7 +8,7 @@ using System.Linq.Expressions;
 
 namespace e_Estoque_API.Application.Inventories.Queries.Handlers;
 
-public class SearchInventoryQueryHandler : IRequestHandler<SearchInventoryQuery, BaseResult<InventoryViewModel>>
+public class SearchInventoryQueryHandler : IRequestHandler<SearchInventoryQuery, BaseResultList<InventoryViewModel>>
 {
     private readonly IInventoryRepository _inventoryRepository;
 
@@ -17,7 +17,7 @@ public class SearchInventoryQueryHandler : IRequestHandler<SearchInventoryQuery,
         _inventoryRepository = inventoryRepository;
     }
 
-    public async Task<BaseResult<InventoryViewModel>> Handle(
+    public async Task<BaseResultList<InventoryViewModel>> Handle(
         SearchInventoryQuery request,
         CancellationToken cancellationToken)
     {
@@ -94,13 +94,14 @@ public class SearchInventoryQueryHandler : IRequestHandler<SearchInventoryQuery,
         }
 
         var result = await _inventoryRepository
-            .Search(
+            .SearchAsync(
                 filter,
                 ordeBy,
+                "",
                 request.PageSize,
                 request.PageIndex);
 
-        return new BaseResult<InventoryViewModel>(
+        return new BaseResultList<InventoryViewModel>(
             result.Data.Select(x => InventoryViewModel.FromEntity(x)).ToList(), result.PagedResult);
     }
 }

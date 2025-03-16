@@ -4,7 +4,6 @@ using e_Estoque_API.Application.Common.Behaviours;
 using e_Estoque_API.Application.Common.Notifications;
 using e_Estoque_API.Core.Models;
 using MediatR;
-using Microsoft.IdentityModel.Tokens;
 using System.Text.Json;
 
 namespace e_Estoque_API.Application.Auth.Commands.Handlers;

@@ -24,7 +24,7 @@ public class DeleteProductHandler : IRequestHandler<DeleteProductCommand, Unit>
         DeleteProductCommand request,
         CancellationToken cancellationToken)
     {
-        var entity = await _productRepository.GetById(request.Id);
+        var entity = await _productRepository.GetByIdAsync(request.Id);
 
         if (entity == null)
         {
@@ -36,7 +36,7 @@ public class DeleteProductHandler : IRequestHandler<DeleteProductCommand, Unit>
             throw new NotFoundException("Delete Error");
         }
 
-        await _productRepository.Remove(entity.Id);
+        await _productRepository.RemoveAsync(entity.Id);
 
         return Unit.Value;
     }

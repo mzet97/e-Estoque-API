@@ -5,67 +5,66 @@ using e_Estoque_API.Core.Repositories;
 using FluentAssertions;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace e_Estoque_API.UnitTest.Categories.Queries.Handlers
+namespace e_Estoque_API.UnitTest.Categories.Queries.Handlers;
+
+public class SearchCategoryQueryHandlerTest : BaseTest, IClassFixture<BaseTest>
 {
-    public class SearchCategoryQueryHandlerTest : BaseTest, IClassFixture<BaseTest>
+    private readonly ServiceProvider _serviceProvide;
+
+    public SearchCategoryQueryHandlerTest(BaseTest baseTest)
     {
-        private readonly ServiceProvider _serviceProvide;
+        _serviceProvide = baseTest.ServiceProvider;
+    }
 
-        public SearchCategoryQueryHandlerTest(BaseTest baseTest)
+    [Fact(DisplayName = "Test search category success")]
+    [Trait("SearchCategoryQueryHandlerTest", "SearchCategory QueryHandler Tests")]
+    public async Task SearchCategoryQueryHandlerSuccess()
+    {
+        // Arrange
+        var categoryRepository = _serviceProvide.GetService<ICategoryRepository>();
+        var faker = new GenerateCategoryFake().CreateValid(1).First();
+
+        await categoryRepository.AddAsync(faker);
+
+        // Act
+        var queryHandler = new SearchCategoryQueryHandler(categoryRepository);
+
+        var query = new SearchCategoryQuery
         {
-            _serviceProvide = baseTest.ServiceProvider;
-        }
+             Name= faker.Name,
+            Description= faker.Description,
+            ShortDescription= faker.ShortDescription,
+            Id= faker.Id,
+            Order= "Id"
+        };
 
-        [Fact(DisplayName = "Test search category success")]
-        [Trait("SearchCategoryQueryHandlerTest", "SearchCategory QueryHandler Tests")]
-        public async Task SearchCategoryQueryHandlerSuccess()
+        var result = await queryHandler.Handle(query, CancellationToken.None);
+
+        // Assert
+        categoryRepository.Should().NotBeNull();
+        result.Should().NotBeNull();
+    }
+
+    [Fact(DisplayName = "Test search category failure")]
+    [Trait("SearchCategoryQueryHandlerTest", "SearchCategory QueryHandler Tests")]
+    public async Task SearchCategoryQueryHandlerFailure()
+    {
+        // Arrange
+        var categoryRepository = _serviceProvide.GetService<ICategoryRepository>();
+
+        // Act
+        var queryHandler = new SearchCategoryQueryHandler(categoryRepository);
+
+        var query = new SearchCategoryQuery
         {
-            // Arrange
-            var categoryRepository = _serviceProvide.GetService<ICategoryRepository>();
-            var faker = new GenerateCategoryFake().CreateValid(1).First();
+            Id = Guid.NewGuid(),
+            Order = "Id"
+        };
 
-            await categoryRepository.Add(faker);
+        var result = await queryHandler.Handle(query, CancellationToken.None);
 
-            // Act
-            var queryHandler = new SearchCategoryQueryHandler(categoryRepository);
-
-            var query = new SearchCategoryQuery
-            {
-                 Name= faker.Name,
-                Description= faker.Description,
-                ShortDescription= faker.ShortDescription,
-                Id= faker.Id,
-                Order= "Id"
-            };
-
-            var result = await queryHandler.Handle(query, CancellationToken.None);
-
-            // Assert
-            categoryRepository.Should().NotBeNull();
-            result.Should().NotBeNull();
-        }
-
-        [Fact(DisplayName = "Test search category failure")]
-        [Trait("SearchCategoryQueryHandlerTest", "SearchCategory QueryHandler Tests")]
-        public async Task SearchCategoryQueryHandlerFailure()
-        {
-            // Arrange
-            var categoryRepository = _serviceProvide.GetService<ICategoryRepository>();
-
-            // Act
-            var queryHandler = new SearchCategoryQueryHandler(categoryRepository);
-
-            var query = new SearchCategoryQuery
-            {
-                Id = Guid.NewGuid(),
-                Order = "Id"
-            };
-
-            var result = await queryHandler.Handle(query, CancellationToken.None);
-
-            // Assert
-            categoryRepository.Should().NotBeNull();
-            result.Data.Should().BeEmpty();
-        }
+        // Assert
+        categoryRepository.Should().NotBeNull();
+        result.Data.Should().BeEmpty();
     }
 }

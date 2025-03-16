@@ -15,7 +15,11 @@ namespace e_Estoque_API.Core.Fakes
                         Guid.NewGuid(),
                         lorem.Word(),
                         lorem.Sentence(1, 2),
-                        lorem.Sentence(1, 5)
+                        lorem.Sentence(1, 5),
+                        DateTime.Now,
+                        null,
+                        null,
+                        false
                     );
 
                 list.Add(category);
@@ -34,7 +38,11 @@ namespace e_Estoque_API.Core.Fakes
                         Guid.Empty,
                         "",
                         "",
-                        ""
+                        "",
+                        DateTime.Now,
+                        null,
+                        null,
+                        false
                     );
 
                 list.Add(category);

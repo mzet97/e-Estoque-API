@@ -35,7 +35,7 @@ public class CreateTaxCommandHandler : IRequestHandler<CreateTaxCommand, Guid>
             request.Percentage,
             request.IdCategory);
 
-        if (!Validator.Validate(new TaxValidation(), entity))
+        if (!entity.IsValid())
         {
             var noticiation = new NotificationError("Validate Tax has error", "Validate Tax has error");
             var routingKey = noticiation.GetType().Name.ToDashCase();
@@ -45,7 +45,7 @@ public class CreateTaxCommandHandler : IRequestHandler<CreateTaxCommand, Guid>
             throw new ValidationException("Validate Error");
         }
 
-        var category = _categoryRepository.GetById(entity.IdCategory);
+        var category = _categoryRepository.GetByIdAsync(entity.IdCategory);
 
         if (category == null)
         {
@@ -57,7 +57,7 @@ public class CreateTaxCommandHandler : IRequestHandler<CreateTaxCommand, Guid>
             throw new ValidationException("Category not found");
         }
 
-        await _taxRepository.Add(entity);
+        await _taxRepository.AddAsync(entity);
 
         foreach (var @event in entity.Events)
         {

@@ -28,7 +28,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\e-Estoque-API.Application\e-Estoque-API.Application.csproj" />
-    <ProjectReference Include="..\e-Estoque-API.Core\e-Estoque-API.Core.csproj" />
+    <ProjectReference Include="..\e-Estoque-API.Core\e-Estoque-API.Domain.csproj" />
     <ProjectReference Include="..\e-Estoque-API.Infrastructure\e-Estoque-API.Infrastructure.csproj" />
   </ItemGroup>
 

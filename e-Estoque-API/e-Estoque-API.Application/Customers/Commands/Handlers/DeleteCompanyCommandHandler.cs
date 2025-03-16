@@ -24,7 +24,7 @@ public class DeleteCustomerCommandHandler : IRequestHandler<DeleteCustomerComman
         DeleteCustomerCommand request,
         CancellationToken cancellationToken)
     {
-        var entity = await _customerRepository.GetById(request.Id);
+        var entity = await _customerRepository.GetByIdAsync(request.Id);
 
         if (entity == null)
         {
@@ -36,7 +36,7 @@ public class DeleteCustomerCommandHandler : IRequestHandler<DeleteCustomerComman
             throw new NotFoundException("Delete Error");
         }
 
-        await _customerRepository.Remove(entity.Id);
+        await _customerRepository.RemoveAsync(entity.Id);
 
         return Unit.Value;
     }

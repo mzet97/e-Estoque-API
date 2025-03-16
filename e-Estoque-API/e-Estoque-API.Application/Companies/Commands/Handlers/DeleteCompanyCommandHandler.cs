@@ -24,7 +24,7 @@ public class DeleteCompanyCommandHandler : IRequestHandler<DeleteCompanyCommand,
         DeleteCompanyCommand request,
         CancellationToken cancellationToken)
     {
-        var entity = await _companyRepository.GetById(request.Id);
+        var entity = await _companyRepository.GetByIdAsync(request.Id);
 
         if (entity == null)
         {
@@ -36,7 +36,7 @@ public class DeleteCompanyCommandHandler : IRequestHandler<DeleteCompanyCommand,
             throw new NotFoundException("Delete Error");
         }
 
-        await _companyRepository.Remove(entity.Id);
+        await _companyRepository.RemoveAsync(entity.Id);
 
         return Unit.Value;
     }

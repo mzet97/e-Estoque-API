@@ -31,7 +31,7 @@ public class UpdateProductCommandHandler : IRequestHandler<UpdateProductCommand,
         UpdateProductCommand request,
         CancellationToken cancellationToken)
     {
-        var entity = await _productRepository.GetById(request.Id);
+        var entity = await _productRepository.GetByIdAsync(request.Id);
 
         if (entity == null)
         {
@@ -55,7 +55,7 @@ public class UpdateProductCommandHandler : IRequestHandler<UpdateProductCommand,
              request.IdCategory,
              request.IdCompany);
 
-        if (!Validator.Validate(new ProductValidation(), entity))
+        if (!entity.IsValid())
         {
             var noticiation = new NotificationError("Validate Product has error", "Validate Product has error");
             var routingKey = noticiation.GetType().Name.ToDashCase();
@@ -65,7 +65,7 @@ public class UpdateProductCommandHandler : IRequestHandler<UpdateProductCommand,
             throw new ValidationException("Validate Error");
         }
 
-        var category = await _categoryRepository.GetById(request.IdCategory);
+        var category = await _categoryRepository.GetByIdAsync(request.IdCategory);
 
         if (category == null)
         {
@@ -77,7 +77,7 @@ public class UpdateProductCommandHandler : IRequestHandler<UpdateProductCommand,
             throw new NotFoundException("Category not found");
         }
 
-        var company = await _companyRepository.GetById(request.IdCompany);
+        var company = await _companyRepository.GetByIdAsync(request.IdCompany);
 
         if (company == null)
         {
@@ -89,7 +89,7 @@ public class UpdateProductCommandHandler : IRequestHandler<UpdateProductCommand,
             throw new NotFoundException("Company not found");
         }
 
-        await _productRepository.Update(entity);
+        await _productRepository.UpdateAsync(entity);
 
         foreach (var @event in entity.Events)
         {

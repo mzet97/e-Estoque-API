@@ -1,4 +1,5 @@
 ﻿using e_Estoque_API.Core.Events.Products;
+using e_Estoque_API.Core.Validations;
 
 namespace e_Estoque_API.Core.Entities;
 
@@ -24,11 +25,13 @@ public class Product : AggregateRoot
 
     #endregion EFCRelations
 
+
     public Product()
     {
+
     }
 
-    public Product(
+    protected Product(
         Guid id,
         string name,
         string description,
@@ -39,9 +42,18 @@ public class Product : AggregateRoot
         decimal length,
         string image,
         Guid idCategory,
-        Guid idCompany)
+        Guid idCompany,
+        DateTime createdAt,
+        DateTime? updatedAt,
+        DateTime? deletedAt,
+        bool isDeleted
+        ) : base(
+            id,
+            createdAt,
+            updatedAt,
+            deletedAt,
+            isDeleted)
     {
-        Id = id;
         Name = name;
         Description = description;
         ShortDescription = shortDescription;
@@ -77,9 +89,11 @@ public class Product : AggregateRoot
             length,
             image,
             idCategory,
-            idCompany);
-
-        product.CreatedAt = DateTime.UtcNow;
+            idCompany,
+            DateTime.Now,
+            null,
+            null,
+            false);
 
         product.AddEvent(new ProductCreated(
             product.Id,
@@ -119,7 +133,7 @@ public class Product : AggregateRoot
         IdCategory = idCategory;
         IdCompany = idCompany;
 
-        UpdatedAt = DateTime.UtcNow;
+        Update();
 
         AddEvent(new ProductUpdated(
             Id,
@@ -133,5 +147,21 @@ public class Product : AggregateRoot
             Image,
             IdCategory,
             IdCompany));
+    }
+
+    public override void Validate()
+    {
+        var validator = new ProductValidation();
+        var result = validator.Validate(this);
+        if (!result.IsValid)
+        {
+            _errors = result.Errors.Select(x => x.ErrorMessage);
+            _isValid = false;
+        }
+        else
+        {
+            _errors = Enumerable.Empty<string>();
+            _isValid = true;
+        }
     }
 }

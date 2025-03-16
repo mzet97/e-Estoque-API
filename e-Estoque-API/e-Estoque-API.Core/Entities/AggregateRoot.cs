@@ -1,22 +1,19 @@
 ﻿using e_Estoque_API.Core.Events;
+using e_Estoque_API.Domain.Entities;
 
 namespace e_Estoque_API.Core.Entities;
 
-public class AggregateRoot : IEntityBase
+public class AggregateRoot : Entity
 {
-    public Guid Id { get; set; }
-    public DateTime CreatedAt { get; set; }
-    public DateTime? UpdatedAt { get; set; }
-    public DateTime? DeletedAt { get; set; }
-
-    private List<IDomainEvent> _events = new List<IDomainEvent>();
-    public IEnumerable<IDomainEvent> Events => _events;
-
-    protected void AddEvent(IDomainEvent @event)
+    protected AggregateRoot()
     {
-        if (_events == null)
-            _events = new List<IDomainEvent>();
-
-        _events.Add(@event);
+    }
+    protected AggregateRoot(
+        Guid id,
+        DateTime createdAt,
+        DateTime? updatedAt,
+        DateTime? deletedAt,
+        bool isDeleted) : base(id, createdAt, updatedAt, deletedAt, isDeleted)
+    {
     }
 }

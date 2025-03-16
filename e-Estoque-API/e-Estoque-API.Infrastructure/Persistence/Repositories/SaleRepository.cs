@@ -12,7 +12,7 @@ public class SaleRepository : Repository<Sale>, ISaleRepository
     {
     }
 
-    public override async Task<IEnumerable<Sale>> Find(Expression<Func<Sale, bool>> predicate)
+    public override async Task<IEnumerable<Sale>> FindAsync(Expression<Func<Sale, bool>> predicate)
     {
         return await DbSet
             .AsNoTracking()
@@ -23,7 +23,7 @@ public class SaleRepository : Repository<Sale>, ISaleRepository
             .ToListAsync();
     }
 
-    public override async Task<IEnumerable<Sale>> GetAll()
+    public override async Task<IEnumerable<Sale>> GetAllAsync()
     {
         return await DbSet
              .Include("Customer")
@@ -33,7 +33,7 @@ public class SaleRepository : Repository<Sale>, ISaleRepository
              .ToListAsync();
     }
 
-    public override async Task<Sale?> GetById(Guid id)
+    public override async Task<Sale?> GetByIdAsync(Guid id)
     {
         return await DbSet
             .Include("Customer")
@@ -44,7 +44,7 @@ public class SaleRepository : Repository<Sale>, ISaleRepository
             .FirstOrDefaultAsync();
     }
 
-    public override async Task<BaseResult<Sale>> Search(
+    public override async Task<BaseResultList<Sale>> SearchAsync(
         Expression<Func<Sale, bool>>? predicate = null,
         Func<IQueryable<Sale>, IOrderedQueryable<Sale>>? orderBy = null,
         int pageSize = 10, int page = 1)
@@ -71,9 +71,9 @@ public class SaleRepository : Repository<Sale>, ISaleRepository
         if (orderBy != null)
         {
             var data = await orderBy(query).ToListAsync();
-            return new BaseResult<Sale>(data, paged);
+            return new BaseResultList<Sale>(data, paged);
         }
 
-        return new BaseResult<Sale>(await query.ToListAsync(), paged);
+        return new BaseResultList<Sale>(await query.ToListAsync(), paged);
     }
 }

@@ -23,7 +23,7 @@ public class GetByIdCategoryQueryHandler : IRequestHandler<GetByIdCategoryQuery,
         GetByIdCategoryQuery request,
         CancellationToken cancellationToken)
     {
-        var entity = await _categoryRepository.GetById(request.Id);
+        var entity = await _categoryRepository.GetByIdAsync(request.Id);
 
         if (entity == null)
         {

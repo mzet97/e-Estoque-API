@@ -1,9 +1,10 @@
 ﻿using e_Estoque_API.Core.Entities;
 using e_Estoque_API.Core.Enums;
+using e_Estoque_API.Domain.Events;
 
 namespace e_Estoque_API.Core.Events.Sales;
 
-public class SaleCreated : IDomainEvent
+public class SaleCreated : DomainEvent
 {
     public Guid Id { get; private set; }
     public int Quantity { get; private set; }

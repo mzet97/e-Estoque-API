@@ -1,5 +1,6 @@
 ﻿using e_Estoque_API.Core.Enums;
 using e_Estoque_API.Core.Events.Sales;
+using e_Estoque_API.Core.Validations;
 
 namespace e_Estoque_API.Core.Entities;
 
@@ -29,7 +30,9 @@ public class Sale : AggregateRoot
     {
     }
 
-    public Sale(
+
+    protected Sale(
+        Guid id,
         int quantity,
         decimal totalPrice,
         decimal totalTax,
@@ -39,37 +42,18 @@ public class Sale : AggregateRoot
         DateTime saleDate,
         DateTime? paymentDate,
         Guid idCustomer,
-        List<SaleProduct> saleProducts)
-    {
-        Quantity = quantity;
-        TotalPrice = totalPrice;
-        TotalTax = totalTax;
-        SaleType = saleType;
-        PaymentType = paymentType;
-        DeliveryDate = deliveryDate;
-        SaleDate = saleDate;
-        PaymentDate = paymentDate;
-        IdCustomer = idCustomer;
-        SaleProducts = saleProducts;
-    }
-
-    public Sale(
-       Guid id,
-       int quantity,
-       decimal totalPrice,
-       decimal totalTax,
-       SaleType saleType,
-       PaymentType paymentType,
-       DateTime? deliveryDate,
-       DateTime saleDate,
-       DateTime? paymentDate,
+        IEnumerable<SaleProduct> saleProducts,
         DateTime createdAt,
         DateTime? updatedAt,
         DateTime? deletedAt,
-       Guid idCustomer,
-       List<SaleProduct> saleProducts)
+        bool isDeleted
+        ) : base(
+            id,
+            createdAt,
+            updatedAt,
+            deletedAt,
+            isDeleted)
     {
-        Id = id;
         Quantity = quantity;
         TotalPrice = totalPrice;
         TotalTax = totalTax;
@@ -78,9 +62,6 @@ public class Sale : AggregateRoot
         DeliveryDate = deliveryDate;
         SaleDate = saleDate;
         PaymentDate = paymentDate;
-        CreatedAt = createdAt;
-        UpdatedAt = updatedAt;
-        DeletedAt = deletedAt;
         IdCustomer = idCustomer;
         SaleProducts = saleProducts;
     }
@@ -98,18 +79,21 @@ public class Sale : AggregateRoot
         List<SaleProduct> saleProducts)
     {
         var sale = new Sale(
-        quantity,
-        totalPrice,
-        totalTax,
-        saleType,
-        paymentType,
-        deliveryDate,
-        saleDate,
-        paymentDate,
-        idCustomer,
-        saleProducts);
-
-        sale.CreatedAt = DateTime.UtcNow;
+            Guid.NewGuid(),
+            quantity,
+            totalPrice,
+            totalTax,
+            saleType,
+            paymentType,
+            deliveryDate,
+            saleDate,
+            paymentDate,
+            idCustomer,
+            saleProducts,
+            DateTime.Now,
+            null,
+            null,
+            false);
 
         sale.AddEvent(new SaleCreated(
             sale.Id,
@@ -150,7 +134,7 @@ public class Sale : AggregateRoot
         IdCustomer = idCustomer;
         SaleProducts = saleProducts;
 
-        UpdatedAt = DateTime.UtcNow;
+        Update();
 
         AddEvent(new SaleUpdated(
             Id,
@@ -169,5 +153,21 @@ public class Sale : AggregateRoot
     public static IEnumerable<Product> SaleProductsToProduct(IEnumerable<SaleProduct> saleProducts)
     {
         return saleProducts.Select(saleProduct => saleProduct.Product);
+    }
+
+    public override void Validate()
+    {
+        var validator = new SaleValidation();
+        var result = validator.Validate(this);
+        if (!result.IsValid)
+        {
+            _errors = result.Errors.Select(x => x.ErrorMessage);
+            _isValid = false;
+        }
+        else
+        {
+            _errors = Enumerable.Empty<string>();
+            _isValid = true;
+        }
     }
 }

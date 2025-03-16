@@ -2,7 +2,6 @@
 using e_Estoque_API.Core.Models;
 using e_Estoque_API.Core.Repositories;
 using Microsoft.EntityFrameworkCore;
-using System.Linq;
 using System.Linq.Expressions;
 
 namespace e_Estoque_API.Infrastructure.Persistence.Repositories;
@@ -13,7 +12,7 @@ public class TaxRepository : Repository<Tax>, ITaxRepository
     {
     }
 
-    public override async Task<IEnumerable<Tax>> Find(Expression<Func<Tax, bool>> predicate)
+    public override async Task<IEnumerable<Tax>> FindAsync(Expression<Func<Tax, bool>> predicate)
     {
         return await DbSet
             .AsNoTracking()
@@ -22,7 +21,7 @@ public class TaxRepository : Repository<Tax>, ITaxRepository
             .ToListAsync();
     }
 
-    public override async Task<IEnumerable<Tax>> GetAll()
+    public override async Task<IEnumerable<Tax>> GetAllAsync()
     {
         return await DbSet
             .Include("Category")
@@ -30,7 +29,7 @@ public class TaxRepository : Repository<Tax>, ITaxRepository
             .ToListAsync();
     }
 
-    public override async Task<Tax?> GetById(Guid id)
+    public override async Task<Tax?> GetByIdAsync(Guid id)
     {
         return await DbSet
             .Include("Category")
@@ -39,7 +38,7 @@ public class TaxRepository : Repository<Tax>, ITaxRepository
             .FirstOrDefaultAsync();
     }
 
-    public override async Task<BaseResult<Tax>> Search(
+    public override async Task<BaseResultList<Tax>> SearchAsync(
         Expression<Func<Tax, bool>>? predicate = null,
         Func<IQueryable<Tax>, IOrderedQueryable<Tax>>? orderBy = null,
         int pageSize = 10, int page = 1)
@@ -62,9 +61,9 @@ public class TaxRepository : Repository<Tax>, ITaxRepository
         if (orderBy != null)
         {
             var data = await orderBy(query).ToListAsync();
-            return new BaseResult<Tax>(data, paged);
+            return new BaseResultList<Tax>(data, paged);
         }
 
-        return new BaseResult<Tax>(await query.ToListAsync(), paged);
+        return new BaseResultList<Tax>(await query.ToListAsync(), paged);
     }
 }

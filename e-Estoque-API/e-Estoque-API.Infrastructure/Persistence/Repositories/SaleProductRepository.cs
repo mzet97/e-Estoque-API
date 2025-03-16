@@ -2,7 +2,6 @@
 using e_Estoque_API.Core.Models;
 using e_Estoque_API.Core.Repositories;
 using Microsoft.EntityFrameworkCore;
-using System.Linq;
 using System.Linq.Expressions;
 
 namespace e_Estoque_API.Infrastructure.Persistence.Repositories;
@@ -13,7 +12,7 @@ public class SaleProductRepository : Repository<SaleProduct>, ISaleProductReposi
     {
     }
 
-    public override async Task<IEnumerable<SaleProduct>> Find(Expression<Func<SaleProduct, bool>> predicate)
+    public override async Task<IEnumerable<SaleProduct>> FindAsync(Expression<Func<SaleProduct, bool>> predicate)
     {
         return await DbSet
             .AsNoTracking()
@@ -23,7 +22,7 @@ public class SaleProductRepository : Repository<SaleProduct>, ISaleProductReposi
             .ToListAsync();
     }
 
-    public override async Task<IEnumerable<SaleProduct>> GetAll()
+    public override async Task<IEnumerable<SaleProduct>> GetAllAsync()
     {
         return await DbSet
              .Include("Product")
@@ -32,7 +31,7 @@ public class SaleProductRepository : Repository<SaleProduct>, ISaleProductReposi
              .ToListAsync();
     }
 
-    public override async Task<SaleProduct?> GetById(Guid id)
+    public override async Task<SaleProduct?> GetByIdAsync(Guid id)
     {
         return await DbSet
             .Include("Product")
@@ -42,7 +41,7 @@ public class SaleProductRepository : Repository<SaleProduct>, ISaleProductReposi
             .FirstOrDefaultAsync();
     }
 
-    public override async Task<BaseResult<SaleProduct>> Search(
+    public override async Task<BaseResultList<SaleProduct>> SearchAsync(
         Expression<Func<SaleProduct, bool>>? predicate = null,
         Func<IQueryable<SaleProduct>, IOrderedQueryable<SaleProduct>>? orderBy = null,
         int pageSize = 10, int page = 1)
@@ -67,9 +66,9 @@ public class SaleProductRepository : Repository<SaleProduct>, ISaleProductReposi
         if (orderBy != null)
         {
             var data = await orderBy(query).ToListAsync();
-            return new BaseResult<SaleProduct>(data, paged);
+            return new BaseResultList<SaleProduct>(data, paged);
         }
 
-        return new BaseResult<SaleProduct>(await query.ToListAsync(), paged);
+        return new BaseResultList<SaleProduct>(await query.ToListAsync(), paged);
     }
 }

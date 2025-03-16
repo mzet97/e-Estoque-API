@@ -25,7 +25,7 @@ public class GetByIdCompanyQueryHandler : IRequestHandler<GetByIdCompanyQuery, C
         GetByIdCompanyQuery request,
         CancellationToken cancellationToken)
     {
-        var entity = await _companyRepository.GetById(request.Id);
+        var entity = await _companyRepository.GetByIdAsync(request.Id);
 
         if (entity == null)
         {

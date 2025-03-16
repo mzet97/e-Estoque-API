@@ -32,7 +32,7 @@ public class CreateInventoryCommandHandler : IRequestHandler<CreateInventoryComm
     {
         var entity = Inventory.Create(request.Quantity, request.DateOrder, request.IdProduct);
 
-        if (!Validator.Validate(new InventoryValidation(), entity))
+        if (!entity.IsValid())
         {
             var noticiation = new NotificationError("Validate Inventory has error", "Validate Inventory has error");
             var routingKey = noticiation.GetType().Name.ToDashCase();
@@ -42,7 +42,7 @@ public class CreateInventoryCommandHandler : IRequestHandler<CreateInventoryComm
             throw new ValidationException("Inventory Error");
         }
 
-        var product = await _productRepository.GetById(request.IdProduct);
+        var product = await _productRepository.GetByIdAsync(request.IdProduct);
 
         if (product == null)
         {
@@ -54,7 +54,7 @@ public class CreateInventoryCommandHandler : IRequestHandler<CreateInventoryComm
             throw new NotFoundException("Product not found");
         }
 
-        await _inventoryRepository.Add(entity);
+        await _inventoryRepository.AddAsync(entity);
 
         foreach (var @event in entity.Events)
         {

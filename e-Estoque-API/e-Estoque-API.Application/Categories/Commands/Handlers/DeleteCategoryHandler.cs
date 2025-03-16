@@ -25,7 +25,7 @@ public class DeleteCategoryHandler : IRequestHandler<DeleteCategoryCommand, Unit
         DeleteCategoryCommand request,
         CancellationToken cancellationToken)
     {
-        var entity = await _categoryRepository.GetById(request.Id);
+        var entity = await _categoryRepository.GetByIdAsync(request.Id);
 
         if (entity == null)
         {
@@ -37,7 +37,7 @@ public class DeleteCategoryHandler : IRequestHandler<DeleteCategoryCommand, Unit
             throw new NotFoundException("Delete Error");
         }
 
-        await _categoryRepository.Remove(entity.Id);
+        await _categoryRepository.RemoveAsync(entity.Id);
 
         return Unit.Value;
     }

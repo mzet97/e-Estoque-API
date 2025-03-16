@@ -1,8 +1,10 @@
 ﻿using e_Estoque_API.Core.Events.Inventories;
+using e_Estoque_API.Core.Validations;
+using e_Estoque_API.Domain.Entities;
 
 namespace e_Estoque_API.Core.Entities;
 
-public class Inventory : AggregateRoot
+public class Inventory : Entity
 {
     public int Quantity { get; private set; }
     public DateTime DateOrder { get; private set; }
@@ -16,35 +18,85 @@ public class Inventory : AggregateRoot
 
     public Inventory()
     {
+
     }
 
-    public Inventory(Guid id, int quantity, DateTime dateOrder, Guid idProduct)
+    public Inventory(
+        Guid id,
+        int quantity,
+        DateTime dateOrder,
+        Guid idProduct,
+        DateTime createdAt,
+        DateTime? updatedAt,
+        DateTime? deletedAt,
+        bool isDeleted
+        ) : base(
+            id,
+            createdAt,
+            updatedAt,
+            deletedAt,
+            isDeleted)
     {
-        Id = id;
         Quantity = quantity;
         DateOrder = dateOrder;
         IdProduct = idProduct;
     }
 
-    public static Inventory Create(int quantity, DateTime dateOrder, Guid idProduct)
+    public static Inventory Create(
+        int quantity,
+        DateTime dateOrder,
+        Guid idProduct)
     {
-        var inventory = new Inventory(Guid.NewGuid(), quantity, dateOrder, idProduct);
+        var inventory = new Inventory(
+            Guid.NewGuid(),
+            quantity,
+            dateOrder,
+            idProduct,
+            DateTime.Now,
+            null,
+            null, 
+            false);
 
-        inventory.CreatedAt = DateTime.UtcNow;
-
-        inventory.AddEvent(new InventoryCreated(inventory.Id, inventory.Quantity, inventory.DateOrder, inventory.IdProduct));
+        inventory.AddEvent(new InventoryCreated(
+            inventory.Id,
+            inventory.Quantity,
+            inventory.DateOrder,
+            inventory.IdProduct));
 
         return inventory;
     }
 
-    public void Update(int quantity, DateTime dateOrder, Guid idProduct)
+    public void Update(
+        int quantity,
+        DateTime dateOrder,
+        Guid idProduct)
     {
         Quantity = quantity;
         DateOrder = dateOrder;
         IdProduct = idProduct;
 
-        UpdatedAt = DateTime.UtcNow;
+        Update();
 
-        AddEvent(new InventoryUpdated(Id, Quantity, DateOrder, IdProduct));
+        AddEvent(new InventoryUpdated(
+            Id,
+            Quantity,
+            DateOrder,
+            IdProduct));
+    }
+
+    public override void Validate()
+    {
+        var validator = new InventoryValidation();
+        var result = validator.Validate(this);
+        if (!result.IsValid)
+        {
+            _errors = result.Errors.Select(x => x.ErrorMessage);
+            _isValid = false;
+        }
+        else
+        {
+            _errors = Enumerable.Empty<string>();
+            _isValid = true;
+        }
     }
 }

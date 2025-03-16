@@ -24,7 +24,7 @@ public class DeleteInventoryHandler : IRequestHandler<DeleteInventoryCommand, Un
         DeleteInventoryCommand request,
         CancellationToken cancellationToken)
     {
-        var entity = await _inventoryRepository.GetById(request.Id);
+        var entity = await _inventoryRepository.GetByIdAsync(request.Id);
 
         if (entity == null)
         {
@@ -36,7 +36,7 @@ public class DeleteInventoryHandler : IRequestHandler<DeleteInventoryCommand, Un
             throw new NotFoundException("Delete Error");
         }
 
-        await _inventoryRepository.Remove(entity.Id);
+        await _inventoryRepository.RemoveAsync(entity.Id);
 
         return Unit.Value;
     }

@@ -1,4 +1,5 @@
 ﻿using e_Estoque_API.Application.Dtos.InputModels;
+using e_Estoque_API.Domain.ValueObjects;
 using MediatR;
 
 namespace e_Estoque_API.Application.Customers.Commands;
@@ -11,5 +12,5 @@ public class CreateCustomerCommand : IRequest<Guid>
     public string Description { get; set; } = string.Empty;
     public string PhoneNumber { get; set; } = string.Empty;
 
-    public AddressInputModel Address { get; set; }
+    public CustomerAddress CustomerAddress { get; set; }
 }

@@ -1,5 +1,6 @@
 ﻿using e_Estoque_API.Application.Dtos.ViewModels;
 using e_Estoque_API.Core.Entities;
+using e_Estoque_API.Domain.ValueObjects;
 
 namespace e_Estoque_API.Application.Companies.ViewModels;
 
@@ -11,8 +12,7 @@ public class CompanyViewModel : BaseViewModel
     public string Description { get; set; }
     public string PhoneNumber { get; set; }
 
-    public Guid IdCompanyAddress { get; set; }
-    public AddressViewModel CompanyAddress { get; set; }
+    public CompanyAddress CompanyAddress { get; set; }
 
     public CompanyViewModel(
         Guid id,
@@ -21,8 +21,7 @@ public class CompanyViewModel : BaseViewModel
         string email,
         string description,
         string phoneNumber,
-        Guid idCompanyAddress,
-        AddressViewModel companyAddress,
+        CompanyAddress companyAddress,
         DateTime createdAt,
         DateTime? updatedAt,
         DateTime? deletedAt
@@ -33,7 +32,6 @@ public class CompanyViewModel : BaseViewModel
         Email = email;
         Description = description;
         PhoneNumber = phoneNumber;
-        IdCompanyAddress = idCompanyAddress;
         CompanyAddress = companyAddress;
     }
 
@@ -46,8 +44,7 @@ public class CompanyViewModel : BaseViewModel
             entity.Email,
             entity.Description,
             entity.PhoneNumber,
-            entity.IdCompanyAddress,
-            AddressViewModel.FromEntity(entity.CompanyAddress),
+            entity.CompanyAddress,
             entity.CreatedAt,
             entity.UpdatedAt,
             entity.DeletedAt);

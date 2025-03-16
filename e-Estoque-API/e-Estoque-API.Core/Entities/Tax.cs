@@ -1,8 +1,10 @@
 ﻿using e_Estoque_API.Core.Events.Taxes;
+using e_Estoque_API.Core.Validations;
+using e_Estoque_API.Domain.Entities;
 
 namespace e_Estoque_API.Core.Entities;
 
-public class Tax : AggregateRoot
+public class Tax : Entity
 {
     public string Name { get; private set; } = string.Empty;
     public string Description { get; private set; } = string.Empty;
@@ -19,22 +21,52 @@ public class Tax : AggregateRoot
     {
     }
 
-    public Tax(Guid id, string name, string description, decimal percentage, Guid idCategory)
+    public Tax(
+        Guid id,
+        string name,
+        string description,
+        decimal percentage,
+        Guid idCategory,
+        DateTime createdAt,
+        DateTime? updatedAt,
+        DateTime? deletedAt,
+        bool isDeleted
+    ) : base(
+            id,
+            createdAt,
+            updatedAt,
+            deletedAt,
+            isDeleted)
     {
-        Id = id;
         Name = name;
         Description = description;
         Percentage = percentage;
         IdCategory = idCategory;
     }
 
-    public static Tax Create(string name, string description, decimal percentage, Guid idCategory)
+    public static Tax Create(
+        string name,
+        string description,
+        decimal percentage,
+        Guid idCategory)
     {
-        var tax = new Tax(Guid.NewGuid(), name, description, percentage, idCategory);
+        var tax = new Tax(
+            Guid.NewGuid(),
+            name,
+            description,
+            percentage,
+            idCategory,
+            DateTime.Now,
+            null,
+            null,
+            false);
 
-        tax.CreatedAt = DateTime.UtcNow;
-
-        tax.AddEvent(new TaxCreated(tax.Id, tax.Name, tax.Description, tax.Percentage, tax.IdCategory));
+        tax.AddEvent(new TaxCreated(
+            tax.Id,
+            tax.Name,
+            tax.Description,
+            tax.Percentage,
+            tax.IdCategory));
 
         return tax;
     }
@@ -46,8 +78,29 @@ public class Tax : AggregateRoot
         Percentage = percentage;
         IdCategory = idCategory;
 
-        UpdatedAt = DateTime.UtcNow;
+        Update();
 
-        AddEvent(new TaxUpdated(Id, Name, Description, Percentage, IdCategory));
+        AddEvent(new TaxUpdated(
+            Id,
+            Name,
+            Description,
+            Percentage,
+            IdCategory));
+    }
+
+    public override void Validate()
+    {
+        var validator = new TaxValidation();
+        var result = validator.Validate(this);
+        if (!result.IsValid)
+        {
+            _errors = result.Errors.Select(x => x.ErrorMessage);
+            _isValid = false;
+        }
+        else
+        {
+            _errors = Enumerable.Empty<string>();
+            _isValid = true;
+        }
     }
 }

@@ -9,58 +9,65 @@ using FluentAssertions;
 using Microsoft.Extensions.DependencyInjection;
 using Moq;
 
-namespace e_Estoque_API.UnitTest.Categories.Commands.Handlers
+namespace e_Estoque_API.UnitTest.Categories.Commands.Handlers;
+
+public class DeleteCategoryHandlerTest : BaseTest, IClassFixture<BaseTest>
 {
-    public class DeleteCategoryHandlerTest : BaseTest, IClassFixture<BaseTest>
+    private readonly ServiceProvider _serviceProvide;
+
+    public DeleteCategoryHandlerTest(BaseTest baseTest)
     {
-        private readonly ServiceProvider _serviceProvide;
+        _serviceProvide = baseTest.ServiceProvider;
+    }
 
-        public DeleteCategoryHandlerTest(BaseTest baseTest)
-        {
-            _serviceProvide = baseTest.ServiceProvider;
-        }
+    [Fact(DisplayName = "Test delete category success")]
+    [Trait("DeleteCategoryHandlerTest", "DeleteCategory CommandHandler Tests")]
+    public async Task DeleteCategoryHandlerSuccess()
+    {
+        // Arrange
+        var categoryRepository = _serviceProvide.GetService<ICategoryRepository>();
+        var messageBusMock = new Mock<IMessageBusClient>();
+        var faker = new GenerateCategoryFake().CreateValid(1).First();
+        var category = new Category(
+            faker.Id,
+            faker.Name,
+            faker.Description,
+            faker.ShortDescription,
+            DateTime.Now,
+            null,
+            null,
+            false);
 
-        [Fact(DisplayName = "Test delete category success")]
-        [Trait("DeleteCategoryHandlerTest", "DeleteCategory CommandHandler Tests")]
-        public async Task DeleteCategoryHandlerSuccess()
-        {
-            // Arrange
-            var categoryRepository = _serviceProvide.GetService<ICategoryRepository>();
-            var messageBusMock = new Mock<IMessageBusClient>();
-            var faker = new GenerateCategoryFake().CreateValid(1).First();
-            var category = new Category(faker.Id, faker.Name, faker.Description, faker.ShortDescription);
+        await categoryRepository.AddAsync(category);
 
-            await categoryRepository.Add(category);
+        // Act
+        var commandHandler = new DeleteCategoryHandler(categoryRepository, messageBusMock.Object);
+        var command = new DeleteCategoryCommand(category.Id);
 
-            // Act
-            var commandHandler = new DeleteCategoryHandler(categoryRepository, messageBusMock.Object);
-            var command = new DeleteCategoryCommand(category.Id);
+        var result = await commandHandler.Handle(command, CancellationToken.None);
 
-            var result = await commandHandler.Handle(command, CancellationToken.None);
+        // Assert
+        categoryRepository.Should().NotBeNull();
+        result.Should().NotBeNull();
+    }
 
-            // Assert
-            categoryRepository.Should().NotBeNull();
-            result.Should().NotBeNull();
-        }
+    [Fact(DisplayName = "Test delete category failure")]
+    [Trait("DeleteCategoryHandlerTest", "DeleteCategory CommandHandler Tests")]
+    public async Task DeleteCategoryHandlerFailure()
+    {
+        // Arrange
+        var categoryRepository = _serviceProvide.GetService<ICategoryRepository>();
+        var messageBusMock = new Mock<IMessageBusClient>();
+        var faker = new GenerateCategoryFake().CreateInValid(1).First();
 
-        [Fact(DisplayName = "Test delete category failure")]
-        [Trait("DeleteCategoryHandlerTest", "DeleteCategory CommandHandler Tests")]
-        public async Task DeleteCategoryHandlerFailure()
-        {
-            // Arrange
-            var categoryRepository = _serviceProvide.GetService<ICategoryRepository>();
-            var messageBusMock = new Mock<IMessageBusClient>();
-            var faker = new GenerateCategoryFake().CreateInValid(1).First();
+        // Act
+        var commandHandler = new DeleteCategoryHandler(categoryRepository, messageBusMock.Object);
+        var command = new DeleteCategoryCommand(faker.Id);
 
-            // Act
-            var commandHandler = new DeleteCategoryHandler(categoryRepository, messageBusMock.Object);
-            var command = new DeleteCategoryCommand(faker.Id);
+        Func<Task> act = async () => await commandHandler.Handle(command, CancellationToken.None);
 
-            Func<Task> act = async () => await commandHandler.Handle(command, CancellationToken.None);
-
-            // Assert
-            categoryRepository.Should().NotBeNull();
-            await act.Should().ThrowAsync<NotFoundException>();
-        }
+        // Assert
+        categoryRepository.Should().NotBeNull();
+        await act.Should().ThrowAsync<NotFoundException>();
     }
 }

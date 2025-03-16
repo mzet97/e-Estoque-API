@@ -1,4 +1,4 @@
-﻿using e_Estoque_API.Application.Dtos.InputModels;
+﻿using e_Estoque_API.Domain.ValueObjects;
 using MediatR;
 
 namespace e_Estoque_API.Application.Customers.Commands;
@@ -12,6 +12,5 @@ public class UpdateCustomerCommand : IRequest<Guid>
     public string Description { get; set; } = string.Empty;
     public string PhoneNumber { get; set; } = string.Empty;
 
-    public Guid IdCustomerAddress { get; set; }
-    public AddressInputModel Address { get; set; } = null!;
+    public CustomerAddress CustomerAddress { get; set; } = null!;
 }

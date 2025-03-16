@@ -22,7 +22,7 @@ public class DeleteTaxHandler : IRequestHandler<DeleteTaxCommand, Unit>
         DeleteTaxCommand request,
         CancellationToken cancellationToken)
     {
-        var entity = await _taxRepository.GetById(request.Id);
+        var entity = await _taxRepository.GetByIdAsync(request.Id);
 
         if (entity == null)
         {
@@ -34,7 +34,7 @@ public class DeleteTaxHandler : IRequestHandler<DeleteTaxCommand, Unit>
             throw new NotFoundException("Delete Error");
         }
 
-        await _taxRepository.Remove(entity.Id);
+        await _taxRepository.RemoveAsync(entity.Id);
 
         return Unit.Value;
     }

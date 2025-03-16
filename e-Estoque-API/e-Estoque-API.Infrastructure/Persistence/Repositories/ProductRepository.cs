@@ -12,7 +12,7 @@ public class ProductRepository : Repository<Product>, IProductRepository
     {
     }
 
-    public override async Task<IEnumerable<Product>> Find(Expression<Func<Product, bool>> predicate)
+    public override async Task<IEnumerable<Product>> FindAsync(Expression<Func<Product, bool>> predicate)
     {
         return await DbSet
             .AsNoTracking()
@@ -23,7 +23,7 @@ public class ProductRepository : Repository<Product>, IProductRepository
             .ToListAsync();
     }
 
-    public override async Task<IEnumerable<Product>> GetAll()
+    public override async Task<IEnumerable<Product>> GetAllAsync()
     {
         return await DbSet
             .Include("Category")
@@ -33,7 +33,7 @@ public class ProductRepository : Repository<Product>, IProductRepository
             .ToListAsync();
     }
 
-    public override async Task<Product?> GetById(Guid id)
+    public override async Task<Product?> GetByIdAsync(Guid id)
     {
         return await DbSet
             .Include("Category")
@@ -44,7 +44,7 @@ public class ProductRepository : Repository<Product>, IProductRepository
             .FirstOrDefaultAsync();
     }
 
-    public override async Task<BaseResult<Product>> Search(
+    public override async Task<BaseResultList<Product>> SearchAsync(
         Expression<Func<Product, bool>>? predicate = null,
         Func<IQueryable<Product>, IOrderedQueryable<Product>>? orderBy = null,
         int pageSize = 10, int page = 1)
@@ -71,9 +71,9 @@ public class ProductRepository : Repository<Product>, IProductRepository
         if (orderBy != null)
         {
             var data = await orderBy(query).ToListAsync();
-            return new BaseResult<Product>(data, paged);
+            return new BaseResultList<Product>(data, paged);
         }
 
-        return new BaseResult<Product>(await query.ToListAsync(), paged);
+        return new BaseResultList<Product>(await query.ToListAsync(), paged);
     }
 }

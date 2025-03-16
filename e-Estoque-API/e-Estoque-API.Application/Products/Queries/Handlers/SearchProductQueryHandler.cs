@@ -8,7 +8,7 @@ using System.Linq.Expressions;
 
 namespace e_Estoque_API.Application.Products.Queries.Handlers;
 
-public class SearchProductQueryHandler : IRequestHandler<SearchProductQuery, BaseResult<ProductViewModel>>
+public class SearchProductQueryHandler : IRequestHandler<SearchProductQuery, BaseResultList<ProductViewModel>>
 {
     private readonly IProductRepository _productRepository;
 
@@ -17,7 +17,7 @@ public class SearchProductQueryHandler : IRequestHandler<SearchProductQuery, Bas
         _productRepository = productRepository;
     }
 
-    public async Task<BaseResult<ProductViewModel>> Handle(
+    public async Task<BaseResultList<ProductViewModel>> Handle(
      SearchProductQuery request,
      CancellationToken cancellationToken)
     {
@@ -47,13 +47,13 @@ public class SearchProductQueryHandler : IRequestHandler<SearchProductQuery, Bas
         orderBy = GetOrderByFunc(request.Order);
 
         var result = await _productRepository
-            .Search(
+            .SearchAsync(
                 filter,
                 orderBy,
                 request.PageSize,
                 request.PageIndex);
 
-        return new BaseResult<ProductViewModel>(
+        return new BaseResultList<ProductViewModel>(
             result.Data.Select(x => ProductViewModel.FromEntity(x)).ToList(), result.PagedResult);
     }
 

@@ -2,7 +2,6 @@
 using e_Estoque_API.Core.Events;
 using e_Estoque_API.Core.Exceptions;
 using e_Estoque_API.Core.Repositories;
-using e_Estoque_API.Core.Validations;
 using e_Estoque_API.Infrastructure.MessageBus;
 using MediatR;
 
@@ -28,7 +27,7 @@ public class UpdateTaxCommandHandler : IRequestHandler<UpdateTaxCommand, Guid>
         UpdateTaxCommand request,
         CancellationToken cancellationToken)
     {
-        var entity = await _taxRepository.GetById(request.Id);
+        var entity = await _taxRepository.GetByIdAsync(request.Id);
 
         if (entity == null)
         {
@@ -47,7 +46,7 @@ public class UpdateTaxCommandHandler : IRequestHandler<UpdateTaxCommand, Guid>
             request.Percentage,
             request.IdCategory);
 
-        if (!Validator.Validate(new TaxValidation(), entity))
+        if (!entity.IsValid())
         {
             var noticiation = new NotificationError("Validate Tax has error", "Validate Tax has error");
             var routingKey = noticiation.GetType().Name.ToDashCase();
@@ -57,7 +56,7 @@ public class UpdateTaxCommandHandler : IRequestHandler<UpdateTaxCommand, Guid>
             throw new ValidationException("Validate Error");
         }
 
-        var category = await _categoryRepository.GetById(request.IdCategory);
+        var category = await _categoryRepository.GetByIdAsync(request.IdCategory);
 
         if (category == null)
         {
@@ -69,7 +68,7 @@ public class UpdateTaxCommandHandler : IRequestHandler<UpdateTaxCommand, Guid>
             throw new ValidationException("Category not found");
         }
 
-        await _taxRepository.Update(entity);
+        await _taxRepository.UpdateAsync(entity);
 
         foreach (var @event in entity.Events)
         {

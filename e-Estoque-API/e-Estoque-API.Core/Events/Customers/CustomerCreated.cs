@@ -1,18 +1,18 @@
-﻿using e_Estoque_API.Core.Entities;
+﻿using e_Estoque_API.Domain.Events;
+using e_Estoque_API.Domain.ValueObjects;
 
 namespace e_Estoque_API.Core.Events.Customers;
 
-public class CustomerCreated : IDomainEvent
+public class CustomerCreated : DomainEvent
 {
-    public Guid Id { get; set; }
+    public Guid Id { get; private set; }
     public string Name { get; private set; }
     public string DocId { get; private set; }
     public string Email { get; private set; }
     public string Description { get; private set; }
     public string PhoneNumber { get; private set; }
 
-    public Guid IdCompanyAddress { get; private set; }
-    public Address CompanyAddress { get; private set; }
+    public CustomerAddress CustomerAddress { get; private set; }
 
     public CustomerCreated(
         Guid id,
@@ -21,8 +21,7 @@ public class CustomerCreated : IDomainEvent
         string email,
         string description,
         string phoneNumber,
-        Guid idCompanyAddress,
-        Address companyAddress)
+        CustomerAddress customerAddress) : base()
     {
         Id = id;
         Name = name;
@@ -30,7 +29,6 @@ public class CustomerCreated : IDomainEvent
         Email = email;
         Description = description;
         PhoneNumber = phoneNumber;
-        IdCompanyAddress = idCompanyAddress;
-        CompanyAddress = companyAddress;
+        CustomerAddress = customerAddress;
     }
 }

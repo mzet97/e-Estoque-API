@@ -8,7 +8,7 @@ using System.Linq.Expressions;
 
 namespace e_Estoque_API.Application.Categories.Queries.Handlers;
 
-public class SearchCategoryQueryHandler : IRequestHandler<SearchCategoryQuery, BaseResult<CategoryViewModel>>
+public class SearchCategoryQueryHandler : IRequestHandler<SearchCategoryQuery, BaseResultList<CategoryViewModel>>
 {
     private readonly ICategoryRepository _categoryRepository;
 
@@ -17,12 +17,13 @@ public class SearchCategoryQueryHandler : IRequestHandler<SearchCategoryQuery, B
         _categoryRepository = categoryRepository;
     }
 
-    public async Task<BaseResult<CategoryViewModel>> Handle(
+    public async Task<BaseResultList<CategoryViewModel>> Handle(
         SearchCategoryQuery request,
         CancellationToken cancellationToken)
     {
         Expression<Func<Category, bool>>? filter = PredicateBuilder.New<Category>(true);
         Func<IQueryable<Category>, IOrderedQueryable<Category>>? ordeBy = null;
+        string includes = "Products,Taxs";
 
         if (!string.IsNullOrWhiteSpace(request.Name))
         {
@@ -98,13 +99,14 @@ public class SearchCategoryQueryHandler : IRequestHandler<SearchCategoryQuery, B
         }
 
         var result = await _categoryRepository
-            .Search(
+            .SearchAsync(
                 filter,
                 ordeBy,
+                includes,
                 request.PageSize,
                 request.PageIndex);
 
-        return new BaseResult<CategoryViewModel>(
+        return new BaseResultList<CategoryViewModel>(
             result.Data.Select(x => CategoryViewModel.FromEntity(x)).ToList(), result.PagedResult);
     }
 }

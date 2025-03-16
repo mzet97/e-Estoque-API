@@ -5,7 +5,7 @@ using MediatR;
 
 namespace e_Estoque_API.Application.Customers.Queries;
 
-public class SearchCustomerQuery : BaseSearch, IRequest<BaseResult<CustomerViewModel>>
+public class SearchCustomerQuery : BaseSearch, IRequest<BaseResultList<CustomerViewModel>>
 {
     public string Name { get; set; } = string.Empty;
     public string DocId { get; set; } = string.Empty;

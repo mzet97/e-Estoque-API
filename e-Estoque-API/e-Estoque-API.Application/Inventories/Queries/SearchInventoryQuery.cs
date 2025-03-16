@@ -5,7 +5,7 @@ using MediatR;
 
 namespace e_Estoque_API.Application.Inventories.Queries;
 
-public class SearchInventoryQuery : BaseSearch, IRequest<BaseResult<InventoryViewModel>>
+public class SearchInventoryQuery : BaseSearch, IRequest<BaseResultList<InventoryViewModel>>
 {
     public int Quantity { get; set; }
     public DateTime DateOrder { get; set; }

@@ -1,99 +1,202 @@
-﻿using e_Estoque_API.Core.Entities;
-using e_Estoque_API.Core.Models;
+﻿using e_Estoque_API.Core.Models;
 using e_Estoque_API.Core.Repositories;
+using e_Estoque_API.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
-using System.Linq;
 using System.Linq.Expressions;
 
 namespace e_Estoque_API.Infrastructure.Persistence.Repositories;
 
-public abstract class Repository<TEntity> : IRepository<TEntity> where TEntity : AggregateRoot, new()
+public abstract class Repository<TEntity> : IRepository<TEntity> where TEntity : Entity
 {
     protected readonly EstoqueDbContext Db;
     protected readonly DbSet<TEntity> DbSet;
 
     protected Repository(EstoqueDbContext db)
     {
-        Db = db;
+        Db = db ?? throw new ArgumentNullException(nameof(db));
         DbSet = db.Set<TEntity>();
     }
 
-    public virtual async Task Add(TEntity entity)
+    public virtual async Task AddAsync(TEntity entity)
     {
-        entity.CreatedAt = DateTime.UtcNow;
-        await DbSet.AddAsync(entity);
+        if (entity == null) throw new ArgumentNullException(nameof(entity));
 
+        await DbSet.AddAsync(entity);
         await Db.SaveChangesAsync();
     }
 
-    public virtual async Task<BaseResult<TEntity>> Search(
+    public virtual async Task<BaseResultList<TEntity>> SearchAsync(
         Expression<Func<TEntity, bool>>? predicate = null,
         Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>>? orderBy = null,
         int pageSize = 10, int page = 1)
     {
-        var query = DbSet.AsQueryable();
+        if (pageSize <= 0) throw new ArgumentOutOfRangeException(nameof(pageSize));
+        if (page <= 0) throw new ArgumentOutOfRangeException(nameof(page));
 
-        var paged = PagedResult.Create(page, pageSize, query.Count());
+        var query = DbSet.AsNoTracking().AsQueryable();
 
         if (predicate != null)
         {
             query = query.Where(predicate);
         }
 
-        query = query.OrderBy(x => x.Id).Skip(paged.Skip()).Take(pageSize);
+        var totalCount = await query.CountAsync();
+        var paged = PagedResult.Create(page, pageSize, totalCount);
 
         if (orderBy != null)
         {
-            var data = await orderBy(query).ToListAsync();
-            return new BaseResult<TEntity>(data, paged);
+            query = orderBy(query);
         }
 
-        return new BaseResult<TEntity>(await query.ToListAsync(), paged);
+        var data = await query.Skip(paged.Skip()).Take(pageSize).ToListAsync();
+        return new BaseResultList<TEntity>(data, paged);
     }
 
-    public virtual async Task<IEnumerable<TEntity>> Find(Expression<Func<TEntity, bool>> predicate)
+    public virtual async Task<BaseResultList<TEntity>> SearchAsync(
+        Expression<Func<TEntity, bool>>? predicate = null,
+        Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>>? orderBy = null,
+        string includeProperties = "",
+        int pageSize = 10, int page = 1)
     {
+        if (pageSize <= 0) throw new ArgumentOutOfRangeException(nameof(pageSize));
+        if (page <= 0) throw new ArgumentOutOfRangeException(nameof(page));
+
+        var query = DbSet.AsNoTracking().AsQueryable();
+
+        if (predicate != null)
+        {
+            query = query.Where(predicate);
+        }
+
+        var totalCount = await query.CountAsync();
+        var paged = PagedResult.Create(page, pageSize, totalCount);
+
+        if (orderBy != null)
+        {
+            query = orderBy(query);
+        }
+
+        foreach (var includeProperty in includeProperties.Split
+               (new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
+        {
+            query = query.Include(includeProperty);
+        }
+
+        var data = await query.Skip(paged.Skip()).Take(pageSize).ToListAsync();
+        return new BaseResultList<TEntity>(data, paged);
+    }
+
+
+    public virtual async Task<IEnumerable<TEntity>> FindAsync(Expression<Func<TEntity, bool>> predicate)
+    {
+        if (predicate == null) throw new ArgumentNullException(nameof(predicate));
+
         return await DbSet.AsNoTracking().Where(predicate).ToListAsync();
     }
 
-    public virtual async Task<IEnumerable<TEntity>> GetAll()
+    public virtual async Task<IEnumerable<TEntity>> GetAllAsync()
     {
         return await DbSet.AsNoTracking().ToListAsync();
     }
 
-    public virtual async Task<TEntity?> GetById(Guid id)
+    public virtual async Task<TEntity?> GetByIdAsync(Guid id)
     {
-        return await DbSet.FindAsync(id);
+        if (id == Guid.Empty) throw new ArgumentException("ID não pode ser vazio", nameof(id));
+
+        return await DbSet.AsNoTracking().FirstOrDefaultAsync(e => e.Id == id);
     }
 
-    public virtual async Task Update(TEntity entity)
+    public virtual async Task UpdateAsync(TEntity entity)
     {
-        entity.CreatedAt = DateTime.UtcNow;
-        DbSet.Update(entity);
+        if (entity == null) throw new ArgumentNullException(nameof(entity));
 
+        entity.Update();
+
+        DbSet.Update(entity);
         await Db.SaveChangesAsync();
     }
 
-    public virtual async Task Remove(Guid id)
+    public virtual async Task RemoveAsync(Guid id)
     {
-        var entity = DbSet.Find(id);
+        if (id == Guid.Empty) throw new ArgumentException("ID não pode ser vazio", nameof(id));
+
+        var entity = await DbSet.FindAsync(id);
 
         if (entity != null)
         {
-            entity.DeletedAt = DateTime.UtcNow;
-            await Update(entity);
+            DbSet.Remove(entity);
+            await Db.SaveChangesAsync();
+        }
+        else
+        {
+            throw new InvalidOperationException("Entidade não encontrada para exclusão.");
         }
     }
 
-    public virtual void Dispose(bool disposing)
+
+    public virtual async Task DisableAsync(Guid id)
     {
-        if(disposing)
-            Db?.Dispose();
+        if (id == Guid.Empty) throw new ArgumentException("ID não pode ser vazio", nameof(id));
+
+        var entity = await DbSet.FindAsync(id);
+
+        if (entity != null)
+        {
+            entity.Disabled();
+            DbSet.Update(entity);
+            await Db.SaveChangesAsync();
+        }
     }
 
-    public virtual void Dispose()
+    public async Task ActiveAsync(Guid id)
+    {
+        if (id == Guid.Empty) throw new ArgumentException("ID não pode ser vazio", nameof(id));
+
+        var entity = await DbSet.FindAsync(id);
+
+        if (entity != null)
+        {
+            entity.Activate();
+            DbSet.Update(entity);
+            await Db.SaveChangesAsync();
+        }
+    }
+
+    public Task ActiveOrDisableAsync(Guid id, bool active)
+    {
+        if (active)
+        {
+            return ActiveAsync(id);
+        }
+        else
+        {
+            return DisableAsync(id);
+        }
+    }
+
+    public async Task<int> CountAsync(Expression<Func<TEntity, bool>>? predicate = null)
+    {
+        return predicate == null ? await DbSet.CountAsync() : await DbSet.CountAsync(predicate);
+    }
+
+    public virtual async Task<bool> ExistsAsync(Expression<Func<TEntity, bool>> predicate)
+    {
+        if (predicate == null) throw new ArgumentNullException(nameof(predicate));
+
+        return await DbSet.AsNoTracking().AnyAsync(predicate);
+    }
+
+    public void Dispose()
     {
         Dispose(true);
         GC.SuppressFinalize(this);
+    }
+
+    protected virtual void Dispose(bool disposing)
+    {
+        if (disposing)
+        {
+            Db?.Dispose();
+        }
     }
 }

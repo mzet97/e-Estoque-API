@@ -30,7 +30,7 @@ public class CreateCategoryCommandHandler : IRequestHandler<CreateCategoryComman
             request.Description,
             request.ShortDescription);
 
-        if (!Validator.Validate(new CategoryValidation(), entity))
+        if (!entity.IsValid())
         {
             var noticiation = new NotificationError("Validate Category has error", "Validate Category has error");
             var routingKey = noticiation.GetType().Name.ToDashCase();
@@ -40,7 +40,7 @@ public class CreateCategoryCommandHandler : IRequestHandler<CreateCategoryComman
             throw new ValidationException("Validate Error");
         }
 
-        await _categoryRepository.Add(entity);
+        await _categoryRepository.AddAsync(entity);
 
         foreach (var @event in entity.Events)
         {

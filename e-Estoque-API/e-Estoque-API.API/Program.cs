@@ -22,7 +22,7 @@ builder.Services.Configure<ApiBehaviorOptions>(options =>
 
 builder.Services.AddCorsConfig();
 builder.Services.AddDbContextConfig(builder.Configuration);
-builder.Services.ResolveDependencies();
+builder.Services.ResolveDependenciesInfrastructure();
 builder.Services.AddMessageBus(builder.Configuration);
 builder.Services.AddApplicationServices();
 

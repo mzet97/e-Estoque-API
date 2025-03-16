@@ -8,7 +8,7 @@ using System.Linq.Expressions;
 
 namespace e_Estoque_API.Application.Taxes.Queries.Handlers;
 
-public class SearchTaxQueryHandler : IRequestHandler<SearchTaxQuery, BaseResult<TaxViewModel>>
+public class SearchTaxQueryHandler : IRequestHandler<SearchTaxQuery, BaseResultList<TaxViewModel>>
 {
     private readonly ITaxRepository _taxRepository;
 
@@ -17,7 +17,7 @@ public class SearchTaxQueryHandler : IRequestHandler<SearchTaxQuery, BaseResult<
         _taxRepository = taxRepository;
     }
 
-    public async Task<BaseResult<TaxViewModel>> Handle(
+    public async Task<BaseResultList<TaxViewModel>> Handle(
         SearchTaxQuery request,
         CancellationToken cancellationToken)
     {
@@ -99,13 +99,14 @@ public class SearchTaxQueryHandler : IRequestHandler<SearchTaxQuery, BaseResult<
         }
 
         var result = await _taxRepository
-            .Search(
+            .SearchAsync(
                 filter,
                 ordeBy,
+                "",
                 request.PageSize,
                 request.PageIndex);
 
-        return new BaseResult<TaxViewModel>(
+        return new BaseResultList<TaxViewModel>(
             result.Data.Select(x => TaxViewModel.FromEntity(x)).ToList(), result.PagedResult);
     }
 }

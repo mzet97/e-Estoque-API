@@ -1,5 +1,4 @@
 ﻿using e_Estoque_API.Core.Entities;
-using e_Estoque_API.Core.Models;
 using e_Estoque_API.Core.Repositories;
 using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
@@ -12,7 +11,7 @@ public class CategoryRepository : Repository<Category>, ICategoryRepository
     {
     }
 
-    public override async Task<Category?> GetById(Guid id)
+    public override async Task<Category?> GetByIdAsync(Guid id)
     {
         return await DbSet
             .AsNoTracking()
@@ -22,7 +21,7 @@ public class CategoryRepository : Repository<Category>, ICategoryRepository
             .FirstOrDefaultAsync();
     }
 
-    public override async Task<IEnumerable<Category>> GetAll()
+    public override async Task<IEnumerable<Category>> GetAllAsync()
     {
         return await DbSet
             .AsNoTracking()
@@ -32,7 +31,7 @@ public class CategoryRepository : Repository<Category>, ICategoryRepository
             .ToListAsync();
     }
 
-    public override async Task<IEnumerable<Category>> Find(Expression<Func<Category, bool>> predicate)
+    public override async Task<IEnumerable<Category>> FindAsync(Expression<Func<Category, bool>> predicate)
     {
         return await DbSet
             .AsNoTracking()
@@ -42,34 +41,4 @@ public class CategoryRepository : Repository<Category>, ICategoryRepository
             .ToListAsync();
     }
 
-    public override async Task<BaseResult<Category>> Search(
-        Expression<Func<Category, bool>>? predicate = null,
-        Func<IQueryable<Category>, IOrderedQueryable<Category>>? orderBy = null,
-        int pageSize = 10, int page = 1)
-    {
-        var query = DbSet.AsQueryable();
-
-        var paged = PagedResult.Create(page, pageSize, query.Count());
-
-        if (predicate != null)
-        {
-            query = query.Include("Products")
-                         .Include("Taxs")
-                         .Where(predicate);
-        }
-
-        query = query.Include("Products")
-                     .Include("Taxs")
-                     .OrderBy(x => x.Id)
-                     .Skip(paged.Skip())
-                     .Take(pageSize);
-
-        if (orderBy != null)
-        {
-            var data = await orderBy(query).ToListAsync();
-            return new BaseResult<Category>(data, paged);
-        }
-
-        return new BaseResult<Category>(await query.ToListAsync(), paged);
-    }
 }

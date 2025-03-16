@@ -12,7 +12,7 @@ public class InventoryRepository : Repository<Inventory>, IInventoryRepository
     {
     }
 
-    public override async Task<IEnumerable<Inventory>> Find(Expression<Func<Inventory, bool>> predicate)
+    public override async Task<IEnumerable<Inventory>> FindAsync(Expression<Func<Inventory, bool>> predicate)
     {
         return await DbSet
             .AsNoTracking()
@@ -24,7 +24,7 @@ public class InventoryRepository : Repository<Inventory>, IInventoryRepository
             .ToListAsync();
     }
 
-    public override async Task<IEnumerable<Inventory>> GetAll()
+    public override async Task<IEnumerable<Inventory>> GetAllAsync()
     {
         return await DbSet
             .Include("Product")
@@ -35,7 +35,7 @@ public class InventoryRepository : Repository<Inventory>, IInventoryRepository
             .ToListAsync();
     }
 
-    public override async Task<Inventory?> GetById(Guid id)
+    public override async Task<Inventory?> GetByIdAsync(Guid id)
     {
         return await DbSet
             .Include("Product")
@@ -47,7 +47,7 @@ public class InventoryRepository : Repository<Inventory>, IInventoryRepository
             .FirstOrDefaultAsync();
     }
 
-    public override async Task<BaseResult<Inventory>> Search(
+    public override async Task<BaseResultList<Inventory>> SearchAsync(
         Expression<Func<Inventory, bool>>? predicate = null,
         Func<IQueryable<Inventory>, IOrderedQueryable<Inventory>>? orderBy = null,
         int pageSize = 10, int page = 1)
@@ -76,9 +76,9 @@ public class InventoryRepository : Repository<Inventory>, IInventoryRepository
         if (orderBy != null)
         {
             var data = await orderBy(query).ToListAsync();
-            return new BaseResult<Inventory>(data, paged);
+            return new BaseResultList<Inventory>(data, paged);
         }
 
-        return new BaseResult<Inventory>(await query.ToListAsync(), paged);
+        return new BaseResultList<Inventory>(await query.ToListAsync(), paged);
     }
 }

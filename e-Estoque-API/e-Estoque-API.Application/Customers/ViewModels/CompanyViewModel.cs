@@ -1,18 +1,17 @@
 ﻿using e_Estoque_API.Application.Dtos.ViewModels;
 using e_Estoque_API.Core.Entities;
+using e_Estoque_API.Domain.ValueObjects;
 
 namespace e_Estoque_API.Application.Customers.ViewModels;
 
 public class CustomerViewModel : BaseViewModel
 {
     public string Name { get; set; }
-    public string DocId { get; set; }
-    public string Email { get; set; }
-    public string Description { get; set; }
-    public string PhoneNumber { get; set; }
-
-    public Guid IdCustomerAddress { get; set; }
-    public AddressViewModel CustomerAddress { get; set; }
+    public string DocId { get; set; } = string.Empty;
+    public string Email { get; set; } = string.Empty;
+    public string Description { get; set; } = string.Empty;
+    public string PhoneNumber { get; set; } = string.Empty;
+    public CustomerAddress CustomerAddress { get; set; }
 
     public CustomerViewModel(
         Guid id,
@@ -21,20 +20,22 @@ public class CustomerViewModel : BaseViewModel
         string email,
         string description,
         string phoneNumber,
-        Guid idCompanyAddress,
-        AddressViewModel companyAddress,
+        CustomerAddress customerAddress,
         DateTime createdAt,
         DateTime? updatedAt,
         DateTime? deletedAt
-        ) : base(id, createdAt, updatedAt, deletedAt)
+        ) : base(
+            id,
+            createdAt,
+            updatedAt,
+            deletedAt)
     {
         Name = name;
         DocId = docId;
         Email = email;
         Description = description;
         PhoneNumber = phoneNumber;
-        IdCustomerAddress = idCompanyAddress;
-        CustomerAddress = companyAddress;
+        CustomerAddress = customerAddress;
     }
 
     public static CustomerViewModel FromEntity(Customer entity)
@@ -46,8 +47,7 @@ public class CustomerViewModel : BaseViewModel
             entity.Email,
             entity.Description,
             entity.PhoneNumber,
-            entity.IdCustomerAddress,
-            AddressViewModel.FromEntity(entity.CustomerAddress),
+            entity.CustomerAddress,
             entity.CreatedAt,
             entity.UpdatedAt,
             entity.DeletedAt);

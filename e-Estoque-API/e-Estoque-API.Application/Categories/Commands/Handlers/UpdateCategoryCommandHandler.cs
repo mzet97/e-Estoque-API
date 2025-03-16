@@ -2,7 +2,6 @@
 using e_Estoque_API.Core.Events;
 using e_Estoque_API.Core.Exceptions;
 using e_Estoque_API.Core.Repositories;
-using e_Estoque_API.Core.Validations;
 using e_Estoque_API.Infrastructure.MessageBus;
 using MediatR;
 
@@ -25,7 +24,7 @@ public class UpdateCategoryCommandHandler : IRequestHandler<UpdateCategoryComman
         UpdateCategoryCommand request,
         CancellationToken cancellationToken)
     {
-        var entity = await _categoryRepository.GetById(request.Id);
+        var entity = await _categoryRepository.GetByIdAsync(request.Id);
 
         if (entity == null)
         {
@@ -43,7 +42,7 @@ public class UpdateCategoryCommandHandler : IRequestHandler<UpdateCategoryComman
             request.ShortDescription,
             request.Description);
 
-        if (!Validator.Validate(new CategoryValidation(), entity))
+        if (!entity.IsValid())
         {
             var noticiation = new NotificationError("Validate Category has error", "Validate Category has error");
             var routingKey = noticiation.GetType().Name.ToDashCase();
@@ -53,7 +52,7 @@ public class UpdateCategoryCommandHandler : IRequestHandler<UpdateCategoryComman
             throw new ValidationException("Validate Error");
         }
 
-        await _categoryRepository.Update(entity);
+        await _categoryRepository.UpdateAsync(entity);
 
         foreach (var @event in entity.Events)
         {

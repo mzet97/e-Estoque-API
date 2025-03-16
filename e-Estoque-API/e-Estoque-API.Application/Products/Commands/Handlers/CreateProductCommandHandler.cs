@@ -45,7 +45,7 @@ public class CreateProductCommandHandler : IRequestHandler<CreateProductCommand,
             request.IdCategory,
             request.IdCompany);
 
-        if (!Validator.Validate(new ProductValidation(), entity))
+        if (!entity.IsValid())
         {
             var noticiation = new NotificationError("Validate Product has error", "Validate Product has error");
             var routingKey = noticiation.GetType().Name.ToDashCase();
@@ -55,7 +55,7 @@ public class CreateProductCommandHandler : IRequestHandler<CreateProductCommand,
             throw new ValidationException("Validate Error");
         }
 
-        var category = await _categoryRepository.GetById(request.IdCategory);
+        var category = await _categoryRepository.GetByIdAsync(request.IdCategory);
 
         if (category == null)
         {
@@ -67,7 +67,7 @@ public class CreateProductCommandHandler : IRequestHandler<CreateProductCommand,
             throw new NotFoundException("Category not found");
         }
 
-        var company = await _companyRepository.GetById(request.IdCompany);
+        var company = await _companyRepository.GetByIdAsync(request.IdCompany);
 
         if (company == null)
         {
@@ -79,7 +79,7 @@ public class CreateProductCommandHandler : IRequestHandler<CreateProductCommand,
             throw new NotFoundException("Company not found");
         }
 
-        await _productRepository.Add(entity);
+        await _productRepository.AddAsync(entity);
 
         foreach (var @event in entity.Events)
         {

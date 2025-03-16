@@ -2,7 +2,6 @@
 using e_Estoque_API.Core.Events;
 using e_Estoque_API.Core.Exceptions;
 using e_Estoque_API.Core.Repositories;
-using e_Estoque_API.Core.Validations;
 using e_Estoque_API.Infrastructure.MessageBus;
 using MediatR;
 
@@ -28,7 +27,7 @@ public class UpdateInventoryCommandHandler : IRequestHandler<UpdateInventoryComm
         UpdateInventoryCommand request,
         CancellationToken cancellationToken)
     {
-        var entity = await _inventoryRepository.GetById(request.Id);
+        var entity = await _inventoryRepository.GetByIdAsync(request.Id);
 
         if (entity == null)
         {
@@ -45,7 +44,7 @@ public class UpdateInventoryCommandHandler : IRequestHandler<UpdateInventoryComm
             request.DateOrder,
             request.IdProduct);
 
-        if (!Validator.Validate(new InventoryValidation(), entity))
+        if (!entity.IsValid())
         {
             var noticiation = new NotificationError("Validate Inventory has error", "Validate Inventory has error");
             var routingKey = noticiation.GetType().Name.ToDashCase();
@@ -55,7 +54,7 @@ public class UpdateInventoryCommandHandler : IRequestHandler<UpdateInventoryComm
             throw new ValidationException("Validate Error");
         }
 
-        var product = await _productRepository.GetById(request.IdProduct);
+        var product = await _productRepository.GetByIdAsync(request.IdProduct);
 
         if (product == null)
         {
@@ -67,7 +66,7 @@ public class UpdateInventoryCommandHandler : IRequestHandler<UpdateInventoryComm
             throw new NotFoundException("Product not found");
         }
 
-        await _inventoryRepository.Update(entity);
+        await _inventoryRepository.UpdateAsync(entity);
 
         foreach (var @event in entity.Events)
         {

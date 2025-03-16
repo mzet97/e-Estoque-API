@@ -16,7 +16,6 @@ public class EstoqueDbContext : DbContext
     public DbSet<Product> Products { get; set; }
     public DbSet<Category> Categories { get; set; }
     public DbSet<Company> Companies { get; set; }
-    public DbSet<CompanyAddress> CompanyAddress { get; set; }
     public DbSet<Customer> Customers { get; set; }
     public DbSet<Inventory> inventories { get; set; }
     public DbSet<Sale> Sales { get; set; }
@@ -46,25 +45,6 @@ public class EstoqueDbContext : DbContext
         base.OnModelCreating(modelBuilder);
     }
 
-    public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = new CancellationToken())
-    {
-        foreach (var entry in ChangeTracker.Entries().Where(entry => entry.Entity.GetType().GetProperty("CreatedAt") != null))
-        {
-            if (entry.State == EntityState.Added)
-            {
-                entry.Property("CreatedAt").CurrentValue = DateTime.UtcNow;
-                entry.Property("UpdatedAt").CurrentValue = DateTime.UtcNow;
-            }
-
-            if (entry.State == EntityState.Modified)
-            {
-                entry.Property("UpdatedAt").CurrentValue = DateTime.UtcNow;
-                entry.Property("CreatedAt").IsModified = false;
-            }
-        }
-
-        return base.SaveChangesAsync(cancellationToken);
-    }
 }
 
 internal class ZonedDateTimeConverter : ValueConverter<ZonedDateTime, LocalDateTime>
