@@ -1,5 +1,5 @@
-﻿using e_Estoque_API.Application.Taxes.Commands;
-using e_Estoque_API.Application.Taxes.Queries;
+﻿using e_Estoque_API.Application.Inventories.Commands;
+using e_Estoque_API.Application.Inventories.Queries;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -9,17 +9,17 @@ namespace e_Estoque_API.API.Controllers;
 [Authorize]
 [Route("api/[controller]")]
 [ApiController]
-public class TaxController : MainController
+public class InventoriesController : MainController
 {
     private readonly IMediator _mediator;
 
-    public TaxController(IMediator mediator)
+    public InventoriesController(IMediator mediator)
     {
         _mediator = mediator;
     }
 
     [HttpGet]
-    public async Task<IActionResult> Get([FromQuery] SearchTaxQuery query)
+    public async Task<IActionResult> Get([FromQuery] SearchInventoryQuery query)
     {
         var result = await _mediator.Send(query);
 
@@ -32,7 +32,7 @@ public class TaxController : MainController
     [HttpGet("{id}")]
     public async Task<IActionResult> Get([FromRoute] Guid id)
     {
-        var query = new GetByIdTaxQuery(id);
+        var query = new GetByIdInventoryQuery(id);
 
         var result = await _mediator.Send(query);
 
@@ -44,7 +44,7 @@ public class TaxController : MainController
 
     [Authorize(Roles = "Create")]
     [HttpPost]
-    public async Task<IActionResult> Post([FromBody] CreateTaxCommand command)
+    public async Task<IActionResult> Post([FromBody] CreateInventoryCommand command)
     {
         var id = await _mediator.Send(command);
 
@@ -53,7 +53,7 @@ public class TaxController : MainController
 
     [Authorize(Roles = "Create")]
     [HttpPut("{id}")]
-    public async Task<IActionResult> Put([FromRoute] Guid id, [FromBody] UpdateTaxCommand command)
+    public async Task<IActionResult> Put([FromRoute] Guid id, [FromBody] UpdateInventoryCommand command)
     {
         var result = await _mediator.Send(command);
 
@@ -64,7 +64,7 @@ public class TaxController : MainController
     [HttpDelete("{id}")]
     public async Task<IActionResult> Delete([FromRoute] Guid id)
     {
-        var command = new DeleteTaxCommand(id);
+        var command = new DeleteInventoryCommand(id);
 
         var result = await _mediator.Send(command);
 

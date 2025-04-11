@@ -3,7 +3,10 @@ using e_Estoque_API.API.Extensions;
 using e_Estoque_API.Application;
 using e_Estoque_API.Infrastructure.Configuration;
 using e_Estoque_API.Infrastructure.Persistence;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.IdentityModel.Tokens;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -31,6 +34,22 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerConfig();
 builder.Services.AddSwaggerGen();
 builder.Services.AddKeycloakConfig(builder.Configuration);
+builder.Services.AddTransient<IClaimsTransformation, KeycloakClaimsTransformation>();
+builder.Services.PostConfigure<JwtBearerOptions>(
+    JwtBearerDefaults.AuthenticationScheme,
+    options =>
+    {
+        options.RequireHttpsMetadata = false;
+
+        options.TokenValidationParameters.AudienceValidator =
+            (IEnumerable<string> tokenAudiences, SecurityToken securityToken, TokenValidationParameters validationParameters) =>
+            {
+                if (tokenAudiences == null)
+                    return false;
+                return tokenAudiences.Contains("e-estoque-client");
+            };
+
+    });
 //builder.Services.AddWso2Config(builder.Configuration);
 
 builder.Services.AddHealthChecks();
@@ -55,7 +74,6 @@ else
 
 app.UseMiddleware<ExceptionMiddleware>();
 
-app.UseExceptionHandler(options => { });
 app.UseRouting();
 
 app.UseHttpsRedirection();

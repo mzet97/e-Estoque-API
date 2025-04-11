@@ -9,11 +9,11 @@ namespace e_Estoque_API.API.Controllers;
 [Authorize]
 [Route("api/[controller]")]
 [ApiController]
-public class CompanyController : MainController
+public class CompaniesController : MainController
 {
     private readonly IMediator _mediator;
 
-    public CompanyController(IMediator mediator)
+    public CompaniesController(IMediator mediator)
     {
         _mediator = mediator;
     }

@@ -2,13 +2,14 @@
 using e_Estoque_API.Application.Extensions;
 using e_Estoque_API.Core.Events;
 using e_Estoque_API.Core.Exceptions;
+using e_Estoque_API.Core.Models;
 using e_Estoque_API.Core.Repositories;
 using e_Estoque_API.Infrastructure.MessageBus;
 using MediatR;
 
 namespace e_Estoque_API.Application.Categories.Queries.Handlers;
 
-public class GetByIdCategoryQueryHandler : IRequestHandler<GetByIdCategoryQuery, CategoryViewModel>
+public class GetByIdCategoryQueryHandler : IRequestHandler<GetByIdCategoryQuery, BaseResult<CategoryViewModel>>
 {
     private readonly ICategoryRepository _categoryRepository;
     private readonly IMessageBusClient _messageBus;
@@ -19,7 +20,7 @@ public class GetByIdCategoryQueryHandler : IRequestHandler<GetByIdCategoryQuery,
         _messageBus = messageBus;
     }
 
-    public async Task<CategoryViewModel> Handle(
+    public async Task<BaseResult<CategoryViewModel>> Handle(
         GetByIdCategoryQuery request,
         CancellationToken cancellationToken)
     {
@@ -35,6 +36,6 @@ public class GetByIdCategoryQueryHandler : IRequestHandler<GetByIdCategoryQuery,
             throw new NotFoundException("Not found");
         }
 
-        return CategoryViewModel.FromEntity(entity);
+        return new BaseResult<CategoryViewModel>(CategoryViewModel.FromEntity(entity));
     }
 }
