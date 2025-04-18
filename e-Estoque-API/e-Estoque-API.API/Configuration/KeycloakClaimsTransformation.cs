@@ -20,12 +20,22 @@ public class KeycloakClaimsTransformation : IClaimsTransformation
 
                 if (resourceAccess.TryGetProperty("e-estoque-client", out var clientAccess))
                 {
-                    if (clientAccess.TryGetProperty("roles", out var rolesElement) && rolesElement.ValueKind == JsonValueKind.Array)
+                    if (clientAccess.TryGetProperty("roles", out var rolesElement))
                     {
-                        foreach (var role in rolesElement.EnumerateArray())
+                        if (rolesElement.ValueKind == JsonValueKind.Array)
                         {
-                            var roleValue = role.GetString();
-                            // Evita duplicadas ou roles já adicionadas
+                            foreach (var role in rolesElement.EnumerateArray())
+                            {
+                                var roleValue = role.GetString();
+                                if (!identity.Claims.Any(c => c.Type == identity.RoleClaimType && c.Value == roleValue))
+                                {
+                                    identity.AddClaim(new Claim(identity.RoleClaimType, roleValue));
+                                }
+                            }
+                        }
+                        else if (rolesElement.ValueKind == JsonValueKind.String)
+                        {
+                            var roleValue = rolesElement.GetString();
                             if (!identity.Claims.Any(c => c.Type == identity.RoleClaimType && c.Value == roleValue))
                             {
                                 identity.AddClaim(new Claim(identity.RoleClaimType, roleValue));
