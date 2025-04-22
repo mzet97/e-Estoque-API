@@ -2,13 +2,14 @@
 using e_Estoque_API.Application.Inventories.ViewModels;
 using e_Estoque_API.Core.Events;
 using e_Estoque_API.Core.Exceptions;
+using e_Estoque_API.Core.Models;
 using e_Estoque_API.Core.Repositories;
 using e_Estoque_API.Infrastructure.MessageBus;
 using MediatR;
 
 namespace e_Estoque_API.Application.Inventories.Queries.Handlers;
 
-public class GetByIdInventoryQueryHandler : IRequestHandler<GetByIdInventoryQuery, InventoryViewModel>
+public class GetByIdInventoryQueryHandler : IRequestHandler<GetByIdInventoryQuery, BaseResult<InventoryViewModel>>
 {
     private readonly IInventoryRepository _inventoryRepository;
     private readonly IMessageBusClient _messageBus;
@@ -21,7 +22,7 @@ public class GetByIdInventoryQueryHandler : IRequestHandler<GetByIdInventoryQuer
         _messageBus = messageBus;
     }
 
-    public async Task<InventoryViewModel> Handle(
+    public async Task<BaseResult<InventoryViewModel>> Handle(
         GetByIdInventoryQuery request,
         CancellationToken cancellationToken)
     {
@@ -37,6 +38,6 @@ public class GetByIdInventoryQueryHandler : IRequestHandler<GetByIdInventoryQuer
             throw new NotFoundException("Not found");
         }
 
-        return InventoryViewModel.FromEntity(entity);
+        return new BaseResult<InventoryViewModel>(InventoryViewModel.FromEntity(entity), true);
     }
 }

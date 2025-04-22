@@ -2,13 +2,14 @@
 using e_Estoque_API.Application.Taxes.ViewModels;
 using e_Estoque_API.Core.Events;
 using e_Estoque_API.Core.Exceptions;
+using e_Estoque_API.Core.Models;
 using e_Estoque_API.Core.Repositories;
 using e_Estoque_API.Infrastructure.MessageBus;
 using MediatR;
 
 namespace e_Estoque_API.Application.Taxes.Queries.Handlers;
 
-public class GetByIdTaxQueryHandler : IRequestHandler<GetByIdTaxQuery, TaxViewModel>
+public class GetByIdTaxQueryHandler : IRequestHandler<GetByIdTaxQuery, BaseResult<TaxViewModel>>
 {
     private readonly ITaxRepository _taxRepository;
     private readonly IMessageBusClient _messageBus;
@@ -21,7 +22,7 @@ public class GetByIdTaxQueryHandler : IRequestHandler<GetByIdTaxQuery, TaxViewMo
         _messageBus = messageBus;
     }
 
-    public async Task<TaxViewModel> Handle(
+    public async Task<BaseResult<TaxViewModel>> Handle(
         GetByIdTaxQuery request,
         CancellationToken cancellationToken)
     {
@@ -37,6 +38,6 @@ public class GetByIdTaxQueryHandler : IRequestHandler<GetByIdTaxQuery, TaxViewMo
             throw new NotFoundException("Not found");
         }
 
-        return TaxViewModel.FromEntity(entity);
+        return new BaseResult<TaxViewModel>(TaxViewModel.FromEntity(entity), true);
     }
 }

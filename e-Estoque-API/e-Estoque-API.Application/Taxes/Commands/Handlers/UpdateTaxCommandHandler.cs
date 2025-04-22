@@ -31,29 +31,13 @@ public class UpdateTaxCommandHandler : IRequestHandler<UpdateTaxCommand, Guid>
 
         if (entity == null)
         {
-            var noticiation = new NotificationError("Update Tax has error", "Update Tax has error");
+            var errors = String.Join(",", entity.GetErrors());
+            var noticiation = new NotificationError("Update Tax has error", errors);
             var routingKey = noticiation.GetType().Name.ToDashCase();
 
             _messageBus.Publish(noticiation, routingKey, "noticiation-service");
 
-            throw new NotFoundException("Find Error");
-        }
-
-        entity
-            .Update(
-            request.Name,
-            request.Description,
-            request.Percentage,
-            request.IdCategory);
-
-        if (!entity.IsValid())
-        {
-            var noticiation = new NotificationError("Validate Tax has error", "Validate Tax has error");
-            var routingKey = noticiation.GetType().Name.ToDashCase();
-
-            _messageBus.Publish(noticiation, routingKey, "noticiation-service");
-
-            throw new ValidationException("Validate Error");
+            throw new NotFoundException(errors);
         }
 
         var category = await _categoryRepository.GetByIdAsync(request.IdCategory);
@@ -67,6 +51,27 @@ public class UpdateTaxCommandHandler : IRequestHandler<UpdateTaxCommand, Guid>
 
             throw new ValidationException("Category not found");
         }
+
+        entity
+            .Update(
+            request.Name,
+            request.Description,
+            request.Percentage,
+            request.IdCategory,
+            category);
+
+        if (!entity.IsValid())
+        {
+            var errors = String.Join("", entity.GetErrors());
+            var noticiation = new NotificationError("Validate Tax has error", errors);
+            var routingKey = noticiation.GetType().Name.ToDashCase();
+
+            _messageBus.Publish(noticiation, routingKey, "noticiation-service");
+
+            throw new ValidationException(errors);
+        }
+
+        
 
         await _taxRepository.UpdateAsync(entity);
 

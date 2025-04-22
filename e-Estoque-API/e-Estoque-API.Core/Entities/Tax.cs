@@ -60,6 +60,7 @@ public class Tax : Entity
             null,
             null,
             false);
+        
 
         tax.AddEvent(new TaxCreated(
             tax.Id,
@@ -68,16 +69,23 @@ public class Tax : Entity
             tax.Percentage,
             tax.IdCategory));
 
+        tax.Validate();
+
         return tax;
     }
 
-    public void Update(string name, string description, decimal percentage, Guid idCategory)
+    public void Update(
+        string name,
+        string description,
+        decimal percentage,
+        Guid idCategory,
+        Category category)
     {
         Name = name;
         Description = description;
         Percentage = percentage;
         IdCategory = idCategory;
-
+        Category = category;
         Update();
 
         AddEvent(new TaxUpdated(
@@ -86,6 +94,8 @@ public class Tax : Entity
             Description,
             Percentage,
             IdCategory));
+
+        Validate();
     }
 
     public override void Validate()

@@ -1,4 +1,6 @@
-﻿namespace e_Estoque_API.Core.Models;
+﻿using System.Runtime.InteropServices;
+
+namespace e_Estoque_API.Core.Models;
 
 public class BaseResult
 {
@@ -23,6 +25,7 @@ public class BaseResult<T> : BaseResult
     }
 
     public T Data { get; private set; }
+
 }
 
 public class BaseResultList<T> : BaseResult

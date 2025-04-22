@@ -6,6 +6,7 @@ using e_Estoque_API.Core.Repositories;
 using e_Estoque_API.Core.Validations;
 using e_Estoque_API.Infrastructure.MessageBus;
 using MediatR;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace e_Estoque_API.Application.Taxes.Commands.Handlers;
 
@@ -37,12 +38,13 @@ public class CreateTaxCommandHandler : IRequestHandler<CreateTaxCommand, Guid>
 
         if (!entity.IsValid())
         {
-            var noticiation = new NotificationError("Validate Tax has error", "Validate Tax has error");
+            var errors = String.Join(",", entity.GetErrors());
+            var noticiation = new NotificationError("Validate Tax has error", errors);
             var routingKey = noticiation.GetType().Name.ToDashCase();
 
             _messageBus.Publish(noticiation, routingKey, "noticiation-service");
 
-            throw new ValidationException("Validate Error");
+            throw new ValidationException(errors);
         }
 
         var category = _categoryRepository.GetByIdAsync(entity.IdCategory);

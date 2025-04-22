@@ -71,6 +71,8 @@ public class Customer : Entity
             company.PhoneNumber,
             company.CustomerAddress));
 
+        company.Validate();
+
         return company;
     }
 
@@ -99,6 +101,8 @@ public class Customer : Entity
             Description,
             PhoneNumber,
             customerAddress));
+
+        Validate();
     }
 
     public override void Validate()

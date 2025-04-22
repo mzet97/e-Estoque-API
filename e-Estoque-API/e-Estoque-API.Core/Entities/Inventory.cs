@@ -63,6 +63,8 @@ public class Inventory : Entity
             inventory.DateOrder,
             inventory.IdProduct));
 
+        inventory.Validate();
+
         return inventory;
     }
 
@@ -82,6 +84,8 @@ public class Inventory : Entity
             Quantity,
             DateOrder,
             IdProduct));
+
+        Validate();
     }
 
     public override void Validate()

@@ -107,6 +107,8 @@ public class Product : AggregateRoot
             product.IdCategory,
             product.IdCompany));
 
+        product.Validate();
+
         return product;
     }
 
@@ -147,6 +149,8 @@ public class Product : AggregateRoot
             Image,
             IdCategory,
             IdCompany));
+
+        Validate();
     }
 
     public override void Validate()

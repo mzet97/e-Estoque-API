@@ -57,12 +57,13 @@ public class UpdateProductCommandHandler : IRequestHandler<UpdateProductCommand,
 
         if (!entity.IsValid())
         {
-            var noticiation = new NotificationError("Validate Product has error", "Validate Product has error");
+            var errors = String.Join(",", entity.GetErrors());
+            var noticiation = new NotificationError("Validate Product has error", errors);
             var routingKey = noticiation.GetType().Name.ToDashCase();
 
             _messageBus.Publish(noticiation, routingKey, "noticiation-service");
 
-            throw new ValidationException("Validate Error");
+            throw new ValidationException(errors);
         }
 
         var category = await _categoryRepository.GetByIdAsync(request.IdCategory);

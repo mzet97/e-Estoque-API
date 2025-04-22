@@ -44,12 +44,13 @@ public class UpdateCategoryCommandHandler : IRequestHandler<UpdateCategoryComman
 
         if (!entity.IsValid())
         {
-            var noticiation = new NotificationError("Validate Category has error", "Validate Category has error");
+            var errors = String.Join(",", entity.GetErrors());
+            var noticiation = new NotificationError("Validate Category has error", errors);
             var routingKey = noticiation.GetType().Name.ToDashCase();
 
             _messageBus.Publish(noticiation, routingKey, "noticiation-service");
 
-            throw new ValidationException("Validate Error");
+            throw new ValidationException(errors);
         }
 
         await _categoryRepository.UpdateAsync(entity);

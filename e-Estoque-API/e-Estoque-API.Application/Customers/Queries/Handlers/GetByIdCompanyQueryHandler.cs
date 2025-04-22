@@ -2,13 +2,14 @@
 using e_Estoque_API.Application.Extensions;
 using e_Estoque_API.Core.Events;
 using e_Estoque_API.Core.Exceptions;
+using e_Estoque_API.Core.Models;
 using e_Estoque_API.Core.Repositories;
 using e_Estoque_API.Infrastructure.MessageBus;
 using MediatR;
 
 namespace e_Estoque_API.Application.Customers.Queries.Handlers;
 
-public class GetByICustomerQueryHandler : IRequestHandler<GetByIdCustomerQuery, CustomerViewModel>
+public class GetByICustomerQueryHandler : IRequestHandler<GetByIdCustomerQuery, BaseResult<CustomerViewModel>>
 {
     private readonly ICustomerRepository _customerRepository;
     private readonly IMessageBusClient _messageBus;
@@ -21,7 +22,7 @@ public class GetByICustomerQueryHandler : IRequestHandler<GetByIdCustomerQuery, 
         _messageBus = messageBus;
     }
 
-    public async Task<CustomerViewModel> Handle(
+    public async Task<BaseResult<CustomerViewModel>> Handle(
         GetByIdCustomerQuery request,
         CancellationToken cancellationToken)
     {
@@ -37,6 +38,6 @@ public class GetByICustomerQueryHandler : IRequestHandler<GetByIdCustomerQuery, 
             throw new NotFoundException("Not found");
         }
 
-        return CustomerViewModel.FromEntity(entity);
+        return new BaseResult<CustomerViewModel>(CustomerViewModel.FromEntity(entity), true);
     }
 }

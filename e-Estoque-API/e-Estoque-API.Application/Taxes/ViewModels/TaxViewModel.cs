@@ -39,7 +39,7 @@ public class TaxViewModel : BaseViewModel
             entity.Description,
             entity.Percentage,
             entity.IdCategory,
-            CategoryViewModel.FromEntity(entity.Category),
+            entity.Category != null ? CategoryViewModel.FromEntity(entity.Category) : null,
             entity.CreatedAt,
             entity.UpdatedAt,
             entity.DeletedAt);

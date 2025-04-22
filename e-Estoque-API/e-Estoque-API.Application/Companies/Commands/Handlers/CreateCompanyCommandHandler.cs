@@ -35,12 +35,13 @@ public class CreateCompanyCommandHandler : IRequestHandler<CreateCompanyCommand,
 
         if (!entity.IsValid())
         {
-            var noticiation = new NotificationError("Validate Company has error", "Validate Company has error");
+            var errors = String.Join(",", entity.GetErrors());
+            var noticiation = new NotificationError("Validate Company has error", errors);
             var routingKey = noticiation.GetType().Name.ToDashCase();
 
             _messageBus.Publish(noticiation, routingKey, "noticiation-service");
 
-            throw new ValidationException("Validate Error");
+            throw new ValidationException(errors);
         }
 
         await _companyRepository.AddAsync(entity);

@@ -66,7 +66,7 @@ public class CompanyMapping : IEntityTypeConfiguration<Company>
                 .HasColumnName("CompanyAddress_City")
                 .HasColumnType("varchar(80)");
 
-            address.Property(p => p.County)
+            address.Property(p => p.Country)
                 .HasColumnName("CompanyAddress_County")
                 .HasColumnType("varchar(80)");
 

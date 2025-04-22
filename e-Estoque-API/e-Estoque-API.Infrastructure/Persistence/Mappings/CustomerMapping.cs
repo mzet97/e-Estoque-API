@@ -66,7 +66,7 @@ public class CustomerMapping : IEntityTypeConfiguration<Customer>
                 .HasColumnName("CustomerAddress_City")
                 .HasColumnType("varchar(80)");
 
-            address.Property(a => a.County)
+            address.Property(a => a.Country)
                 .HasColumnName("CustomerAddress_County")
                 .HasColumnType("varchar(80)");
 

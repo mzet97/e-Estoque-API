@@ -36,7 +36,6 @@ public class Category : Entity
         Name = name;
         Description = description;
         ShortDescription = shortDescription;
-        Validate();
     }
 
     public static Category Create(
@@ -59,6 +58,8 @@ public class Category : Entity
             category.Name,
             category.Description,
             category.ShortDescription));
+        
+        category.Validate();
 
         return category;
     }

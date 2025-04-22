@@ -34,12 +34,13 @@ public class CreateInventoryCommandHandler : IRequestHandler<CreateInventoryComm
 
         if (!entity.IsValid())
         {
-            var noticiation = new NotificationError("Validate Inventory has error", "Validate Inventory has error");
+            var errors = String.Join(",", entity.GetErrors());
+            var noticiation = new NotificationError("Validate Inventory has error", errors);
             var routingKey = noticiation.GetType().Name.ToDashCase();
 
             _messageBus.Publish(noticiation, routingKey, "noticiation-service");
 
-            throw new ValidationException("Inventory Error");
+            throw new ValidationException(errors);
         }
 
         var product = await _productRepository.GetByIdAsync(request.IdProduct);

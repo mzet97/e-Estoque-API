@@ -80,7 +80,7 @@ public class CompanyValidation : AbstractValidator<Company>
             .Length(3, 80)
             .WithMessage("The {PropertyName} need to have between {MinLength} and {MaxLength} characters");
 
-        RuleFor(x => x.CompanyAddress.County)
+        RuleFor(x => x.CompanyAddress.Country)
             .NotEmpty()
             .WithMessage("{PropertyName} is required")
             .Length(3, 80)

@@ -108,6 +108,8 @@ public class Sale : AggregateRoot
             sale.IdCustomer,
             SaleProductsToProduct(sale.SaleProducts)));
 
+        sale.Validate();
+
         return sale;
     }
 
@@ -148,6 +150,8 @@ public class Sale : AggregateRoot
             PaymentDate,
             IdCustomer,
             SaleProductsToProduct(SaleProducts)));
+
+        Validate();
     }
 
     public static IEnumerable<Product> SaleProductsToProduct(IEnumerable<SaleProduct> saleProducts)

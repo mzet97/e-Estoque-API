@@ -102,7 +102,7 @@ public class SearchTaxQueryHandler : IRequestHandler<SearchTaxQuery, BaseResultL
             .SearchAsync(
                 filter,
                 ordeBy,
-                "",
+                "Category",
                 request.PageSize,
                 request.PageIndex);
 

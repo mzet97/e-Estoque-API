@@ -2,13 +2,14 @@
 using e_Estoque_API.Application.Extensions;
 using e_Estoque_API.Core.Events;
 using e_Estoque_API.Core.Exceptions;
+using e_Estoque_API.Core.Models;
 using e_Estoque_API.Core.Repositories;
 using e_Estoque_API.Infrastructure.MessageBus;
 using MediatR;
 
 namespace e_Estoque_API.Application.Companies.Queries.Handlers;
 
-public class GetByIdCompanyQueryHandler : IRequestHandler<GetByIdCompanyQuery, CompanyViewModel>
+public class GetByIdCompanyQueryHandler : IRequestHandler<GetByIdCompanyQuery, BaseResult<CompanyViewModel>>
 {
     private readonly ICompanyRepository _companyRepository;
     private readonly IMessageBusClient _messageBus;
@@ -21,7 +22,7 @@ public class GetByIdCompanyQueryHandler : IRequestHandler<GetByIdCompanyQuery, C
         _messageBus = messageBus;
     }
 
-    public async Task<CompanyViewModel> Handle(
+    public async Task<BaseResult<CompanyViewModel>> Handle(
         GetByIdCompanyQuery request,
         CancellationToken cancellationToken)
     {
@@ -37,6 +38,6 @@ public class GetByIdCompanyQueryHandler : IRequestHandler<GetByIdCompanyQuery, C
             throw new NotFoundException("Not found");
         }
 
-        return CompanyViewModel.FromEntity(entity);
+        return new BaseResult<CompanyViewModel>(CompanyViewModel.FromEntity(entity), true);
     }
 }

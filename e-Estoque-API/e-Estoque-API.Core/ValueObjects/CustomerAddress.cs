@@ -7,7 +7,7 @@ public sealed record CustomerAddress(
      string Neighborhood,
      string District,
      string City,
-     string County,
+     string Country,
      string ZipCode,
      string Latitude,
      string Longitude

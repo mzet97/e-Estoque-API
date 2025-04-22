@@ -35,12 +35,13 @@ public class CreateCustomerCommandHandler : IRequestHandler<CreateCustomerComman
 
         if (!entity.IsValid())
         {
-            var noticiation = new NotificationError("Validate Customer has error", "Validate Customer has error");
+            var errors = String.Join(",", entity.GetErrors());
+            var noticiation = new NotificationError("Validate Customer has error", errors);
             var routingKey = noticiation.GetType().Name.ToDashCase();
 
             _messageBus.Publish(noticiation, routingKey, "noticiation-service");
 
-            throw new ValidationException("Validate Error");
+            throw new ValidationException(errors);
         }
 
         await _customerRepository.AddAsync(entity);
