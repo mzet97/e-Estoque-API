@@ -39,22 +39,6 @@ public class UpdateInventoryCommandHandler : IRequestHandler<UpdateInventoryComm
             throw new NotFoundException("Find Error");
         }
 
-        entity.Update(
-            request.Quantity,
-            request.DateOrder,
-            request.IdProduct);
-
-        if (!entity.IsValid())
-        {
-            var errors = String.Join(",", entity.GetErrors());
-            var noticiation = new NotificationError("Validate Inventory has error", errors);
-            var routingKey = noticiation.GetType().Name.ToDashCase();
-
-            _messageBus.Publish(noticiation, routingKey, "noticiation-service");
-
-            throw new ValidationException(errors);
-        }
-
         var product = await _productRepository.GetByIdAsync(request.IdProduct);
 
         if (product == null)
@@ -65,6 +49,23 @@ public class UpdateInventoryCommandHandler : IRequestHandler<UpdateInventoryComm
             _messageBus.Publish(noticiation, routingKey, "noticiation-service");
 
             throw new NotFoundException("Product not found");
+        }
+
+        entity.Update(
+            request.Quantity,
+            request.DateOrder,
+            request.IdProduct,
+            product);
+
+        if (!entity.IsValid())
+        {
+            var errors = String.Join(",", entity.GetErrors());
+            var noticiation = new NotificationError("Validate Inventory has error", errors);
+            var routingKey = noticiation.GetType().Name.ToDashCase();
+
+            _messageBus.Publish(noticiation, routingKey, "noticiation-service");
+
+            throw new ValidationException(errors);
         }
 
         await _inventoryRepository.UpdateAsync(entity);

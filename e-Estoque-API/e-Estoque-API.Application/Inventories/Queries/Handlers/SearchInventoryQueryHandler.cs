@@ -97,7 +97,7 @@ public class SearchInventoryQueryHandler : IRequestHandler<SearchInventoryQuery,
             .SearchAsync(
                 filter,
                 ordeBy,
-                "",
+                "Product,Product.Category,Product.Company",
                 request.PageSize,
                 request.PageIndex);
 

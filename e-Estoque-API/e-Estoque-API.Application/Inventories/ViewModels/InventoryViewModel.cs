@@ -36,7 +36,7 @@ public class InventoryViewModel : BaseViewModel
             entity.Quantity,
             entity.DateOrder,
             entity.IdProduct,
-            ProductViewModel.FromEntity(entity.Product),
+            entity.Product != null ? ProductViewModel.FromEntity(entity.Product) : null,
             entity.CreatedAt,
             entity.UpdatedAt,
             entity.DeletedAt);

@@ -68,9 +68,9 @@ public class ProductViewModel : BaseViewModel
             entity.Length,
             entity.Image,
             entity.IdCategory,
-            CategoryViewModel.FromEntity(entity.Category),
+            entity.Category != null ? CategoryViewModel.FromEntity(entity.Category) : null,
             entity.IdCompany,
-            CompanyViewModel.FromEntity(entity.Company),
+            entity.Company != null ? CompanyViewModel.FromEntity(entity.Company) : null,
             entity.CreatedAt,
             entity.UpdatedAt,
             entity.DeletedAt);

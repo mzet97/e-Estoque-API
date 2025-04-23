@@ -2,7 +2,6 @@
 using e_Estoque_API.Core.Events;
 using e_Estoque_API.Core.Exceptions;
 using e_Estoque_API.Core.Repositories;
-using e_Estoque_API.Core.Validations;
 using e_Estoque_API.Infrastructure.MessageBus;
 using MediatR;
 
@@ -43,28 +42,7 @@ public class UpdateProductCommandHandler : IRequestHandler<UpdateProductCommand,
             throw new NotFoundException("Find Error");
         }
 
-        entity.Update(
-             request.Name,
-             request.Description,
-             request.ShortDescription,
-             request.Price,
-             request.Weight,
-             request.Height,
-             request.Length,
-             request.Image,
-             request.IdCategory,
-             request.IdCompany);
-
-        if (!entity.IsValid())
-        {
-            var errors = String.Join(",", entity.GetErrors());
-            var noticiation = new NotificationError("Validate Product has error", errors);
-            var routingKey = noticiation.GetType().Name.ToDashCase();
-
-            _messageBus.Publish(noticiation, routingKey, "noticiation-service");
-
-            throw new ValidationException(errors);
-        }
+       
 
         var category = await _categoryRepository.GetByIdAsync(request.IdCategory);
 
@@ -88,6 +66,31 @@ public class UpdateProductCommandHandler : IRequestHandler<UpdateProductCommand,
             _messageBus.Publish(noticiation, routingKey, "noticiation-service");
 
             throw new NotFoundException("Company not found");
+        }
+
+        entity.Update(
+            request.Name,
+            request.Description,
+            request.ShortDescription,
+            request.Price,
+            request.Weight,
+            request.Height,
+            request.Length,
+            request.Image,
+            request.IdCategory,
+            category,
+            request.IdCompany,
+            company);
+
+        if (!entity.IsValid())
+        {
+            var errors = String.Join(",", entity.GetErrors());
+            var noticiation = new NotificationError("Validate Product has error", errors);
+            var routingKey = noticiation.GetType().Name.ToDashCase();
+
+            _messageBus.Publish(noticiation, routingKey, "noticiation-service");
+
+            throw new ValidationException(errors);
         }
 
         await _productRepository.UpdateAsync(entity);

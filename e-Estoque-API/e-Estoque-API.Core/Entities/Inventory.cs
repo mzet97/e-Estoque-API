@@ -71,11 +71,13 @@ public class Inventory : Entity
     public void Update(
         int quantity,
         DateTime dateOrder,
-        Guid idProduct)
+        Guid idProduct,
+        Product product)
     {
         Quantity = quantity;
         DateOrder = dateOrder;
         IdProduct = idProduct;
+        Product = product;
 
         Update();
 

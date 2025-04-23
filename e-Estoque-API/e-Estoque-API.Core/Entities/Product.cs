@@ -122,7 +122,9 @@ public class Product : AggregateRoot
         decimal length,
         string image,
         Guid idCategory,
-        Guid idCompany)
+        Category category,
+        Guid idCompany,
+        Company company)
     {
         Name = name;
         Description = description;
@@ -134,6 +136,8 @@ public class Product : AggregateRoot
         Image = image;
         IdCategory = idCategory;
         IdCompany = idCompany;
+        Category = category;
+        Company = company;
 
         Update();
 
