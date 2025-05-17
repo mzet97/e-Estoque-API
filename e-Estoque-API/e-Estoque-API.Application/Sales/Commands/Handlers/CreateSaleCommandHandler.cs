@@ -31,7 +31,7 @@ public class CreateSaleCommandHandler : IRequestHandler<CreateSaleCommand, Guid>
     {
         var company = await _companyRepository.GetByIdAsync(request.IdCustomer);
 
-        if (company == null)
+        if (company is null)
         {
             var noticiation = new NotificationError("Company not found", "Company not found");
             var routingKey = noticiation.GetType().Name.ToDashCase();
@@ -41,7 +41,7 @@ public class CreateSaleCommandHandler : IRequestHandler<CreateSaleCommand, Guid>
 
         var customer = await _companyRepository.GetByIdAsync(request.IdCustomer);
 
-        if (customer == null)
+        if (customer is null)
         {
             var noticiation = new NotificationError("Customer not found", "Customer not found");
             var routingKey = noticiation.GetType().Name.ToDashCase();
@@ -53,7 +53,7 @@ public class CreateSaleCommandHandler : IRequestHandler<CreateSaleCommand, Guid>
         foreach(var idProduct in request.IdsProducts)
         {
             var product = await _productRepository.GetByIdAsync(idProduct);
-            if (product == null)
+            if (product is null)
             {
                 var noticiation = new NotificationError("Product not found", "Product not found");
                 var routingKey = noticiation.GetType().Name.ToDashCase();

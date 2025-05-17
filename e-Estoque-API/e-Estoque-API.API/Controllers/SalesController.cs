@@ -1,5 +1,6 @@
 ﻿using e_Estoque_API.Application.Products.Commands;
 using e_Estoque_API.Application.Products.Queries;
+using e_Estoque_API.Application.Sales.Commands;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -44,7 +45,7 @@ public class SalesController : MainController
 
     [Authorize(Roles = "Create")]
     [HttpPost]
-    public async Task<IActionResult> Post([FromBody] CreateProductCommand command)
+    public async Task<IActionResult> Post([FromBody] CreateSaleCommand command)
     {
         var id = await _mediator.Send(command);
 
