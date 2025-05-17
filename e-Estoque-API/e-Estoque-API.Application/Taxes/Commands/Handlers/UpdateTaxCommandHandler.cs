@@ -29,7 +29,7 @@ public class UpdateTaxCommandHandler : IRequestHandler<UpdateTaxCommand, Guid>
     {
         var entity = await _taxRepository.GetByIdAsync(request.Id);
 
-        if (entity == null)
+        if (entity is null)
         {
             var errors = String.Join(",", entity.GetErrors());
             var noticiation = new NotificationError("Update Tax has error", errors);
@@ -42,7 +42,7 @@ public class UpdateTaxCommandHandler : IRequestHandler<UpdateTaxCommand, Guid>
 
         var category = await _categoryRepository.GetByIdAsync(request.IdCategory);
 
-        if (category == null)
+        if (category is null)
         {
             var noticiation = new NotificationError("Category not found", "Category not found");
             var routingKey = noticiation.GetType().Name.ToDashCase();

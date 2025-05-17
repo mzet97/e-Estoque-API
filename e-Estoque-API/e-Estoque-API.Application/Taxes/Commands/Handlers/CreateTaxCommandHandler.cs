@@ -47,9 +47,9 @@ public class CreateTaxCommandHandler : IRequestHandler<CreateTaxCommand, Guid>
             throw new ValidationException(errors);
         }
 
-        var category = _categoryRepository.GetByIdAsync(entity.IdCategory);
+        var category = await _categoryRepository.GetByIdAsync(entity.IdCategory);
 
-        if (category == null)
+        if (category is null)
         {
             var noticiation = new NotificationError("Category not found", "Category not found");
             var routingKey = noticiation.GetType().Name.ToDashCase();

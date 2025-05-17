@@ -24,7 +24,7 @@ public class DeleteTaxHandler : IRequestHandler<DeleteTaxCommand, Unit>
     {
         var entity = await _taxRepository.GetByIdAsync(request.Id);
 
-        if (entity == null)
+        if (entity is null)
         {
             var noticiation = new NotificationError("Delete Tax has error", "Delete Tax has error");
             var routingKey = noticiation.GetType().Name.ToDashCase();
