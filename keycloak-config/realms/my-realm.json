@@ -16,15 +16,43 @@
           "temporary": false
         }
       ],
-      "realmRoles": ["admin", "Create"]
+      "realmRoles": ["admin", "Create", "Read", "Update", "Delete"]
+    },
+    {
+      "username": "usuario",
+      "enabled": true,
+      "email": "usuario@exemplo.com",
+      "firstName": "Usuário",
+      "lastName": "Comum",
+      "credentials": [
+        {
+          "type": "password",
+          "value": "senha123",
+          "temporary": false
+        }
+      ],
+      "realmRoles": ["user", "Read"]
     }
   ],
   "roles": {
     "realm": [
       { "name": "admin" },
       { "name": "user" },
-      { "name": "Create" }
-    ]
+      { "name": "Create" },
+      { "name": "Read" },
+      { "name": "Update" },
+      { "name": "Delete" }
+    ],
+    "client": {
+      "e-estoque-client": [
+        { "name": "admin", "composite": false, "clientRole": true },
+        { "name": "user", "composite": false, "clientRole": true },
+        { "name": "Create", "composite": false, "clientRole": true },
+        { "name": "Read", "composite": false, "clientRole": true },
+        { "name": "Update", "composite": false, "clientRole": true },
+        { "name": "Delete", "composite": false, "clientRole": true }
+      ]
+    }
   },
   "clients": [
     {
@@ -32,13 +60,28 @@
       "enabled": true,
       "protocol": "openid-connect",
       "redirectUris": [
-        "http://localhost:8080/*"
+        "http://localhost:8080/*",
+        "http://localhost:5000/*",
+        "http://localhost:5001/*"
       ],
       "webOrigins": [
         "*"
       ],
-      "publicClient": true,
+      "publicClient": false,
       "authorizationServicesEnabled": true,
+      "secret": "WjLGUAvmDyf5lEkbS6zcFnICU6tDrrtW",
+      "standardFlowEnabled": true,
+      "implicitFlowEnabled": false,
+      "directAccessGrantsEnabled": true,
+      "serviceAccountsEnabled": true,
+      "clientAuthenticatorType": "client-secret",
+      "defaultClientScopes": ["web-origins", "acr", "profile", "roles", "email"],
+      "optionalClientScopes": ["address", "phone", "offline_access", "microprofile-jwt"],
+      "access": {
+        "view": true,
+        "configure": true,
+        "manage": true
+      },
       "protocolMappers": [
         {
           "name": "realm roles",

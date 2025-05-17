@@ -18,6 +18,10 @@ public class SaleProduct : Entity
     {
     }
 
+    public SaleProduct(int quantity, Guid IdProduct)
+    {
+    }
+
     public SaleProduct(
         Guid id,
         int quantity,
