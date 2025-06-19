@@ -1,6 +1,6 @@
 ﻿using e_Estoque_API.Application.Products.Commands;
-using e_Estoque_API.Application.Products.Queries;
 using e_Estoque_API.Application.Sales.Commands;
+using e_Estoque_API.Application.Sales.Queries;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -20,7 +20,7 @@ public class SalesController : MainController
     }
 
     [HttpGet]
-    public async Task<IActionResult> Get([FromQuery] SearchProductQuery query)
+    public async Task<IActionResult> Get([FromQuery] SearchSaleQuery query)
     {
         var result = await _mediator.Send(query);
 
@@ -33,7 +33,7 @@ public class SalesController : MainController
     [HttpGet("{id}")]
     public async Task<IActionResult> Get([FromRoute] Guid id)
     {
-        var query = new GetByIdProductQuery(id);
+        var query = new GetByIdSaleQuery(id);
 
         var result = await _mediator.Send(query);
 

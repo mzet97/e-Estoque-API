@@ -10,6 +10,8 @@ public interface IRepository<TEntity> : IDisposable where TEntity : IEntity
 
     Task<TEntity?> GetByIdAsync(Guid id);
 
+    IQueryable<TEntity> GetAllQueryable();
+
     Task<IEnumerable<TEntity>> GetAllAsync();
 
     Task<IEnumerable<TEntity>> FindAsync(Expression<Func<TEntity, bool>> predicate);

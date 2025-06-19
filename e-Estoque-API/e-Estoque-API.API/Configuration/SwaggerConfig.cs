@@ -64,10 +64,7 @@ public class SwaggerDefaultValues : IOperationFilter
 {
     public void Apply(OpenApiOperation operation, OperationFilterContext context)
     {
-        if (operation.Parameters == null)
-        {
-            return;
-        }
+        if (operation.Parameters == null) return;
 
         foreach (var parameter in operation.Parameters)
         {
@@ -80,21 +77,19 @@ public class SwaggerDefaultValues : IOperationFilter
             operation.Deprecated = OpenApiOperation.DeprecatedDefault;
 
             if (parameter.Description == null)
-            {
                 parameter.Description = description.ModelMetadata?.Description;
-            }
 
-            if (routeInfo == null)
+            if (routeInfo != null)
             {
-                continue;
-            }
+                if (parameter.In != ParameterLocation.Path
+                    && parameter.Schema.Default == null
+                    && routeInfo.DefaultValue != null)
+                {
+                    parameter.Schema.Default = new OpenApiString(routeInfo.DefaultValue.ToString());
+                }
 
-            if (parameter.In != ParameterLocation.Path && parameter.Schema.Default == null)
-            {
-                parameter.Schema.Default = new OpenApiString(routeInfo.DefaultValue.ToString());
+                parameter.Required |= !routeInfo.IsOptional;
             }
-
-            parameter.Required |= !routeInfo.IsOptional;
         }
     }
 }

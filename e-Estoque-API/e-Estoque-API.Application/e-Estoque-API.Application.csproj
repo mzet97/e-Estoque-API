@@ -28,7 +28,6 @@
   <ItemGroup>
     <Folder Include="Categories\Notifications\" />
     <Folder Include="Configuration\" />
-    <Folder Include="Sales\Queries\Handlers\" />
   </ItemGroup>
 
 </Project>

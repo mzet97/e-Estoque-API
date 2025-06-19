@@ -19,7 +19,8 @@ public abstract class Repository<TEntity> : IRepository<TEntity> where TEntity :
 
     public virtual async Task AddAsync(TEntity entity)
     {
-        if (entity == null) throw new ArgumentNullException(nameof(entity));
+        if (entity == null) 
+            throw new ArgumentNullException(nameof(entity));
 
         await DbSet.AddAsync(entity);
         await Db.SaveChangesAsync();
@@ -30,8 +31,10 @@ public abstract class Repository<TEntity> : IRepository<TEntity> where TEntity :
         Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>>? orderBy = null,
         int pageSize = 10, int page = 1)
     {
-        if (pageSize <= 0) throw new ArgumentOutOfRangeException(nameof(pageSize));
-        if (page <= 0) throw new ArgumentOutOfRangeException(nameof(page));
+        if (pageSize <= 0) 
+            throw new ArgumentOutOfRangeException(nameof(pageSize));
+        if (page <= 0) 
+            throw new ArgumentOutOfRangeException(nameof(page));
 
         var query = DbSet.AsNoTracking().AsQueryable();
 
@@ -97,6 +100,11 @@ public abstract class Repository<TEntity> : IRepository<TEntity> where TEntity :
     public virtual async Task<IEnumerable<TEntity>> GetAllAsync()
     {
         return await DbSet.AsNoTracking().ToListAsync();
+    }
+
+    public virtual IQueryable<TEntity> GetAllQueryable()
+    {
+        return DbSet.AsNoTracking();
     }
 
     public virtual async Task<TEntity?> GetByIdAsync(Guid id)

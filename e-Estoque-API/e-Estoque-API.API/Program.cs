@@ -3,9 +3,11 @@ using e_Estoque_API.API.Extensions;
 using e_Estoque_API.Application;
 using e_Estoque_API.Infrastructure.Configuration;
 using e_Estoque_API.Infrastructure.Persistence;
+using e_Estoque_API.Infrastructure.Persistence.OData;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.OData;
 using Microsoft.IdentityModel.Tokens;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -29,10 +31,24 @@ builder.Services.ResolveDependenciesInfrastructure();
 builder.Services.AddMessageBus(builder.Configuration);
 builder.Services.AddApplicationServices();
 
-builder.Services.AddControllers();
+builder.Services
+    .AddControllers()
+    .AddOData(opt => opt
+        .AddRouteComponents("odata", ODataModel.Model) 
+        .Select()                                      
+        .Filter()                                      
+        .OrderBy()                                      
+        .Expand()                                       
+        .Count()                                        
+        .SetMaxTop(null)                                
+    );
+
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerConfig();
-builder.Services.AddSwaggerGen();
+builder.Services.AddSwaggerGen(c =>
+{
+    c.ResolveConflictingActions(apiDescriptions => apiDescriptions.First());
+});
 builder.Services.AddKeycloakConfig(builder.Configuration);
 builder.Services.AddTransient<IClaimsTransformation, KeycloakClaimsTransformation>();
 builder.Services.PostConfigure<JwtBearerOptions>(
